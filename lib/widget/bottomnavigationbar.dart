@@ -19,7 +19,10 @@ class _BottomState extends State<Bottom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: getTabs(),
+      bottomNavigationBar: SizedBox(
+        height: 80,
+        child: getTabs(),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           setState(() {

@@ -14,10 +14,13 @@ class IncomeAndExpense extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
-      child: SafeArea(
-        child: Column(
-          children: [
-            TabBar(
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(60), // here the desired height
+          child: AppBar(
+            backgroundColor: maincolor,
+            bottom: TabBar(
+              indicatorColor: red,
               tabs: [
                 Tab(
                   child: Text(
@@ -39,14 +42,12 @@ class IncomeAndExpense extends StatelessWidget {
                 ),
               ],
             ),
-            Expanded(
-              child: TabBarView(
-                children: [
-                  Income(),
-                  Expense(),
-                ],
-              ),
-            )
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            Income(),
+            Expense(),
           ],
         ),
       ),

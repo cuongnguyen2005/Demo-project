@@ -71,19 +71,18 @@ class DetailBox extends StatelessWidget {
           Spacer(),
           Row(
             children: [
-              IconButton(
-                padding: EdgeInsets.all(0),
-                onPressed: () {},
-                icon: Icon(
+              GestureDetector(
+                onTap: () {},
+                child: Icon(
                   Icons.pending_actions,
                   color: blue,
                   size: 15,
                 ),
               ),
-              IconButton(
-                padding: EdgeInsets.all(0),
-                onPressed: () {},
-                icon: Icon(
+              SizedBox(width: 10),
+              GestureDetector(
+                onTap: () {},
+                child: Icon(
                   Icons.delete,
                   color: red,
                   size: 15,

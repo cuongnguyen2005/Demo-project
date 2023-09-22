@@ -10,7 +10,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: white,
+      backgroundColor: maincolor,
       body: ListView(
         children: [
           Container(
@@ -20,14 +20,14 @@ class HomeScreen extends StatelessWidget {
                 bottomRight: Radius.circular(20),
                 bottomLeft: Radius.circular(20),
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: grey,
-                  offset: Offset(0.0, 5.0),
-                  blurRadius: 10.0,
-                  spreadRadius: 0.0,
-                ),
-              ],
+              // boxShadow: [
+              //   BoxShadow(
+              //     color: grey,
+              //     offset: Offset(0.0, 5.0),
+              //     blurRadius: 10.0,
+              //     spreadRadius: 0.0,
+              //   ),
+              // ],
             ),
             child: Column(
               children: [
@@ -73,14 +73,14 @@ class HomeScreen extends StatelessWidget {
                           Text(
                             'NGUYEN MANH CUONG',
                             style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w600),
+                                fontSize: 17, fontWeight: FontWeight.w600),
                           ),
                         ],
                       ),
                     ],
                   ),
                 ),
-                SizedBox(height: 50),
+                SizedBox(height: 35),
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 30),
                   padding: EdgeInsets.all(16),
@@ -104,11 +104,11 @@ class HomeScreen extends StatelessWidget {
                       Text(
                         'Tổng số tiền: 10.000.000',
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 17,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      SizedBox(height: 15),
+                      SizedBox(height: 20),
                       Row(
                         children: [
                           Text(
@@ -136,9 +136,23 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 30),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            decoration: BoxDecoration(
+              color: white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: grey,
+                  offset: Offset(0.0, 5.0),
+                  blurRadius: 10.0,
+                  spreadRadius: 0.0,
+                ),
+              ],
+            ),
+            padding: EdgeInsets.symmetric(vertical: 40, horizontal: 16),
             child: Column(
               children: [
                 Row(
@@ -189,7 +203,6 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 30),
         ],
       ),
     );
