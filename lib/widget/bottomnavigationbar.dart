@@ -1,7 +1,11 @@
+import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:finance_app/colors.dart';
+import 'package:finance_app/main.dart';
+import 'package:finance_app/widget/fianceDetail.dart';
 import 'package:finance_app/widget/home.dart';
-import 'package:finance_app/widget/writeIandE.dart';
+import 'package:finance_app/widget/writefiance.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 
 class Bottom extends StatefulWidget {
   const Bottom({Key? key}) : super(key: key);
@@ -11,71 +15,57 @@ class Bottom extends StatefulWidget {
 }
 
 class _BottomState extends State<Bottom> {
-  int index_color = 0;
-  List Screen = [HomeScreen(), IncomeAndExpense(), HomeScreen(), HomeScreen()];
+  int pageIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Screen[index_color],
-      bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        child: Padding(
-          padding: const EdgeInsets.only(top: 7.5, bottom: 7.5),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    index_color = 0;
-                  });
-                },
-                child: Icon(
-                  Icons.home,
-                  size: 30,
-                  color: index_color == 0 ? maincolor : grey,
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    index_color = 1;
-                  });
-                },
-                child: Icon(
-                  Icons.pending_actions,
-                  size: 30,
-                  color: index_color == 1 ? maincolor : grey,
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    index_color = 2;
-                  });
-                },
-                child: Icon(
-                  Icons.account_balance_wallet_outlined,
-                  size: 30,
-                  color: index_color == 2 ? maincolor : grey,
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    index_color = 3;
-                  });
-                },
-                child: Icon(
-                  Icons.person_outlined,
-                  size: 30,
-                  color: index_color == 3 ? maincolor : grey,
-                ),
-              ),
-            ],
-          ),
-        ),
+      bottomNavigationBar: getTabs(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setState(() {
+            pageIndex = 4;
+          });
+        },
+        child: Icon(Icons.add),
+        backgroundColor: maincolor,
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      body: getBody(),
+    );
+  }
+
+  Widget getTabs() {
+    List<IconData> iconsItems = [
+      MaterialCommunityIcons.home_variant,
+      MaterialCommunityIcons.note_text,
+      MaterialCommunityIcons.chart_areaspline,
+      MaterialCommunityIcons.account_circle,
+    ];
+    return AnimatedBottomNavigationBar(
+      icons: iconsItems,
+      activeColor: maincolor,
+      inactiveColor: grey,
+      gapLocation: GapLocation.center,
+      splashColor: maincolor,
+      activeIndex: pageIndex,
+      onTap: (index) {
+        setState(() {
+          pageIndex = index;
+        });
+      },
+    );
+  }
+
+  Widget getBody() {
+    return IndexedStack(
+      index: pageIndex,
+      children: [
+        HomeScreen(),
+        FianceDetail(),
+        HomeScreen(),
+        HomeScreen(),
+        IncomeAndExpense(),
+      ],
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:finance_app/routes.dart';
 import 'package:finance_app/widget/bottomnavigationbar.dart';
 import 'package:finance_app/widget/home.dart';
-import 'package:finance_app/widget/writeIandE.dart';
+import 'package:finance_app/widget/writefiance.dart';
 import 'package:flutter/material.dart';
 
 void main() {
