@@ -1,6 +1,7 @@
 import 'package:finance_app/component/boxDetailBasic.dart';
 import 'package:finance_app/widget/fianceDetail.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import '../colors.dart';
 
@@ -10,29 +11,19 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: maincolor,
-      body: ListView(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: maincolor,
-              borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(20),
-                bottomLeft: Radius.circular(20),
-              ),
-              // boxShadow: [
-              //   BoxShadow(
-              //     color: grey,
-              //     offset: Offset(0.0, 5.0),
-              //     blurRadius: 10.0,
-              //     spreadRadius: 0.0,
-              //   ),
-              // ],
-            ),
-            child: Column(
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/background.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: ListView(
+          children: [
+            Column(
               children: [
                 Container(
-                  padding: EdgeInsets.only(left: 16, right: 16, top: 30),
+                  padding: EdgeInsets.only(left: 16, right: 16, top: 20),
                   child: Row(
                     children: [
                       InkWell(
@@ -80,7 +71,7 @@ class HomeScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(height: 35),
+                SizedBox(height: 120),
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 30),
                   padding: EdgeInsets.all(16),
@@ -135,75 +126,75 @@ class HomeScreen extends StatelessWidget {
                 )
               ],
             ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              color: white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30),
-                topRight: Radius.circular(30),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: grey,
-                  offset: Offset(0.0, 5.0),
-                  blurRadius: 10.0,
-                  spreadRadius: 0.0,
+            Container(
+              decoration: BoxDecoration(
+                color: white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
                 ),
-              ],
-            ),
-            padding: EdgeInsets.symmetric(vertical: 40, horizontal: 16),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      'Danh sách thu chi gần đây',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Spacer(),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, FianceDetail.routeName);
-                      },
-                      child: Text(
-                        'Tất cả',
+                boxShadow: [
+                  BoxShadow(
+                    color: grey,
+                    offset: Offset(0.0, 5.0),
+                    blurRadius: 10.0,
+                    spreadRadius: 0.0,
+                  ),
+                ],
+              ),
+              padding: EdgeInsets.symmetric(vertical: 40, horizontal: 16),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        'Danh sách thu chi gần đây',
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w600,
-                          color: blue,
                         ),
                       ),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Column(
-                  children: [
-                    DetailBoxBasic(),
-                    SizedBox(height: 10),
-                    DetailBoxBasic(),
-                    SizedBox(height: 10),
-                    DetailBoxBasic(),
-                    SizedBox(height: 10),
-                    DetailBoxBasic(),
-                    SizedBox(height: 10),
-                    DetailBoxBasic(),
-                    SizedBox(height: 10),
-                    DetailBoxBasic(),
-                    SizedBox(height: 10),
-                    DetailBoxBasic(),
-                  ],
-                )
-              ],
+                      Spacer(),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, FianceDetail.routeName);
+                        },
+                        child: Text(
+                          'Tất cả',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: blue,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Column(
+                    children: [
+                      DetailBoxBasic(),
+                      SizedBox(height: 10),
+                      DetailBoxBasic(),
+                      SizedBox(height: 10),
+                      DetailBoxBasic(),
+                      SizedBox(height: 10),
+                      DetailBoxBasic(),
+                      SizedBox(height: 10),
+                      DetailBoxBasic(),
+                      SizedBox(height: 10),
+                      DetailBoxBasic(),
+                      SizedBox(height: 10),
+                      DetailBoxBasic(),
+                    ],
+                  )
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
