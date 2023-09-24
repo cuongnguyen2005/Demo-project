@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:finance_app/colors.dart';
+import 'package:finance_app/source/colors.dart';
+import 'package:finance_app/source/typo.dart';
 import 'package:finance_app/widget/expense.dart';
 import 'package:finance_app/widget/income.dart';
 import 'package:flutter/material.dart';
@@ -23,19 +24,13 @@ class IncomeAndExpense extends StatelessWidget {
                 Tab(
                   child: Text(
                     'Khoản Thu',
-                    style: TextStyle(
-                      color: black,
-                      fontWeight: FontWeight.w700,
-                    ),
+                    style: TextBlack16B(),
                   ),
                 ),
                 Tab(
                   child: Text(
                     'Khoản Chi',
-                    style: TextStyle(
-                      color: black,
-                      fontWeight: FontWeight.w700,
-                    ),
+                    style: TextBlack16B(),
                   ),
                 ),
               ],

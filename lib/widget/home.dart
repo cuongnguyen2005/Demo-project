@@ -2,9 +2,10 @@
 
 import 'package:finance_app/component/card_grid.dart';
 import 'package:finance_app/component/search.dart';
+import 'package:finance_app/source/typo.dart';
 import 'package:finance_app/widget/fiance_detail.dart';
 import 'package:flutter/material.dart';
-import '../colors.dart';
+import '../source/colors.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -37,6 +38,14 @@ class _HomeScreenState extends State<HomeScreen> {
             Container(
               height: size.height * .35,
               decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: grey.withOpacity(0.3),
+                    spreadRadius: 3, //độ mờ shadow
+                    blurRadius: 5, //tán shadow
+                    offset: Offset(0, 2), // changes position of shadow
+                  ),
+                ],
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(16),
                   bottomRight: Radius.circular(16),
@@ -59,19 +68,60 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       InkWell(
                         onTap: () {
-                          showDialog(
+                          showModalBottomSheet(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            backgroundColor: white,
                             context: context,
-                            builder: (context) => Align(
-                              alignment: Alignment.bottomCenter,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: white,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(20),
-                                    topRight: Radius.circular(20),
+                            builder: (context) => Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 25,
+                                vertical: 30,
+                              ),
+                              height: 150,
+                              child: Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      // Navigator.pop(context);
+                                    },
+                                    child: Row(
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 16,
+                                          child: Icon(Icons.person),
+                                        ),
+                                        SizedBox(width: 10),
+                                        Text(
+                                          'Đổi hình nền',
+                                          style: TextBlack16B(),
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                height: 200,
+                                  Spacer(),
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: Row(
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 16,
+                                          backgroundColor: red,
+                                          child: Icon(
+                                            Icons.exit_to_app,
+                                            color: white,
+                                          ),
+                                        ),
+                                        SizedBox(width: 10),
+                                        Text(
+                                          'Thoát',
+                                          style: TextDynamic16B(color: red),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           );
@@ -92,15 +142,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           Text(
                             'Xin chào buổi sáng!',
-                            style: TextStyle(fontSize: 16),
+                            style: Text16(),
                           ),
                           SizedBox(height: 5),
                           Text(
                             'NGUYEN MANH CUONG',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                            ),
+                            style: Healing20B(),
                           ),
                         ],
                       )
@@ -115,15 +162,15 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 //card chứa thông tin
                 Container(
-                  margin: EdgeInsets.only(top: 220, left: 16, right: 16),
+                  margin: EdgeInsets.only(top: 210, left: 16, right: 16),
                   padding: EdgeInsets.all(16),
                   height: 150,
                   decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
-                        color: grey.withOpacity(0.5),
-                        spreadRadius: 3, //tán shadow
-                        blurRadius: 10, //độ mờ shadow
+                        color: grey.withOpacity(0.3),
+                        spreadRadius: 2, //độ mờ shadow
+                        blurRadius: 10, //tán shadow
                         offset: Offset(0, 2), // changes position of shadow
                       ),
                     ],
@@ -146,17 +193,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             Text(
                               "Tổng tài sản",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
-                              ),
+                              style: TextBlack16B(),
                             ),
                             Text(
                               "10.000.000 VNĐ",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700,
-                              ),
+                              style: Healing20B(),
                             ),
                           ],
                         ),
@@ -178,10 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               SizedBox(height: 10),
                               Text(
                                 '10.000.000 VNĐ',
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: green),
+                                style: Text16(color: green),
                               )
                             ],
                           ),
@@ -200,10 +238,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               SizedBox(height: 10),
                               Text(
                                 '5.000.000 VNĐ',
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: red),
+                                style: Text16(color: red),
                               )
                             ],
                           ),

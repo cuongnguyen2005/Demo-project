@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
-import 'package:finance_app/colors.dart';
+import 'package:finance_app/source/colors.dart';
+import 'package:finance_app/source/typo.dart';
 import 'package:flutter/material.dart';
 
 class CardGrid extends StatelessWidget {
@@ -28,7 +29,7 @@ class CardGrid extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: grey.withOpacity(0.2),
+                color: grey.withOpacity(0.3),
                 spreadRadius: 3, //tán shadow
                 blurRadius: 10, //độ mờ shadow
                 offset: Offset(0, 2), // changes position of shadow
@@ -52,11 +53,7 @@ class CardGrid extends StatelessWidget {
             ),
             Text(
               text,
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w800,
-                color: white,
-              ),
+              style: TextWhite16B(),
             )
           ],
         ),

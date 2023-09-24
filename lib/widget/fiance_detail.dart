@@ -1,5 +1,6 @@
-import 'package:finance_app/colors.dart';
+import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/data/finance.dart';
+import 'package:finance_app/source/typo.dart';
 import 'package:finance_app/widget/fix_detail.dart';
 import 'package:flutter/material.dart';
 
@@ -15,12 +16,8 @@ class FianceDetail extends StatelessWidget {
         backgroundColor: maincolor,
         title: Text(
           textAlign: TextAlign.center,
-          'Danh sách chi tiêu thu chi',
-          style: TextStyle(
-            color: black,
-            fontSize: 17,
-            fontWeight: FontWeight.w600,
-          ),
+          'Danh sách thu chi',
+          style: Healing20B(),
         ),
       ),
       body: Container(
@@ -44,14 +41,10 @@ class FianceDetail extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        finances[index].categoryName,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: finances[index].cate == true ? green : red,
-                        ),
-                      ),
+                      Text(finances[index].categoryName,
+                          style: TextDynamic16B(
+                            color: finances[index].cate == true ? green : red,
+                          )),
                       SizedBox(height: 5),
                       Row(
                         children: [
@@ -61,13 +54,11 @@ class FianceDetail extends StatelessWidget {
                             size: 13,
                           ),
                           SizedBox(width: 3),
-                          Text(
-                            finances[index].cost,
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: finances[index].cate == true ? green : red,
-                            ),
-                          ),
+                          Text(finances[index].cost,
+                              style: TextDynamic14(
+                                color:
+                                    finances[index].cate == true ? green : red,
+                              )),
                         ],
                       ),
                       SizedBox(height: 5),
@@ -81,9 +72,7 @@ class FianceDetail extends StatelessWidget {
                           SizedBox(width: 3),
                           Text(
                             finances[index].date,
-                            style: TextStyle(
-                              fontSize: 13,
-                            ),
+                            style: Text14(),
                           ),
                           SizedBox(width: 10),
                           Icon(
@@ -94,9 +83,7 @@ class FianceDetail extends StatelessWidget {
                           SizedBox(width: 3),
                           Text(
                             finances[index].note,
-                            style: TextStyle(
-                              fontSize: 13,
-                            ),
+                            style: Text14(),
                           )
                         ],
                       )

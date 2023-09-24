@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
-import 'package:finance_app/colors.dart';
+import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/widget/bottom_navigationbar.dart';
 import 'package:flutter/material.dart';
 

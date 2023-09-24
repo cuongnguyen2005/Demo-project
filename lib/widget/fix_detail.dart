@@ -1,4 +1,4 @@
-import 'package:finance_app/colors.dart';
+import 'package:finance_app/source/colors.dart';
 import 'package:flutter/material.dart';
 
 class FixDetail extends StatelessWidget {

@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:finance_app/colors.dart';
+import 'package:finance_app/source/colors.dart';
 import 'package:flutter/material.dart';
 
 class DetailBox extends StatelessWidget {

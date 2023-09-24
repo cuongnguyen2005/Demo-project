@@ -1,7 +1,7 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe, sort_child_properties_last, prefer_const_constructors
 
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
-import 'package:finance_app/colors.dart';
+import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/widget/fiance_detail.dart';
 import 'package:finance_app/widget/home.dart';
 import 'package:finance_app/widget/write_finance.dart';
