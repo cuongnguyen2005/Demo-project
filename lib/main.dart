@@ -1,9 +1,9 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:finance_app/routes.dart';
-import 'package:finance_app/widget/bottomnavigationbar.dart';
-import 'package:finance_app/widget/home.dart';
-import 'package:finance_app/widget/writefiance.dart';
+import 'package:finance_app/widget/bottom_navigationbar.dart';
+import 'package:finance_app/widget/splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       onGenerateRoute: onGenerateRoute,
-      home: Bottom(),
+      home: SplashScreen(),
     );
   }
 }

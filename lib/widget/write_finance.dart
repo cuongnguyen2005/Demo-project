@@ -1,11 +1,9 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:finance_app/colors.dart';
-import 'package:finance_app/component/buttonPrimary.dart';
-import 'package:finance_app/component/textBox.dart';
 import 'package:finance_app/widget/expense.dart';
 import 'package:finance_app/widget/income.dart';
 import 'package:flutter/material.dart';
-
-import '../component/boxDetail.dart';
 
 class IncomeAndExpense extends StatelessWidget {
   const IncomeAndExpense({super.key});

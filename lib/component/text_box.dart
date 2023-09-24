@@ -1,3 +1,6 @@
+// ignore_for_file: prefer_const_constructors
+//Box hiển thị số tiền và nội dung của box
+
 import 'package:finance_app/colors.dart';
 import 'package:flutter/material.dart';
 
