@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'package:finance_app/source/colors.dart';
-import 'package:finance_app/widget/bottom_navigationbar.dart';
+import 'package:finance_app/screen/bottom_navigationbar.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -31,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Text(
           'Finance',
           style: TextStyle(
-              color: maincolor, fontSize: 56, fontWeight: FontWeight.w900),
+              color: themeColor, fontSize: 56, fontWeight: FontWeight.w900),
         ),
       ),
     );

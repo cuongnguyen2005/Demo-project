@@ -1,9 +1,9 @@
 // ignore_for_file: unused_import
 
-import 'package:finance_app/widget/bottom_navigationbar.dart';
-import 'package:finance_app/widget/fiance_detail.dart';
-import 'package:finance_app/widget/fix_detail.dart';
-import 'package:finance_app/widget/write_finance.dart';
+import 'package:finance_app/screen/bottom_navigationbar.dart';
+import 'package:finance_app/screen/fiance_detail.dart';
+import 'package:finance_app/screen/fix_detail.dart';
+import 'package:finance_app/screen/write_finance.dart';
 import 'package:flutter/material.dart';
 
 Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {

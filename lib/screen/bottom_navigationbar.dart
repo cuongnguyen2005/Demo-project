@@ -1,10 +1,11 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe, sort_child_properties_last, prefer_const_constructors
 
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
+import 'package:finance_app/screen/settings.dart';
 import 'package:finance_app/source/colors.dart';
-import 'package:finance_app/widget/fiance_detail.dart';
-import 'package:finance_app/widget/home.dart';
-import 'package:finance_app/widget/write_finance.dart';
+import 'package:finance_app/screen/fiance_detail.dart';
+import 'package:finance_app/screen/home.dart';
+import 'package:finance_app/screen/write_finance.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
@@ -33,7 +34,7 @@ class _BottomState extends State<Bottom> {
           });
         },
         child: Icon(Icons.add),
-        backgroundColor: maincolor,
+        backgroundColor: themeColor,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: getBody(),
@@ -44,15 +45,15 @@ class _BottomState extends State<Bottom> {
     List<IconData> iconsItems = [
       MaterialCommunityIcons.home_variant,
       MaterialCommunityIcons.note_text,
-      MaterialCommunityIcons.chart_areaspline,
-      MaterialCommunityIcons.account_circle,
+      MaterialCommunityIcons.chart_bar,
+      MaterialCommunityIcons.settings,
     ];
     return AnimatedBottomNavigationBar(
       icons: iconsItems,
-      activeColor: maincolor,
+      activeColor: themeColor,
       inactiveColor: grey,
       gapLocation: GapLocation.center,
-      splashColor: maincolor,
+      splashColor: themeColor,
       activeIndex: pageIndex,
       onTap: (index) {
         setState(() {
@@ -69,7 +70,7 @@ class _BottomState extends State<Bottom> {
         HomeScreen(),
         FianceDetail(),
         HomeScreen(),
-        HomeScreen(),
+        Settings(),
         IncomeAndExpense(),
       ],
     );

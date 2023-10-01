@@ -4,8 +4,8 @@ import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/source/typo.dart';
 import 'package:flutter/material.dart';
 
-class Search extends StatelessWidget {
-  const Search({
+class InputDefault extends StatelessWidget {
+  const InputDefault({
     Key? key,
     required this.hintText,
   }) : super(key: key);
@@ -16,10 +16,9 @@ class Search extends StatelessWidget {
     return TextFormField(
       style: medium(),
       decoration: InputDecoration(
-        fillColor: Colors.white.withAlpha(95),
+        fillColor: lightYellow,
         filled: true,
         hintText: hintText,
-        suffixIcon: Icon(Icons.search),
         border: OutlineInputBorder(
           borderSide: BorderSide.none,
           borderRadius: BorderRadius.circular(16),

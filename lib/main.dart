@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:finance_app/routes.dart';
-import 'package:finance_app/widget/bottom_navigationbar.dart';
-import 'package:finance_app/widget/splash_screen.dart';
+import 'package:finance_app/screen/bottom_navigationbar.dart';
+import 'package:finance_app/screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {

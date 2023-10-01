@@ -19,7 +19,7 @@ class ButtonPrimary extends StatelessWidget {
               RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           )),
-          backgroundColor: MaterialStateProperty.all(maincolor),
+          backgroundColor: MaterialStateProperty.all(themeColor),
           padding:
               MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 10)),
         ),
@@ -28,7 +28,7 @@ class ButtonPrimary extends StatelessWidget {
         },
         child: Text(
           textButton,
-          style: TextBlack16B(),
+          style: H5(),
         ),
       ),
     );
