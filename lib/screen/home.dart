@@ -162,7 +162,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
               Container(
                 padding: EdgeInsets.all(16),
-                constraints: BoxConstraints(minHeight: size.height * .4),
+                height: size.height * .5,
+                // constraints: BoxConstraints(minHeight: size.height * .2),
                 color: white,
                 child: ListView.builder(
                     shrinkWrap: true,

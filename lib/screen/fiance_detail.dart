@@ -1,10 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:finance_app/component/list_history_home.dart';
 import 'package:finance_app/source/colors.dart';
-import 'package:finance_app/data/finance.dart';
 import 'package:finance_app/source/typo.dart';
-import 'package:finance_app/screen/fix_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -47,21 +44,7 @@ class _FianceDetailState extends State<FianceDetail> {
             margin: EdgeInsets.only(top: 5),
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             decoration: BoxDecoration(
-                color: white, border: Border.all(width: 1, color: grey)
-                // boxShadow: [
-                //   BoxShadow(
-                //     color: lightGrey,
-                //     blurRadius: 10,
-                //     spreadRadius: 0.5,
-                //     offset: Offset(0, 15),
-                //   ),
-                // ],
-                // // boxShadow: kElevationToShadow[2],
-                // borderRadius: BorderRadius.only(
-                //   bottomLeft: Radius.circular(16),
-                //   bottomRight: Radius.circular(16),
-                // ),
-                ),
+                color: white, border: Border.all(width: 1, color: grey)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -90,7 +73,7 @@ class _FianceDetailState extends State<FianceDetail> {
           //list
           Container(
             padding: EdgeInsets.all(16),
-            height: 300,
+            height: size.height - 530,
             color: white,
             child: ListView.builder(
                 padding: EdgeInsets.zero,

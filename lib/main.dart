@@ -4,8 +4,11 @@ import 'package:finance_app/routes.dart';
 import 'package:finance_app/screen/bottom_navigationbar.dart';
 import 'package:finance_app/screen/splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
+  SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   runApp(const MyApp());
 }
 

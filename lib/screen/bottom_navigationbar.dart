@@ -1,13 +1,12 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe, sort_child_properties_last, prefer_const_constructors
 
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:finance_app/screen/settings.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/screen/fiance_detail.dart';
 import 'package:finance_app/screen/home.dart';
 import 'package:finance_app/screen/write_finance.dart';
+import 'package:finance_app/source/typo.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 
 class Bottom extends StatefulWidget {
   const Bottom({Key? key}) : super(key: key);
@@ -19,60 +18,71 @@ class Bottom extends StatefulWidget {
 }
 
 class _BottomState extends State<Bottom> {
-  int pageIndex = 0;
+  int _pageIndex = 0;
+
   @override
   Widget build(BuildContext context) {
+    final tabs = [
+      HomeScreen(),
+      IncomeAndExpense(),
+      FianceDetail(),
+      HomeScreen(),
+      Settings(),
+    ];
     return Scaffold(
-      bottomNavigationBar: SizedBox(
-        height: 70,
-        child: getTabs(),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
+      body: tabs[_pageIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed, // Fixed
+        backgroundColor: white,
+        currentIndex: _pageIndex,
+        selectedLabelStyle: medium(),
+        unselectedLabelStyle: medium(),
+        selectedItemColor: themeColor,
+        unselectedItemColor: lightGrey,
+        iconSize: 24,
+        items: [
+          BottomNavigationBarItem(
+            icon: Container(
+              padding: const EdgeInsets.only(bottom: 6),
+              child: const Icon(Icons.home),
+            ),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Container(
+              padding: const EdgeInsets.only(bottom: 6),
+              child: const Icon(Icons.add),
+            ),
+            label: 'Add',
+          ),
+          BottomNavigationBarItem(
+            icon: Container(
+              padding: const EdgeInsets.only(bottom: 6),
+              child: const Icon(Icons.calendar_month),
+            ),
+            label: 'Calendar',
+          ),
+          BottomNavigationBarItem(
+            icon: Container(
+              padding: const EdgeInsets.only(bottom: 6),
+              child: const Icon(Icons.person),
+            ),
+            label: 'Analys',
+          ),
+          BottomNavigationBarItem(
+            icon: Container(
+              padding: const EdgeInsets.only(bottom: 6),
+              child: const Icon(Icons.settings),
+            ),
+            label: 'Settings',
+          ),
+        ],
+        onTap: (index) {
           setState(() {
-            pageIndex = 4;
+            _pageIndex = index;
           });
         },
-        child: Icon(Icons.add),
-        backgroundColor: themeColor,
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: getBody(),
-    );
-  }
-
-  Widget getTabs() {
-    List<IconData> iconsItems = [
-      MaterialCommunityIcons.home_variant,
-      MaterialCommunityIcons.note_text,
-      MaterialCommunityIcons.chart_bar,
-      MaterialCommunityIcons.settings,
-    ];
-    return AnimatedBottomNavigationBar(
-      icons: iconsItems,
-      activeColor: themeColor,
-      inactiveColor: grey,
-      gapLocation: GapLocation.center,
-      splashColor: themeColor,
-      activeIndex: pageIndex,
-      onTap: (index) {
-        setState(() {
-          pageIndex = index;
-        });
-      },
-    );
-  }
-
-  Widget getBody() {
-    return IndexedStack(
-      index: pageIndex,
-      children: [
-        HomeScreen(),
-        FianceDetail(),
-        HomeScreen(),
-        Settings(),
-        IncomeAndExpense(),
-      ],
     );
   }
 }
