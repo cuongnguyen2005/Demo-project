@@ -38,7 +38,7 @@ class _BottomState extends State<Bottom> {
         selectedLabelStyle: medium(),
         unselectedLabelStyle: medium(),
         selectedItemColor: themeColor,
-        unselectedItemColor: lightGrey,
+        unselectedItemColor: grey,
         iconSize: 24,
         items: [
           BottomNavigationBarItem(

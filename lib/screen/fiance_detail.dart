@@ -23,48 +23,56 @@ class _FianceDetailState extends State<FianceDetail> {
       backgroundColor: white,
       appBar: AppBar(
         backgroundColor: themeColor,
-        title: Text('Danh sách thu chi', style: H5()),
+        title: Center(
+          child: Text('Danh sách thu chi', style: H5()),
+        ),
       ),
       body: Column(
         children: [
-          //lịch
-          TableCalendar(
-            rowHeight: 40,
-            headerStyle: HeaderStyle(
-              formatButtonVisible: false,
-              titleCentered: true,
-            ),
-            focusedDay: today,
-            firstDay: DateTime.utc(2000),
-            lastDay: DateTime.utc(2050),
-          ),
-
-          //tổng quan tiền
           Container(
-            margin: EdgeInsets.only(top: 5),
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            decoration: BoxDecoration(
-                color: white, border: Border.all(width: 1, color: grey)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Column(
               children: [
-                Column(
-                  children: [
-                    Text('Thu nhập', style: medium()),
-                    Text('10.000.000 đ', style: gMediumBold()),
-                  ],
+                //lịch
+                TableCalendar(
+                  rowHeight: 35,
+                  headerStyle: HeaderStyle(
+                    formatButtonVisible: false,
+                    titleCentered: true,
+                  ),
+                  focusedDay: today,
+                  firstDay: DateTime.utc(2000),
+                  lastDay: DateTime.utc(2050),
                 ),
-                Column(
-                  children: [
-                    Text('Chi tiêu', style: medium()),
-                    Text('5.000.000 đ', style: rMediumBold()),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Text('Còn', style: medium()),
-                    Text('5.000.000 đ', style: bMediumBold()),
-                  ],
+
+                //tổng quan tiền
+                Container(
+                  margin: EdgeInsets.only(top: 5),
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  decoration: BoxDecoration(
+                      color: white, border: Border.all(width: 1, color: grey)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        children: [
+                          Text('Thu nhập', style: medium()),
+                          Text('10.000.000 đ', style: gMediumBold()),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text('Chi tiêu', style: medium()),
+                          Text('5.000.000 đ', style: rMediumBold()),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text('Còn', style: medium()),
+                          Text('5.000.000 đ', style: bMediumBold()),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -73,60 +81,61 @@ class _FianceDetailState extends State<FianceDetail> {
           //list
           Container(
             padding: EdgeInsets.all(16),
-            height: size.height - 530,
+            height: size.height - size.height * .45 - 176,
             color: white,
             child: ListView.builder(
-                padding: EdgeInsets.zero,
-                shrinkWrap: true,
-                itemCount: 6,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 5, horizontal: 16),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text('20/09/2023', style: mediumBold()),
-                          ],
-                        ),
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              itemCount: 6,
+              itemBuilder: (context, index) {
+                return Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text('20/09/2023', style: mediumBold()),
+                        ],
                       ),
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            color: lightYellow,
-                            border: Border.all(width: 1, color: grey)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(children: [
-                              Text('Ăn uống', style: mediumBold()),
-                              Text(' (Đi chợ)', style: mediumRegular()),
-                            ]),
-                            Text(
-                              '300.000 đ',
-                              style: mediumBold(),
-                            ),
-                            Icon(
-                              Icons.delete,
-                              color: red,
-                              size: 20,
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  );
-                  // return ListHistoryHome(
-                  //   note: finances[index].note,
-                  //   cost: finances[index].cost,
-                  //   cate: finances[index].cate,
-                  //   date: finances[index].date,
-                  // );
-                }),
+                    ),
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: lightYellow,
+                          border: Border.all(width: 1, color: grey)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(children: [
+                            Text('Ăn uống', style: mediumBold()),
+                            Text(' (Đi chợ)', style: mediumRegular()),
+                          ]),
+                          Text(
+                            '300.000 đ',
+                            style: mediumBold(),
+                          ),
+                          Icon(
+                            Icons.delete,
+                            color: red,
+                            size: 20,
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                );
+                // return ListHistoryHome(
+                //   note: finances[index].note,
+                //   cost: finances[index].cost,
+                //   cate: finances[index].cate,
+                //   date: finances[index].date,
+                // );
+              },
+            ),
           ),
         ],
       ),

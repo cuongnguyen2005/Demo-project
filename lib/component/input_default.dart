@@ -8,12 +8,24 @@ class InputDefault extends StatelessWidget {
   const InputDefault({
     Key? key,
     required this.hintText,
+    this.controller,
+    this.keyboardType,
+    this.validator,
+    this.autovalidateMode,
   }) : super(key: key);
   final String hintText;
+  final TextEditingController? controller;
+  final TextInputType? keyboardType;
+  final String? Function(String?)? validator;
+  final AutovalidateMode? autovalidateMode;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      validator: validator,
+      autovalidateMode: autovalidateMode,
+      keyboardType: keyboardType,
+      controller: controller,
       style: medium(),
       decoration: InputDecoration(
         fillColor: lightYellow,

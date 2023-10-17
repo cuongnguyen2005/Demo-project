@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:finance_app/component/button_primary.dart';
+import 'package:finance_app/component/btn/button_primary.dart';
+import 'package:finance_app/component/setting/box_basic_setting.dart';
+import 'package:finance_app/component/setting/box_setting.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/source/typo.dart';
 import 'package:flutter/material.dart';
@@ -10,70 +12,69 @@ class Settings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: lightGrey,
       appBar: AppBar(
-        elevation: 0,
         backgroundColor: themeColor,
-        title: Text('Cá nhân', style: H5()),
+        title: Center(
+          child: Text('Cá nhân', style: H5()),
+        ),
       ),
       body: ListView(
         children: [
           //header
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: themeColor,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(16),
-                bottomRight: Radius.circular(16),
-              ),
-            ),
-            child: Column(
-              children: [
-                Container(
-                  width: 100,
-                  height: 100,
+          Stack(
+            // alignment: AlignmentDirectional.center,
+            children: [
+              Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(16),
+                child: CircleAvatar(
+                  radius: 75,
                   child: CircleAvatar(
-                    // child: Image.asset(),
-                    radius: 50,
+                    radius: 70,
+                    backgroundColor: green,
                   ),
                 ),
-                SizedBox(height: 16),
-                Text(
-                  'Nguyễn Mạnh Cường',
-                  style: H5(),
-                )
-              ],
-            ),
+              ),
+              Positioned(
+                bottom: 5,
+                left: size.width * .465,
+                child: CircleAvatar(
+                  backgroundColor: blue,
+                  radius: 15,
+                  child: Icon(
+                    Icons.camera_alt_outlined,
+                    size: 15,
+                  ),
+                ),
+              ),
+            ],
           ),
+          SizedBox(height: 16),
 
           //cài đặt cá nhân
           Container(
-            margin: EdgeInsets.only(right: 16, left: 16, top: 16),
-            padding: const EdgeInsets.all(16),
+            margin: EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
             decoration: BoxDecoration(
               color: white,
               borderRadius: BorderRadius.circular(16),
             ),
-            child: InkWell(
-              onTap: () {},
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Địa chỉ email', style: medium()),
-                      Text('cuongnguyen.01hd@mail.com', style: mediumBold()),
-                    ],
-                  ),
-                  Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    size: 16,
-                  ),
-                ],
-              ),
+            child: Column(
+              children: [
+                BoxSetting(
+                  title: 'Địa chỉ email',
+                  text: 'Cuongnguyen.01hd@gmail.com',
+                  onTap: () {},
+                ),
+                BoxSetting(
+                  title: 'Name',
+                  text: 'Nguyễn Mạnh Cường',
+                  onTap: () {},
+                ),
+              ],
             ),
           ),
 
@@ -87,100 +88,24 @@ class Settings extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Text('Cài đăt cơ bản', style: mediumBold()),
+                Text('Cài đặt cơ bản', style: mediumBold()),
                 SizedBox(height: 10),
-                InkWell(
+                BoxBasicSetting(
+                  text: 'Quản lý danh mục',
                   onTap: () {},
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    decoration: BoxDecoration(
-                        border: Border(
-                      bottom: BorderSide(
-                        color: grey,
-                        width: 1,
-                      ),
-                    )),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Quản lý danh mục', style: mediumRegular()),
-                        Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          size: 16,
-                        ),
-                      ],
-                    ),
-                  ),
                 ),
-                InkWell(
+                BoxBasicSetting(
+                  text: 'Chủ đề',
                   onTap: () {},
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    decoration: BoxDecoration(
-                        border: Border(
-                      bottom: BorderSide(
-                        color: grey,
-                        width: 1,
-                      ),
-                    )),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Chủ đề', style: mediumRegular()),
-                        Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          size: 16,
-                        ),
-                      ],
-                    ),
-                  ),
                 ),
-                InkWell(
+                BoxBasicSetting(
+                  text: 'Thay đổi ngôn ngữ',
                   onTap: () {},
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    decoration: BoxDecoration(
-                        border: Border(
-                      bottom: BorderSide(
-                        color: grey,
-                        width: 1,
-                      ),
-                    )),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Thay đổi ngôn ngữ', style: mediumRegular()),
-                        Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          size: 16,
-                        ),
-                      ],
-                    ),
-                  ),
                 ),
-                InkWell(
+                BoxBasicSetting(
+                  text: 'Thông tin ứng dụng',
                   onTap: () {},
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    decoration: BoxDecoration(
-                        border: Border(
-                      bottom: BorderSide(
-                        color: grey,
-                        width: 1,
-                      ),
-                    )),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Thông tin ứng dụng', style: mediumRegular()),
-                        Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          size: 16,
-                        ),
-                      ],
-                    ),
-                  ),
-                )
+                ),
               ],
             ),
           ),
