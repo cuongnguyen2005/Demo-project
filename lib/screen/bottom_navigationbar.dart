@@ -32,7 +32,7 @@ class _BottomState extends State<Bottom> {
     return Scaffold(
       body: tabs[_pageIndex],
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed, // Fixed
+        type: BottomNavigationBarType.fixed,
         backgroundColor: white,
         currentIndex: _pageIndex,
         selectedLabelStyle: medium(),
@@ -51,7 +51,7 @@ class _BottomState extends State<Bottom> {
           BottomNavigationBarItem(
             icon: Container(
               padding: const EdgeInsets.only(bottom: 6),
-              child: const Icon(Icons.add),
+              child: const Icon(Icons.note_add),
             ),
             label: 'Add',
           ),

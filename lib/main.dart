@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:finance_app/routes.dart';
-import 'package:finance_app/screen/bottom_navigationbar.dart';
 import 'package:finance_app/screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,8 +20,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: new ThemeData(
-        // fontFamily: GoogleFonts.poppins().fontFamily,
+      theme: ThemeData(
+        fontFamily: 'Roboto',
         scaffoldBackgroundColor: Color.fromARGB(255, 248, 248, 248),
       ),
       initialRoute: '/',

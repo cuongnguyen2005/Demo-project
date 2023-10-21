@@ -23,6 +23,7 @@ class Settings extends StatelessWidget {
       ),
       body: ListView(
         children: [
+          SizedBox(height: 16),
           //header
           Stack(
             // alignment: AlignmentDirectional.center,
@@ -112,8 +113,10 @@ class Settings extends StatelessWidget {
 
           //button đăng xuất
           Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: ButtonPrimary(textButton: 'Đăng xuất'))
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: ButtonPrimary(textButton: 'Đăng xuất'),
+          ),
+          SizedBox(height: 16),
         ],
       ),
     );
