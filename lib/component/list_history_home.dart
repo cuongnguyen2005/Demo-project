@@ -29,14 +29,14 @@ class ListHistoryHome extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(note, style: mediumBold()),
+              Text(note, style: tStyle.mediumBold()),
               SizedBox(height: 5),
-              Text(date, style: small()),
+              Text(date, style: tStyle.small()),
             ],
           ),
           Text(
             cost + 'đ',
-            style: cate == false ? rMediumBold() : gMediumBold(),
+            style: cate == false ? tStyle.rMediumBold() : tStyle.gMediumBold(),
           ),
         ],
       ),

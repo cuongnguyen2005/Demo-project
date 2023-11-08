@@ -1,20 +1,20 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, sized_box_for_whitespace
 
-import 'package:finance_app/component/input_default.dart';
+import 'package:finance_app/component/form_field/input_default.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/component/btn/button_primary.dart';
 import 'package:finance_app/source/typo.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class Income extends StatefulWidget {
-  const Income({super.key});
+class Expense extends StatefulWidget {
+  const Expense({super.key});
 
   @override
-  State<Income> createState() => _IncomeState();
+  State<Expense> createState() => _ExpenseState();
 }
 
-class _IncomeState extends State<Income> {
+class _ExpenseState extends State<Expense> {
   void _showDatePicker() async {
     DateTime? picked = await showDatePicker(
       context: context,
@@ -34,7 +34,7 @@ class _IncomeState extends State<Income> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: white,
+      backgroundColor: AppColors.white,
       body: ListView(
         children: [
           Container(
@@ -48,7 +48,7 @@ class _IncomeState extends State<Income> {
                       children: [
                         Container(
                           width: size.width * 1 / 7,
-                          child: Text('Ngày', style: medium()),
+                          child: Text('Ngày', style: tStyle.medium()),
                         ),
                         InkWell(
                           onTap: _showDatePicker,
@@ -57,12 +57,12 @@ class _IncomeState extends State<Income> {
                             child: Container(
                               padding: EdgeInsets.symmetric(vertical: 16),
                               decoration: BoxDecoration(
-                                color: lightYellow,
+                                color: AppColors.lightYellow,
                                 borderRadius: BorderRadius.circular(16),
                               ),
                               child: Text(
                                 DateFormat.yMMMMEEEEd().format(dateTime),
-                                style: medium(),
+                                style: tStyle.medium(),
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -75,11 +75,14 @@ class _IncomeState extends State<Income> {
                       children: [
                         Container(
                           width: size.width * 1 / 7,
-                          child: Text('Ghi chú', style: medium()),
+                          child: Text('Ghi chú', style: tStyle.medium()),
                         ),
                         Container(
                           width: size.width - size.width * 1 / 7 - 32,
-                          child: InputDefault(hintText: 'Nhập ghi chú'),
+                          child: InputDefault(
+                            hintText: 'Nhập ghi chú',
+                            obscureText: false,
+                          ),
                         )
                       ],
                     ),
@@ -88,13 +91,14 @@ class _IncomeState extends State<Income> {
                       children: [
                         Container(
                           width: size.width * 1 / 7,
-                          child: Text('Số Tiền', style: medium()),
+                          child: Text('Số Tiền', style: tStyle.medium()),
                         ),
                         Container(
                           width: size.width - size.width * 1 / 7 - 32,
                           child: InputDefault(
                             hintText: 'Nhập số tiền',
                             keyboardType: TextInputType.number,
+                            obscureText: false,
                           ),
                         )
                       ],
@@ -107,7 +111,7 @@ class _IncomeState extends State<Income> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text('Danh mục', style: medium()),
+                    Text('Danh mục', style: tStyle.medium()),
                   ],
                 ),
                 SizedBox(height: 16),
@@ -124,37 +128,37 @@ class _IncomeState extends State<Income> {
                       Container(
                         padding:
                             EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                        color: red,
+                        color: AppColors.red,
                         child: Text('1'),
                       ),
                       Container(
                         padding:
                             EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                        color: red,
+                        color: AppColors.red,
                         child: Text('1'),
                       ),
                       Container(
                         padding:
                             EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                        color: red,
+                        color: AppColors.red,
                         child: Text('1'),
                       ),
                       Container(
                         padding:
                             EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                        color: red,
+                        color: AppColors.red,
                         child: Text('1'),
                       ),
                       Container(
                         padding:
                             EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                        color: red,
+                        color: AppColors.red,
                         child: Text('1'),
                       ),
                       Container(
                         padding:
                             EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                        color: red,
+                        color: AppColors.red,
                         child: Text('1'),
                       ),
                     ],
@@ -164,7 +168,7 @@ class _IncomeState extends State<Income> {
                 //button
                 Align(
                     alignment: Alignment.bottomCenter,
-                    child: ButtonPrimary(textButton: 'Nhập khoản thu'))
+                    child: ButtonPrimary(textButton: 'Nhập khoản chi'))
               ],
             ),
           ),

@@ -1,11 +1,16 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:finance_app/routes.dart';
-import 'package:finance_app/screen/splash_screen.dart';
+import 'package:finance_app/screen/intro/splash_screen.dart';
+import 'package:finance_app/source/colors.dart';
+import 'package:firebase_core/firebase_core.dart';
+// import 'package:finance_app/screen/intro/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   runApp(const MyApp());
@@ -22,11 +27,10 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         fontFamily: 'Roboto',
-        scaffoldBackgroundColor: Color.fromARGB(255, 248, 248, 248),
+        scaffoldBackgroundColor: AppColors.lightGrey,
       ),
-      initialRoute: '/',
+      initialRoute: SplashScreen.routeName,
       onGenerateRoute: onGenerateRoute,
-      home: SplashScreen(),
     );
   }
 }

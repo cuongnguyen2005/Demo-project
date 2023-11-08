@@ -4,7 +4,7 @@ import 'package:finance_app/screen/settings.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/screen/fiance_detail.dart';
 import 'package:finance_app/screen/home.dart';
-import 'package:finance_app/screen/write_finance.dart';
+import 'package:finance_app/screen/income_expense/write_finance.dart';
 import 'package:finance_app/source/typo.dart';
 import 'package:flutter/material.dart';
 
@@ -33,12 +33,12 @@ class _BottomState extends State<Bottom> {
       body: tabs[_pageIndex],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        backgroundColor: white,
+        backgroundColor: AppColors.white,
         currentIndex: _pageIndex,
-        selectedLabelStyle: medium(),
-        unselectedLabelStyle: medium(),
-        selectedItemColor: themeColor,
-        unselectedItemColor: grey,
+        selectedLabelStyle: tStyle.medium(),
+        unselectedLabelStyle: tStyle.medium(),
+        selectedItemColor: AppColors.themeColor,
+        unselectedItemColor: AppColors.grey,
         iconSize: 24,
         items: [
           BottomNavigationBarItem(

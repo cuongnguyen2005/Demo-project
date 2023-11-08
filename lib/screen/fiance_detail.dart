@@ -20,11 +20,11 @@ class _FianceDetailState extends State<FianceDetail> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: white,
+      backgroundColor: AppColors.white,
       appBar: AppBar(
-        backgroundColor: themeColor,
+        backgroundColor: AppColors.themeColor,
         title: Center(
-          child: Text('Danh sách thu chi', style: H5()),
+          child: Text('Danh sách thu chi', style: tStyle.H5()),
         ),
       ),
       body: Column(
@@ -46,26 +46,27 @@ class _FianceDetailState extends State<FianceDetail> {
             margin: EdgeInsets.only(top: 5),
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             decoration: BoxDecoration(
-                color: white, border: Border.all(width: 1, color: grey)),
+                color: AppColors.white,
+                border: Border.all(width: 1, color: AppColors.grey)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
                   children: [
-                    Text('Thu nhập', style: medium()),
-                    Text('10.000.000 đ', style: gMediumBold()),
+                    Text('Thu nhập', style: tStyle.medium()),
+                    Text('10.000.000 đ', style: tStyle.gMediumBold()),
                   ],
                 ),
                 Column(
                   children: [
-                    Text('Chi tiêu', style: medium()),
-                    Text('5.000.000 đ', style: rMediumBold()),
+                    Text('Chi tiêu', style: tStyle.medium()),
+                    Text('5.000.000 đ', style: tStyle.rMediumBold()),
                   ],
                 ),
                 Column(
                   children: [
-                    Text('Còn', style: medium()),
-                    Text('5.000.000 đ', style: bMediumBold()),
+                    Text('Còn', style: tStyle.medium()),
+                    Text('5.000.000 đ', style: tStyle.bMediumBold()),
                   ],
                 ),
               ],
@@ -89,7 +90,7 @@ class _FianceDetailState extends State<FianceDetail> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text('20/09/2023', style: mediumBold()),
+                            Text('20/09/2023', style: tStyle.mediumBold()),
                           ],
                         ),
                       ),
@@ -98,22 +99,23 @@ class _FianceDetailState extends State<FianceDetail> {
                             EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(16),
-                            color: lightYellow,
-                            border: Border.all(width: 1, color: grey)),
+                            color: AppColors.lightYellow,
+                            border:
+                                Border.all(width: 1, color: AppColors.grey)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Row(children: [
-                              Text('Ăn uống', style: mediumBold()),
-                              Text(' (Đi chợ)', style: mediumRegular()),
+                              Text('Ăn uống', style: tStyle.mediumBold()),
+                              Text(' (Đi chợ)', style: tStyle.mediumRegular()),
                             ]),
                             Text(
                               '300.000 đ',
-                              style: mediumBold(),
+                              style: tStyle.mediumBold(),
                             ),
                             Icon(
                               Icons.delete,
-                              color: red,
+                              color: AppColors.red,
                               size: 20,
                             ),
                           ],

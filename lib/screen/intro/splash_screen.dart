@@ -1,11 +1,13 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
+import 'package:finance_app/screen/login/login.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/screen/bottom_navigationbar.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
+  static String routeName = 'splash_screen';
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -21,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
   _navigatortohome() async {
     await Future.delayed(Duration(milliseconds: 1500), () {});
     Navigator.pushNamedAndRemoveUntil(
-        context, Bottom.routeName, (route) => false);
+        context, LoginPage.routeName, (route) => false);
   }
 
   @override
@@ -31,7 +33,9 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Text(
           'Finance',
           style: TextStyle(
-              color: themeColor, fontSize: 56, fontWeight: FontWeight.w900),
+              color: AppColors.themeColor,
+              fontSize: 56,
+              fontWeight: FontWeight.w900),
         ),
       ),
     );

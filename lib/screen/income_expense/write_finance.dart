@@ -2,8 +2,8 @@
 
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/source/typo.dart';
-import 'package:finance_app/screen/expense.dart';
-import 'package:finance_app/screen/income.dart';
+import 'package:finance_app/screen/income_expense/expense.dart';
+import 'package:finance_app/screen/income_expense/income.dart';
 import 'package:flutter/material.dart';
 
 class IncomeAndExpense extends StatelessWidget {
@@ -17,20 +17,20 @@ class IncomeAndExpense extends StatelessWidget {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(60), // here the desired height
           child: AppBar(
-            backgroundColor: themeColor,
+            backgroundColor: AppColors.themeColor,
             bottom: TabBar(
-              indicatorColor: red,
+              indicatorColor: AppColors.red,
               tabs: [
                 Tab(
                   child: Text(
                     'Khoản Thu',
-                    style: H5(),
+                    style: tStyle.H5(),
                   ),
                 ),
                 Tab(
                   child: Text(
                     'Khoản Chi',
-                    style: H5(),
+                    style: tStyle.H5(),
                   ),
                 ),
               ],
@@ -38,7 +38,7 @@ class IncomeAndExpense extends StatelessWidget {
           ),
         ),
         body: TabBarView(
-          children: [
+          children: const [
             Income(),
             Expense(),
           ],

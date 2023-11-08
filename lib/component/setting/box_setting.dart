@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/source/typo.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +16,7 @@ class BoxSetting extends StatelessWidget {
       padding: const EdgeInsets.only(top: 16, bottom: 10),
       decoration: const BoxDecoration(
         border: Border(
-          bottom: BorderSide(width: 1, color: grey),
+          bottom: BorderSide(width: 1, color: AppColors.grey),
         ),
       ),
       child: InkWell(
@@ -25,11 +27,11 @@ class BoxSetting extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: medium()),
+                Text(title, style: tStyle.medium()),
                 SizedBox(height: 5),
                 Text(
                   text,
-                  style: mediumRegular(),
+                  style: tStyle.mediumRegular(),
                 ),
               ],
             ),

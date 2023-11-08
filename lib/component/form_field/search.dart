@@ -1,36 +1,24 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/source/typo.dart';
 import 'package:flutter/material.dart';
 
-class InputDefault extends StatelessWidget {
-  const InputDefault({
+class Search extends StatelessWidget {
+  const Search({
     Key? key,
     required this.hintText,
-    this.controller,
-    this.keyboardType,
-    this.validator,
-    this.autovalidateMode,
   }) : super(key: key);
   final String hintText;
-  final TextEditingController? controller;
-  final TextInputType? keyboardType;
-  final String? Function(String?)? validator;
-  final AutovalidateMode? autovalidateMode;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      validator: validator,
-      autovalidateMode: autovalidateMode,
-      keyboardType: keyboardType,
-      controller: controller,
-      style: medium(),
+      style: tStyle.medium(),
       decoration: InputDecoration(
-        fillColor: lightYellow,
+        fillColor: Colors.white.withAlpha(95),
         filled: true,
         hintText: hintText,
+        suffixIcon: Icon(Icons.search),
         border: OutlineInputBorder(
           borderSide: BorderSide.none,
           borderRadius: BorderRadius.circular(16),

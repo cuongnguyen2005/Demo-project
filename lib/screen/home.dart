@@ -1,9 +1,14 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers
 
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:finance_app/component/list_history_home.dart';
 import 'package:finance_app/data/finance.dart';
+import 'package:finance_app/data/user_account.dart';
 import 'package:finance_app/source/typo.dart';
 import 'package:finance_app/screen/fiance_detail.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../source/colors.dart';
 
@@ -16,14 +21,35 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
+  void initState() {
+    super.initState();
+    getInfo();
+  }
+
+  User? user = FirebaseAuth.instance.currentUser;
+  UsersAccount? usersAccount;
+  void getInfo() {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(user?.uid)
+        .get()
+        .then((value) {
+      setState(() {
+        usersAccount = UsersAccount.fromMap(value.data());
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    final String avat = usersAccount?.avatar ?? '';
     return Scaffold(
-      backgroundColor: themeColor,
+      backgroundColor: AppColors.themeColor,
       body: SafeArea(
         child: Column(
           children: [
-            //head
+            //header
             SizedBox(height: 16),
             Container(
               padding: const EdgeInsets.all(16),
@@ -32,27 +58,31 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   CircleAvatar(
                     radius: 30,
+                    backgroundImage: avat.isEmpty
+                        ? null
+                        : MemoryImage(
+                            base64.decode(usersAccount?.avatar ?? '')),
                   ),
                   SizedBox(width: 16),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Xin chào!', style: H6()),
+                      Text('Xin chào!', style: tStyle.H6()),
                       SizedBox(height: 5),
-                      Text('Nguyễn Mạnh Cường', style: H3()),
+                      Text(usersAccount?.name ?? "", style: tStyle.H3()),
                     ],
                   )
                 ],
               ),
             ),
-            SizedBox(height: 33),
+            SizedBox(height: 30),
 
             //total money
             Column(
               children: [
-                Text('Tổng tài sản', style: H2()),
+                Text('Tổng tài sản', style: tStyle.H2()),
                 SizedBox(height: 5),
-                Text('10.000.000 đ', style: H1()),
+                Text('10.000.000 đ', style: tStyle.H1()),
               ],
             ),
 
@@ -69,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding:
                             EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                         decoration: BoxDecoration(
-                            color: lightGreen,
+                            color: AppColors.lightGreen,
                             borderRadius: BorderRadius.only(
                               topRight: Radius.circular(16),
                               bottomRight: Radius.circular(16),
@@ -80,9 +110,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             Icon(
                               Icons.home,
                               size: 26,
-                              color: white,
+                              color: AppColors.white,
                             ),
-                            Text('10.000.000 đ', style: H4()),
+                            Text('10.000.000 đ', style: tStyle.H4()),
                           ],
                         ),
                       ),
@@ -97,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding:
                             EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                         decoration: BoxDecoration(
-                            color: lightRed,
+                            color: AppColors.lightRed,
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(16),
                               bottomLeft: Radius.circular(16),
@@ -105,11 +135,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('10.000.000 đ', style: H4()),
+                            Text('10.000.000 đ', style: tStyle.H4()),
                             Icon(
                               Icons.home,
                               size: 26,
-                              color: white,
+                              color: AppColors.white,
                             ),
                           ],
                         ),
@@ -124,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Container(
                 padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: white,
+                  color: AppColors.white,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(16),
                     topRight: Radius.circular(16),
@@ -137,13 +167,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Text(
                           'Lịch sử gần đây',
-                          style: H5(),
+                          style: tStyle.H5(),
                         ),
                         InkWell(
                           onTap: () {},
                           child: Text(
                             'Tất cả',
-                            style: BlueH5(),
+                            style: tStyle.H5Blue(),
                           ),
                         ),
                       ],
