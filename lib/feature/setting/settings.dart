@@ -1,13 +1,15 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, non_constant_identifier_names
 
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:finance_app/component/btn/button_primary.dart';
+import 'package:finance_app/component/form_field/input_default.dart';
 import 'package:finance_app/component/setting/box_basic_setting.dart';
 import 'package:finance_app/component/setting/box_setting.dart';
 import 'package:finance_app/data/user_account.dart';
-import 'package:finance_app/screen/login/login.dart';
+import 'package:finance_app/feature/login/login.dart';
+import 'package:finance_app/feature/setting/change_password.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/source/typo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -58,13 +60,17 @@ class _SettingsState extends State<Settings> {
             userName: usersAccount?.userName,
             avatar: base64Image,
           );
-          FirebaseFirestore.instance
-              .collection('users')
-              .doc(user?.uid)
-              .set(userAcc.toMap());
+          AddtoServer(userAcc);
         });
       }
     } catch (e) {}
+  }
+
+  void AddtoServer(UsersAccount userAcc) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(user?.uid)
+        .set(userAcc.toMap());
   }
 
   @override
@@ -135,14 +141,14 @@ class _SettingsState extends State<Settings> {
                   onTap: () {},
                 ),
                 BoxSetting(
-                  title: 'Name',
+                  title: 'Tên',
                   text: usersAccount?.name ?? '',
-                  onTap: () {},
+                  onTap: onTapChangeName,
                 ),
                 BoxSetting(
-                  title: 'Password',
-                  text: 'Change password',
-                  onTap: () {},
+                  title: 'Mật khẩu',
+                  text: 'Thay đổi mật khẩu',
+                  onTap: onTapChangePw,
                 ),
               ],
             ),
@@ -194,9 +200,54 @@ class _SettingsState extends State<Settings> {
     );
   }
 
+  void onTapBack() {
+    Navigator.pop(context);
+  }
+
   void onTapLogout() {
     FirebaseAuth.instance.signOut();
     Navigator.pushNamedAndRemoveUntil(
         context, LoginPage.routeName, (route) => false);
+  }
+
+  void onTapChangeName() {
+    final nameController = TextEditingController()
+      ..text = usersAccount?.name ?? '';
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: InputDefault(
+            hintText: 'Tên',
+            obscureText: false,
+            controller: nameController,
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+              child: ButtonPrimary(
+                textButton: 'Cập nhật',
+                onTap: () {
+                  setState(() {
+                    usersAccount?.name = nameController.text;
+                  });
+                  UsersAccount userAcc = UsersAccount(
+                    name: nameController.text,
+                    userName: usersAccount?.userName,
+                    avatar: usersAccount?.avatar,
+                  );
+                  AddtoServer(userAcc);
+                  onTapBack();
+                },
+              ),
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  void onTapChangePw() {
+    Navigator.pushNamed(context, ChangePassword.routeName);
   }
 }

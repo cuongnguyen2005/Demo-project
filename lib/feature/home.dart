@@ -7,7 +7,7 @@ import 'package:finance_app/component/list_history_home.dart';
 import 'package:finance_app/data/finance.dart';
 import 'package:finance_app/data/user_account.dart';
 import 'package:finance_app/source/typo.dart';
-import 'package:finance_app/screen/fiance_detail.dart';
+import 'package:finance_app/feature/fiance_detail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../source/colors.dart';
@@ -26,9 +26,9 @@ class _HomeScreenState extends State<HomeScreen> {
     getInfo();
   }
 
-  User? user = FirebaseAuth.instance.currentUser;
   UsersAccount? usersAccount;
   void getInfo() {
+    User? user = FirebaseAuth.instance.currentUser;
     FirebaseFirestore.instance
         .collection('users')
         .doc(user?.uid)
@@ -179,20 +179,20 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                     SizedBox(height: 16),
-                    Flexible(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: finances.length,
-                        itemBuilder: (context, index) {
-                          return ListHistoryHome(
-                            note: finances[index].note,
-                            cost: finances[index].cost,
-                            cate: finances[index].cate,
-                            date: finances[index].date,
-                          );
-                        },
-                      ),
-                    ),
+                    // Flexible(
+                    //   child: ListView.builder(
+                    //     shrinkWrap: true,
+                    //     itemCount: finances.length,
+                    //     itemBuilder: (context, index) {
+                    //       return ListHistoryHome(
+                    //         note: finances[index].note,
+                    //         cost: finances[index].cost,
+                    //         cate: finances[index].cate,
+                    //         date: finances[index].date,
+                    //       );
+                    //     },
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
@@ -204,6 +204,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void onTapListFiance() {
-    Navigator.pushNamed(context, FianceDetail.routeName);
+    Navigator.pushNamed(context, FinanceDetail.routeName);
   }
 }

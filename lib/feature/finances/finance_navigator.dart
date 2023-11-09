@@ -2,8 +2,7 @@
 
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/source/typo.dart';
-import 'package:finance_app/screen/income_expense/expense.dart';
-import 'package:finance_app/screen/income_expense/income.dart';
+import 'package:finance_app/feature/finances/finance_input.dart';
 import 'package:flutter/material.dart';
 
 class IncomeAndExpense extends StatelessWidget {
@@ -23,13 +22,13 @@ class IncomeAndExpense extends StatelessWidget {
               tabs: [
                 Tab(
                   child: Text(
-                    'Khoản Thu',
+                    'Khoản Chi',
                     style: tStyle.H5(),
                   ),
                 ),
                 Tab(
                   child: Text(
-                    'Khoản Chi',
+                    'Khoản Thu',
                     style: tStyle.H5(),
                   ),
                 ),
@@ -39,8 +38,8 @@ class IncomeAndExpense extends StatelessWidget {
         ),
         body: TabBarView(
           children: const [
-            Income(),
-            Expense(),
+            Expense(isExpense: true),
+            Expense(isExpense: false),
           ],
         ),
       ),

@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:finance_app/routes.dart';
-import 'package:finance_app/screen/intro/splash_screen.dart';
+import 'package:finance_app/feature/intro/splash_screen.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:firebase_core/firebase_core.dart';
 // import 'package:finance_app/screen/intro/splash_screen.dart';

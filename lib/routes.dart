@@ -1,11 +1,12 @@
 // ignore_for_file: unused_import
 
-import 'package:finance_app/screen/bottom_navigationbar.dart';
-import 'package:finance_app/screen/fiance_detail.dart';
-import 'package:finance_app/screen/income_expense/write_finance.dart';
-import 'package:finance_app/screen/intro/splash_screen.dart';
-import 'package:finance_app/screen/login/login.dart';
-import 'package:finance_app/screen/signup/signup.dart';
+import 'package:finance_app/feature/bottom_navigationbar.dart';
+import 'package:finance_app/feature/fiance_detail.dart';
+import 'package:finance_app/feature/finances/finance_navigator.dart';
+import 'package:finance_app/feature/intro/splash_screen.dart';
+import 'package:finance_app/feature/login/login.dart';
+import 'package:finance_app/feature/setting/change_password.dart';
+import 'package:finance_app/feature/signup/signup.dart';
 import 'package:flutter/material.dart';
 
 Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
@@ -22,13 +23,16 @@ Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
   if (settings.name == SignupPage.routeName) {
     return MaterialPageRoute(builder: (_) => SignupPage());
   }
-  if (settings.name == FianceDetail.routeName) {
+  if (settings.name == FinanceDetail.routeName) {
     // final String arg = settings.arguments as String;
 
-    return MaterialPageRoute(builder: (_) => FianceDetail());
+    return MaterialPageRoute(builder: (_) => FinanceDetail());
   }
   if (settings.name == Bottom.routeName) {
     return MaterialPageRoute(builder: (_) => Bottom());
+  }
+  if (settings.name == ChangePassword.routeName) {
+    return MaterialPageRoute(builder: (_) => ChangePassword());
   }
 
   return null;

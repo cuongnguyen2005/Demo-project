@@ -1,24 +1,42 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:finance_app/data/finance.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/source/typo.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class FianceDetail extends StatefulWidget {
-  const FianceDetail({super.key});
+class FinanceDetail extends StatefulWidget {
+  const FinanceDetail({super.key});
 
   static String routeName = '/fiance_detail';
 
   @override
-  State<FianceDetail> createState() => _FianceDetailState();
+  State<FinanceDetail> createState() => _FinanceDetailState();
 }
 
-class _FianceDetailState extends State<FianceDetail> {
+class _FinanceDetailState extends State<FinanceDetail> {
+  @override
+  void initState() {
+    super.initState();
+    getInfo();
+  }
+
+  User? user = FirebaseAuth.instance.currentUser;
+  Query? dbRef;
+  void getInfo() {
+    if (user != null) {
+      dbRef = FirebaseDatabase.instance.ref().child('finance').child(user!.uid);
+    }
+  }
+
   DateTime today = DateTime.now();
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: AppBar(
@@ -77,11 +95,13 @@ class _FianceDetailState extends State<FianceDetail> {
           Flexible(
             child: Padding(
               padding: const EdgeInsets.all(16),
-              child: ListView.builder(
+              child: FirebaseAnimatedList(
                 padding: EdgeInsets.zero,
                 shrinkWrap: true,
-                itemCount: 6,
-                itemBuilder: (context, index) {
+                query: dbRef!,
+                itemBuilder: (context, snapshot, animation, index) {
+                  Finance finances = Finance.fromMap(snapshot.value);
+                  DateTime dateTimeFormat = DateTime.parse(finances.dateTime);
                   return Column(
                     children: [
                       Padding(
@@ -90,7 +110,8 @@ class _FianceDetailState extends State<FianceDetail> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text('20/09/2023', style: tStyle.mediumBold()),
+                            Text(DateFormat.yMd().format(dateTimeFormat),
+                                style: tStyle.mediumBold()),
                           ],
                         ),
                       ),
@@ -106,12 +127,16 @@ class _FianceDetailState extends State<FianceDetail> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Row(children: [
-                              Text('Ăn uống', style: tStyle.mediumBold()),
-                              Text(' (Đi chợ)', style: tStyle.mediumRegular()),
+                              Text(finances.cateName,
+                                  style: tStyle.mediumBold()),
+                              Text(' (${finances.note})',
+                                  style: tStyle.mediumRegular()),
                             ]),
                             Text(
-                              '300.000 đ',
-                              style: tStyle.mediumBold(),
+                              '${NumberFormat.decimalPattern().format(finances.money)} đ',
+                              style: finances.cateID == 2
+                                  ? tStyle.rMediumBold()
+                                  : tStyle.gMediumBold(),
                             ),
                             Icon(
                               Icons.delete,

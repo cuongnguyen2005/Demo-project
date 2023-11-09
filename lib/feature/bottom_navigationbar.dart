@@ -1,10 +1,10 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe, sort_child_properties_last, prefer_const_constructors
 
-import 'package:finance_app/screen/settings.dart';
+import 'package:finance_app/feature/setting/settings.dart';
 import 'package:finance_app/source/colors.dart';
-import 'package:finance_app/screen/fiance_detail.dart';
-import 'package:finance_app/screen/home.dart';
-import 'package:finance_app/screen/income_expense/write_finance.dart';
+import 'package:finance_app/feature/fiance_detail.dart';
+import 'package:finance_app/feature/home.dart';
+import 'package:finance_app/feature/finances/finance_navigator.dart';
 import 'package:finance_app/source/typo.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +25,7 @@ class _BottomState extends State<Bottom> {
     final tabs = [
       HomeScreen(),
       IncomeAndExpense(),
-      FianceDetail(),
+      FinanceDetail(),
       HomeScreen(),
       Settings(),
     ];
@@ -46,35 +46,35 @@ class _BottomState extends State<Bottom> {
               padding: const EdgeInsets.only(bottom: 6),
               child: const Icon(Icons.home),
             ),
-            label: 'Home',
+            label: 'Trang chủ',
           ),
           BottomNavigationBarItem(
             icon: Container(
               padding: const EdgeInsets.only(bottom: 6),
               child: const Icon(Icons.note_add),
             ),
-            label: 'Add',
+            label: 'Thêm',
           ),
           BottomNavigationBarItem(
             icon: Container(
               padding: const EdgeInsets.only(bottom: 6),
               child: const Icon(Icons.calendar_month),
             ),
-            label: 'Calendar',
+            label: 'Lịch biểu',
           ),
           BottomNavigationBarItem(
             icon: Container(
               padding: const EdgeInsets.only(bottom: 6),
               child: const Icon(Icons.person),
             ),
-            label: 'Analys',
+            label: 'Thống kê',
           ),
           BottomNavigationBarItem(
             icon: Container(
               padding: const EdgeInsets.only(bottom: 6),
               child: const Icon(Icons.settings),
             ),
-            label: 'Settings',
+            label: 'Cài đặt',
           ),
         ],
         onTap: (index) {

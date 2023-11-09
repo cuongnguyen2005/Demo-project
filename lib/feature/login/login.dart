@@ -1,30 +1,38 @@
-import 'dart:convert';
-import 'dart:typed_data';
+// ignore_for_file: public_member_api_docs, sort_constructors_first, use_build_context_synchronously
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:finance_app/component/btn/button_no_box.dart';
 import 'package:finance_app/component/btn/button_primary.dart';
 import 'package:finance_app/component/form_field/input_default.dart';
-import 'package:finance_app/data/user_account.dart';
-import 'package:finance_app/screen/login/login.dart';
+import 'package:finance_app/feature/bottom_navigationbar.dart';
+import 'package:finance_app/feature/signup/signup.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/source/typo.dart';
 import 'package:finance_app/source/utils/validate_util.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
-class SignupPage extends StatefulWidget {
-  const SignupPage({super.key});
-  static String routeName = 'Signup_page';
+class LoginPage extends StatefulWidget {
+  const LoginPage({
+    Key? key,
+    required this.userName,
+  }) : super(key: key);
+  static String routeName = 'Login_page';
+  final String? userName;
 
   @override
-  State<SignupPage> createState() => _SignupPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _SignupPageState extends State<SignupPage> {
+class _LoginPageState extends State<LoginPage> {
+  @override
+  void initState() {
+    usernameController.text = widget.userName ?? '';
+    super.initState();
+  }
+
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
   bool visibility = true;
-  final nameController = TextEditingController();
   final usernameController = TextEditingController();
   final pwController = TextEditingController();
   final formKey = GlobalKey<FormState>();
@@ -42,28 +50,19 @@ class _SignupPageState extends State<SignupPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: size.height * .1),
-                    InkWell(
-                      onTap: onTapBack,
-                      child: const Icon(Icons.arrow_back_ios),
-                    ),
-                    SizedBox(height: size.height * .1),
+                    SizedBox(height: size.height * .2),
                     Text(
-                      'Create Account',
+                      'Đăng nhập',
                       style: tStyle.H1(),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      'Vui lòng đăng nhập để tiếp tục',
+                      style: tStyle.H6(),
                     ),
                     const SizedBox(height: 32),
                     InputDefault(
-                      hintText: 'username',
-                      obscureText: false,
-                      prefixIcon: const Icon(Icons.person),
-                      validator: ValidateUntils.validateName,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      controller: nameController,
-                    ),
-                    const SizedBox(height: 16),
-                    InputDefault(
-                      hintText: 'email',
+                      hintText: 'Email',
                       obscureText: false,
                       prefixIcon: const Icon(Icons.email),
                       validator: ValidateUntils.validateEmail,
@@ -72,7 +71,7 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                     const SizedBox(height: 16),
                     InputDefault(
-                      hintText: 'password',
+                      hintText: 'Mật khẩu',
                       obscureText: visibility,
                       prefixIcon: const Icon(Icons.lock_outline),
                       suffixIcon: InkWell(
@@ -92,8 +91,8 @@ class _SignupPageState extends State<SignupPage> {
                         Expanded(
                           flex: 1,
                           child: ButtonPrimary(
-                            textButton: 'SIGN UP',
-                            onTap: onTapSignup,
+                            textButton: 'ĐĂNG NHẬP',
+                            onTap: onTapLogin,
                           ),
                         ),
                       ],
@@ -113,17 +112,21 @@ class _SignupPageState extends State<SignupPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Already have a account? ',
+              'Bạn không có tài khoản? ',
               style: tStyle.H5(),
             ),
             ButtonNoBox(
-              textButton: 'Sign in',
-              onTap: onTapBack,
+              textButton: 'Đăng ký',
+              onTap: onTapSignup,
             )
           ],
         ),
       ),
     );
+  }
+
+  void onTapBack() {
+    Navigator.pop(context);
   }
 
   void onTapVisibility() {
@@ -132,48 +135,56 @@ class _SignupPageState extends State<SignupPage> {
     });
   }
 
-  void onTapBack() {
-    Navigator.pop(context);
+  void onTapSignup() {
+    Navigator.pushNamed(context, SignupPage.routeName);
   }
 
-  void onTapSignup() {
+  void onTapLogin() async {
     if (formKey.currentState!.validate()) {
-      FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-              email: usernameController.text, password: pwController.text)
-          .then((value) {
-        createUsertoFireStore();
-      }).catchError((error) {
-        showDialog(
+      //add loading
+      showDialog(
+          barrierDismissible: false,
           context: context,
           builder: (context) {
-            return AlertDialog(
-              title: Text(error.toString()),
-            );
-          },
-        );
-      });
+            return const Center(
+                child: CircularProgressIndicator(
+              color: AppColors.themeColor,
+            ));
+          });
+      try {
+        await auth.signInWithEmailAndPassword(
+            email: usernameController.text, password: pwController.text);
+        //remove loading
+        onTapBack();
+        Navigator.pushNamedAndRemoveUntil(
+            context, Bottom.routeName, (route) => false);
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'INVALID_LOGIN_CREDENTIALS') {
+          //remove loading
+          onTapBack();
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: const Text(
+                  'Tài khoản không tồn tại hoặc mật khẩu không đúng',
+                  textAlign: TextAlign.center,
+                ),
+                actions: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                    child: ButtonPrimary(
+                      textButton: 'Đồng ý',
+                      onTap: onTapBack,
+                    ),
+                  )
+                ],
+              );
+            },
+          );
+        }
+      }
     }
-  }
-
-  createUsertoFireStore() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    ByteData bytes = await rootBundle.load('assets/images/avatar_white.jpg');
-    final ByteBuffer buffer = bytes.buffer;
-
-    UsersAccount userAccount = UsersAccount(
-      name: nameController.text,
-      userName: user!.email,
-      avatar: base64.encode(Uint8List.view(buffer)),
-    );
-
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .set(userAccount.toMap());
-    // ignore: use_build_context_synchronously
-    Navigator.pushNamedAndRemoveUntil(
-        context, LoginPage.routeName, (route) => false,
-        arguments: usernameController.text);
   }
 }
