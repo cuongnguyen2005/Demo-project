@@ -1,7 +1,7 @@
 // ignore_for_file: unused_import
 
 import 'package:finance_app/feature/bottom_navigationbar.dart';
-import 'package:finance_app/feature/fiance_detail.dart';
+import 'package:finance_app/feature/finance_detail.dart';
 import 'package:finance_app/feature/finances/expense.dart';
 import 'package:finance_app/feature/finances/finance_navigator.dart';
 import 'package:finance_app/feature/finances/income.dart';

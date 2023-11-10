@@ -2,7 +2,7 @@
 
 import 'package:finance_app/feature/setting/settings.dart';
 import 'package:finance_app/source/colors.dart';
-import 'package:finance_app/feature/fiance_detail.dart';
+import 'package:finance_app/feature/finance_detail.dart';
 import 'package:finance_app/feature/home.dart';
 import 'package:finance_app/feature/finances/finance_navigator.dart';
 import 'package:finance_app/source/typo.dart';

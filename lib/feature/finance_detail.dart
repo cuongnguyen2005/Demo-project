@@ -10,6 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -50,6 +51,7 @@ class _FinanceDetailState extends State<FinanceDetail> {
         children: [
           //lịch
           TableCalendar(
+            locale: 'vi_VN',
             rowHeight: 35,
             headerStyle: HeaderStyle(
               formatButtonVisible: false,
@@ -95,7 +97,7 @@ class _FinanceDetailState extends State<FinanceDetail> {
           //list
           Flexible(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: FirebaseAnimatedList(
                 padding: EdgeInsets.zero,
                 shrinkWrap: true,
@@ -103,77 +105,91 @@ class _FinanceDetailState extends State<FinanceDetail> {
                 itemBuilder: (context, snapshot, animation, index) {
                   Finance finances = Finance.fromMap(snapshot.value);
                   DateTime dateTimeFormat = DateTime.parse(finances.dateTime);
-                  return Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 7, horizontal: 16),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(DateFormat.yMd().format(dateTimeFormat),
-                                style: tStyle.mediumBold()),
-                          ],
+                  return Slidable(
+                    endActionPane: ActionPane(
+                      motion: BehindMotion(),
+                      children: [
+                        SlidableAction(
+                          onPressed: (context) =>
+                              onTapDelete(snapshot, finances.cateName),
+                          backgroundColor: AppColors.red,
+                          foregroundColor: AppColors.white,
+                          icon: Icons.delete,
+                          label: 'Delete',
                         ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          finances.cateID == 2
-                              ? onTapUpdateExpense(finances, snapshot)
-                              : onTapUpdateIncome(finances, snapshot);
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 16),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                              color: AppColors.lightYellow,
-                              border:
-                                  Border.all(width: 1, color: AppColors.grey)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                flex: 4,
-                                child: Column(
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            finances.cateID == 2
+                                ? onTapUpdateExpense(finances, snapshot)
+                                : onTapUpdateIncome(finances, snapshot);
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 5),
+                            decoration: BoxDecoration(
+                                border: Border(
+                                    bottom: BorderSide(
+                                        width: 1, color: AppColors.grey))),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(finances.cateName,
-                                          style: tStyle.mediumBold()),
-                                      Text(
-                                        ' (${finances.note})',
-                                        style: tStyle.small(),
-                                        overflow: TextOverflow.clip,
+                                      Row(
+                                        children: [
+                                          Text(finances.cateName,
+                                              style: tStyle.mediumBold()),
+                                          Text(
+                                            ' (${finances.note})',
+                                            style: tStyle.small(),
+                                            overflow: TextOverflow.clip,
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 5),
+                                      Row(
+                                        children: [
+                                          Text(
+                                              DateFormat.yMd()
+                                                  .format(dateTimeFormat),
+                                              style: tStyle.mediumBold()),
+                                          Text(
+                                              ' (${DateFormat.E('vi').format(dateTimeFormat)})',
+                                              style: tStyle.mediumBold()),
+                                        ],
                                       ),
                                     ]),
-                              ),
-                              Expanded(
-                                flex: 3,
-                                child: Text(
-                                  '${NumberFormat.decimalPattern().format(finances.money)} đ',
-                                  style: finances.cateID == 2
-                                      ? tStyle.rMediumBold()
-                                      : tStyle.gMediumBold(),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      finances.cateID == 2
+                                          ? '- ${NumberFormat.decimalPattern().format(finances.money)} đ'
+                                          : '+ ${NumberFormat.decimalPattern().format(finances.money)} đ',
+                                      style: finances.cateID == 2
+                                          ? tStyle.rMediumBold()
+                                          : tStyle.gMediumBold(),
+                                    ),
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: 15,
+                                      color: AppColors.black,
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: IconButton(
-                                  padding: EdgeInsets.zero,
-                                  onPressed: () =>
-                                      onTapDelete(snapshot, finances.cateName),
-                                  icon: Icon(
-                                    Icons.delete,
-                                    color: AppColors.red,
-                                    size: 20,
-                                  ),
-                                ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
-                      )
-                    ],
+                      ],
+                    ),
                   );
                 },
               ),

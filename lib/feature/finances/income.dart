@@ -109,6 +109,7 @@ class _IncomePageState extends State<IncomePage> {
   //chọn ngày
   void _showDatePicker() async {
     DateTime? picked = await showDatePicker(
+      locale: const Locale("vi"),
       context: context,
       initialDate: dateTime,
       firstDate: DateTime(2000),
@@ -166,7 +167,7 @@ class _IncomePageState extends State<IncomePage> {
                                 borderRadius: BorderRadius.circular(16),
                               ),
                               child: Text(
-                                DateFormat.yMMMMEEEEd().format(dateTime),
+                                DateFormat.yMMMMEEEEd('vi').format(dateTime),
                                 style: tStyle.medium(),
                                 textAlign: TextAlign.center,
                               ),
