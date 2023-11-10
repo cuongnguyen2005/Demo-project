@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:finance_app/component/dialog/dialog_primary.dart';
 import 'package:finance_app/data/finance.dart';
+import 'package:finance_app/feature/finances/expense.dart';
+import 'package:finance_app/feature/finances/income.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/source/typo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,18 +26,16 @@ class _FinanceDetailState extends State<FinanceDetail> {
   @override
   void initState() {
     super.initState();
-    getInfo();
-  }
-
-  User? user = FirebaseAuth.instance.currentUser;
-  Query? dbRef;
-  void getInfo() {
     if (user != null) {
       dbRef = FirebaseDatabase.instance.ref().child('finance').child(user!.uid);
     }
   }
 
+  User? user = FirebaseAuth.instance.currentUser;
+  Query? dbRef;
+
   DateTime today = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,7 +107,7 @@ class _FinanceDetailState extends State<FinanceDetail> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 5, horizontal: 16),
+                            vertical: 7, horizontal: 16),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -115,35 +116,61 @@ class _FinanceDetailState extends State<FinanceDetail> {
                           ],
                         ),
                       ),
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            color: AppColors.lightYellow,
-                            border:
-                                Border.all(width: 1, color: AppColors.grey)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(children: [
-                              Text(finances.cateName,
-                                  style: tStyle.mediumBold()),
-                              Text(' (${finances.note})',
-                                  style: tStyle.mediumRegular()),
-                            ]),
-                            Text(
-                              '${NumberFormat.decimalPattern().format(finances.money)} đ',
-                              style: finances.cateID == 2
-                                  ? tStyle.rMediumBold()
-                                  : tStyle.gMediumBold(),
-                            ),
-                            Icon(
-                              Icons.delete,
-                              color: AppColors.red,
-                              size: 20,
-                            ),
-                          ],
+                      InkWell(
+                        onTap: () {
+                          finances.cateID == 2
+                              ? onTapUpdateExpense(finances, snapshot)
+                              : onTapUpdateIncome(finances, snapshot);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                              color: AppColors.lightYellow,
+                              border:
+                                  Border.all(width: 1, color: AppColors.grey)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                flex: 4,
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(finances.cateName,
+                                          style: tStyle.mediumBold()),
+                                      Text(
+                                        ' (${finances.note})',
+                                        style: tStyle.small(),
+                                        overflow: TextOverflow.clip,
+                                      ),
+                                    ]),
+                              ),
+                              Expanded(
+                                flex: 3,
+                                child: Text(
+                                  '${NumberFormat.decimalPattern().format(finances.money)} đ',
+                                  style: finances.cateID == 2
+                                      ? tStyle.rMediumBold()
+                                      : tStyle.gMediumBold(),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: IconButton(
+                                  padding: EdgeInsets.zero,
+                                  onPressed: () =>
+                                      onTapDelete(snapshot, finances.cateName),
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: AppColors.red,
+                                    size: 20,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       )
                     ],
@@ -154,6 +181,42 @@ class _FinanceDetailState extends State<FinanceDetail> {
           ),
         ],
       ),
+    );
+  }
+
+  void onTapBack() {
+    Navigator.of(context).pop();
+  }
+
+  void onTapUpdateExpense(finances, DataSnapshot snapshot) {
+    Navigator.pushNamed(context, ExpensePage.routeName,
+        arguments: ExpensePageArg(
+            isUpdate: true, finances: finances, key: snapshot.key));
+  }
+
+  void onTapUpdateIncome(finances, DataSnapshot snapshot) {
+    Navigator.pushNamed(context, IncomePage.routeName,
+        arguments: IncomePageArg(
+            isUpdate: true, finances: finances, key: snapshot.key));
+  }
+
+  void onTapDelete(snapshot, cateName) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return DialogPrimary(
+          content: 'Bạn có muốn xóa $cateName không?',
+          onTap: () async {
+            await FirebaseDatabase.instance
+                .ref()
+                .child('finance')
+                .child(user!.uid)
+                .child(snapshot.key!)
+                .remove();
+            onTapBack();
+          },
+        );
+      },
     );
   }
 }

@@ -2,7 +2,6 @@
 
 import 'package:finance_app/feature/login/login.dart';
 import 'package:finance_app/source/colors.dart';
-import 'package:finance_app/feature/bottom_navigationbar.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {

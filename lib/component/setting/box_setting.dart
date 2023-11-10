@@ -28,7 +28,7 @@ class BoxSetting extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(title, style: tStyle.medium()),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Text(
                   text,
                   style: tStyle.mediumRegular(),

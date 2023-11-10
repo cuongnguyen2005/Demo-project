@@ -39,4 +39,9 @@ class Finance {
 
   factory Finance.fromJson(String source) =>
       Finance.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  String toString() {
+    return 'Finance(cateID: $cateID,cateName: $cateName,dateTime: $dateTime,money: $money)';
+  }
 }

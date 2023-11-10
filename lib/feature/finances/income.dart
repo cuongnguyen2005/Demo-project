@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, sized_box_for_whitespace
 
+import 'package:finance_app/component/btn/button_no_box.dart';
+import 'package:finance_app/component/dialog/dialog_primary.dart';
 import 'package:finance_app/component/form_field/input_default.dart';
 import 'package:finance_app/data/category.dart';
 import 'package:finance_app/data/finance.dart';
@@ -11,33 +13,45 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class Expense extends StatefulWidget {
-  const Expense({super.key, required this.isExpense});
-  final bool isExpense;
-
-  @override
-  State<Expense> createState() => _ExpenseState();
+class IncomePageArg {
+  final bool isUpdate;
+  final Finance? finances;
+  final String? key;
+  IncomePageArg({
+    required this.isUpdate,
+    this.finances,
+    this.key,
+  });
 }
 
-class _ExpenseState extends State<Expense> {
+class IncomePage extends StatefulWidget {
+  const IncomePage({super.key, required this.arg});
+  final IncomePageArg arg;
+  static String routeName = 'income_page';
+
+  @override
+  State<IncomePage> createState() => _IncomePageState();
+}
+
+class _IncomePageState extends State<IncomePage> {
   @override
   void initState() {
     super.initState();
     getCategory();
+    noteController.text = widget.arg.finances?.note ?? '';
+    moneyController.text = widget.arg.finances?.money.toString() ?? '';
+    dateTime = DateTime.parse(
+        widget.arg.finances?.dateTime ?? DateTime.now().toString());
+    nameCate = widget.arg.finances?.cateName ?? '';
+    cateID = widget.arg.finances?.cateID ?? 0;
   }
 
   User? user = FirebaseAuth.instance.currentUser;
 
   //phân loại danh mục
-  List<Category> cateExpense = [];
   List<Category> cateIncome = [];
   void getCategory() {
     for (var element in cates) {
-      if (element.cateID == 2) {
-        setState(() {
-          cateExpense.add(element);
-        });
-      }
       if (element.cateID == 1) {
         setState(() {
           cateIncome.add(element);
@@ -72,6 +86,26 @@ class _ExpenseState extends State<Expense> {
     }
   }
 
+  //update thu chi
+  void updateFinance(int cateID, String cateName, int money, String dateTime,
+      String note) async {
+    if (user != null) {
+      Finance finance = Finance(
+        cateID: cateID,
+        cateName: cateName,
+        money: money,
+        dateTime: dateTime,
+        note: note,
+      );
+      await FirebaseDatabase.instance
+          .ref()
+          .child('finance')
+          .child(user!.uid)
+          .child(widget.arg.key!)
+          .set(finance.toMap());
+    }
+  }
+
   //chọn ngày
   void _showDatePicker() async {
     DateTime? picked = await showDatePicker(
@@ -87,7 +121,6 @@ class _ExpenseState extends State<Expense> {
     }
   }
 
-  int choose = -1;
   String nameCate = '';
   int cateID = 0;
   final noteController = TextEditingController();
@@ -98,6 +131,15 @@ class _ExpenseState extends State<Expense> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
+      appBar: widget.arg.isUpdate == true
+          ? AppBar(
+              automaticallyImplyLeading: false,
+              backgroundColor: AppColors.themeColor,
+              title: Center(
+                child: Text('Chỉnh sửa', style: tStyle.H5()),
+              ),
+            )
+          : null,
       body: ListView(
         children: [
           Container(
@@ -188,35 +230,26 @@ class _ExpenseState extends State<Expense> {
                         crossAxisSpacing: 10,
                         mainAxisSpacing: 10,
                       ),
-                      itemCount: widget.isExpense == true
-                          ? cateExpense.length
-                          : cateIncome.length,
+                      itemCount: cateIncome.length,
                       itemBuilder: (BuildContext ctx, index) {
                         return InkWell(
                           onTap: () {
                             setState(() {
-                              choose = index;
-                              nameCate = widget.isExpense == true
-                                  ? cateExpense[index].cateName
-                                  : cateIncome[index].cateName;
-                              cateID = widget.isExpense == true
-                                  ? cateExpense[index].cateID
-                                  : cateIncome[index].cateID;
+                              nameCate = cateIncome[index].cateName;
+                              cateID = cateIncome[index].cateID;
                             });
                           },
                           child: Container(
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                                border: choose != index
+                                border: nameCate != cateIncome[index].cateName
                                     ? Border.all(
                                         color: AppColors.grey, width: 2)
                                     : Border.all(
                                         color: AppColors.themeColor, width: 2),
                                 borderRadius: BorderRadius.circular(16)),
                             child: Text(
-                              widget.isExpense == true
-                                  ? cateExpense[index].cateName
-                                  : cateIncome[index].cateName,
+                              cateIncome[index].cateName,
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -228,9 +261,9 @@ class _ExpenseState extends State<Expense> {
                 Align(
                     alignment: Alignment.bottomCenter,
                     child: ButtonPrimary(
-                      textButton: widget.isExpense == true
-                          ? 'Nhập khoản chi'
-                          : 'Nhập khoản thu',
+                      textButton: widget.arg.isUpdate == false
+                          ? 'Nhập khoản thu'
+                          : 'Chỉnh sửa khoản thu',
                       onTap: () {
                         addFinanceDetail(cateID, nameCate);
                       },
@@ -240,6 +273,17 @@ class _ExpenseState extends State<Expense> {
           ),
         ],
       ),
+      bottomSheet: widget.arg.isUpdate == true
+          ? Container(
+              width: double.infinity,
+              color: AppColors.white,
+              padding: const EdgeInsets.all(16),
+              child: ButtonNoBox(
+                textButton: 'Quay về',
+                onTap: onTapBack,
+              ),
+            )
+          : null,
     );
   }
 
@@ -252,28 +296,23 @@ class _ExpenseState extends State<Expense> {
       if (nameCate != '') {
         int money = int.parse(moneyController.text);
         String datetime = dateTime.toIso8601String();
-        addFinance(cateID, cateName, money, datetime, noteController.text);
+        widget.arg.isUpdate == false
+            ? addFinance(cateID, cateName, money, datetime, noteController.text)
+            : updateFinance(
+                cateID, cateName, money, datetime, noteController.text);
+        if (widget.arg.isUpdate == true) {
+          Navigator.pop(context);
+        }
+
         moneyController.clear();
         noteController.clear();
       } else {
         showDialog(
           context: context,
           builder: (context) {
-            return AlertDialog(
-              content: const Text(
-                'Bạn chưa chọn danh mục',
-                textAlign: TextAlign.center,
-              ),
-              actions: [
-                Padding(
-                  padding:
-                      const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-                  child: ButtonPrimary(
-                    textButton: 'Đồng ý',
-                    onTap: onTapBack,
-                  ),
-                )
-              ],
+            return DialogPrimary(
+              content: 'Bạn chưa chọn danh mục',
+              onTap: onTapBack,
             );
           },
         );
@@ -282,20 +321,9 @@ class _ExpenseState extends State<Expense> {
       showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
-            content: const Text(
-              'Bạn chưa nhập số tiền',
-              textAlign: TextAlign.center,
-            ),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-                child: ButtonPrimary(
-                  textButton: 'Đồng ý',
-                  onTap: onTapBack,
-                ),
-              )
-            ],
+          return DialogPrimary(
+            content: 'Bạn chưa nhập số tiền',
+            onTap: onTapBack,
           );
         },
       );

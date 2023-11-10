@@ -1,8 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:finance_app/feature/finances/income.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/source/typo.dart';
-import 'package:finance_app/feature/finances/finance_input.dart';
+import 'package:finance_app/feature/finances/expense.dart';
 import 'package:flutter/material.dart';
 
 class IncomeAndExpense extends StatelessWidget {
@@ -37,9 +38,9 @@ class IncomeAndExpense extends StatelessWidget {
           ),
         ),
         body: TabBarView(
-          children: const [
-            Expense(isExpense: true),
-            Expense(isExpense: false),
+          children: [
+            ExpensePage(arg: ExpensePageArg(isUpdate: false)),
+            IncomePage(arg: IncomePageArg(isUpdate: false)),
           ],
         ),
       ),

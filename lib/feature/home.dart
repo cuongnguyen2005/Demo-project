@@ -3,8 +3,6 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:finance_app/component/list_history_home.dart';
-import 'package:finance_app/data/finance.dart';
 import 'package:finance_app/data/user_account.dart';
 import 'package:finance_app/source/typo.dart';
 import 'package:finance_app/feature/fiance_detail.dart';

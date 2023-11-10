@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, use_build_context_synchronously
+import 'package:finance_app/component/dialog/dialog_primary.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -165,21 +166,9 @@ class _LoginPageState extends State<LoginPage> {
           showDialog(
             context: context,
             builder: (context) {
-              return AlertDialog(
-                content: const Text(
-                  'Tài khoản không tồn tại hoặc mật khẩu không đúng',
-                  textAlign: TextAlign.center,
-                ),
-                actions: [
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-                    child: ButtonPrimary(
-                      textButton: 'Đồng ý',
-                      onTap: onTapBack,
-                    ),
-                  )
-                ],
+              return DialogPrimary(
+                content: 'Tài khoản không tồn tại hoặc mật khẩu không đúng',
+                onTap: onTapBack,
               );
             },
           );

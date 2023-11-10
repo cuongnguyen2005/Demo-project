@@ -55,21 +55,21 @@ class _SettingsState extends State<Settings> {
         String base64Image = base64.encode(imageBytes);
         setState(() {
           usersAccount?.avatar = base64Image;
-          UsersAccount userAcc = UsersAccount(
-            name: usersAccount?.name,
-            userName: usersAccount?.userName,
-            avatar: base64Image,
-          );
-          AddtoServer(userAcc);
         });
+        UsersAccount userAcc = UsersAccount(
+          name: usersAccount?.name,
+          userName: usersAccount?.userName,
+          avatar: base64Image,
+        );
+        AddtoServer(userAcc);
       }
     } catch (e) {}
   }
 
-  void AddtoServer(UsersAccount userAcc) {
-    FirebaseFirestore.instance
+  void AddtoServer(UsersAccount userAcc) async {
+    await FirebaseFirestore.instance
         .collection('users')
-        .doc(user?.uid)
+        .doc(user!.uid)
         .set(userAcc.toMap());
   }
 

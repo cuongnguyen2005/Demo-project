@@ -6,6 +6,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:finance_app/component/btn/button_no_box.dart';
 import 'package:finance_app/component/btn/button_primary.dart';
+import 'package:finance_app/component/dialog/dialog_primary.dart';
 import 'package:finance_app/component/form_field/input_default.dart';
 import 'package:finance_app/data/user_account.dart';
 import 'package:finance_app/feature/login/login.dart';
@@ -162,22 +163,8 @@ class _SignupPageState extends State<SignupPage> {
           showDialog(
             context: context,
             builder: (context) {
-              return AlertDialog(
-                content: const Text(
-                  'Email đã tồn tại',
-                  textAlign: TextAlign.center,
-                ),
-                actions: [
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-                    child: ButtonPrimary(
-                      textButton: 'Đồng ý',
-                      onTap: onTapBack,
-                    ),
-                  )
-                ],
-              );
+              return DialogPrimary(
+                  content: 'Email đã tồn tại', onTap: onTapBack);
             },
           );
         }
