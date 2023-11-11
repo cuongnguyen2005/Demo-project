@@ -34,6 +34,15 @@ class Finance {
       note: map['note'] as String,
     );
   }
+  // factory Finance.fromMap1(Map<dynamic, dynamic> map) {
+  //   return Finance(
+  //     cateID: map['cateID'] as int,
+  //     cateName: map['cateName'] as String,
+  //     money: map['money'] as int,
+  //     dateTime: map['dateTime'] as String,
+  //     note: map['note'] as String,
+  //   );
+  // }
 
   String toJson() => json.encode(toMap());
 

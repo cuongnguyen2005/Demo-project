@@ -1,53 +1,46 @@
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
+// ignore_for_file: file_names
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:finance_app/component/dialog/dialog_primary.dart';
 import 'package:finance_app/data/finance.dart';
-import 'package:finance_app/feature/bottom_navigationbar.dart';
 import 'package:finance_app/feature/finances/expense.dart';
 import 'package:finance_app/feature/finances/income.dart';
 import 'package:finance_app/source/colors.dart';
+import 'package:finance_app/source/finances_api.dart';
 import 'package:finance_app/source/typo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class FinanceDetail extends StatefulWidget {
-  const FinanceDetail({super.key});
+class FinanceDt extends StatefulWidget {
+  const FinanceDt({super.key});
 
   static String routeName = '/fiance_detail';
 
   @override
-  State<FinanceDetail> createState() => _FinanceDetailState();
+  State<FinanceDt> createState() => _FinanceDtState();
 }
 
-class _FinanceDetailState extends State<FinanceDetail> {
+class _FinanceDtState extends State<FinanceDt> {
   @override
   void initState() {
     super.initState();
-    if (user != null) {
-      dbRef = FirebaseDatabase.instance
-          .ref()
-          .child('finance/${user!.uid}')
-          .orderByChild('dateTime');
-    }
+    getKey();
     getInfo();
   }
 
   User? user = FirebaseAuth.instance.currentUser;
-  Query? dbRef;
+  String? key;
+
   List<Finance> financeList = [];
-  int totalExpense = 0;
-  int totalIncome = 0;
-  int finalTotal = 0;
 
   void getInfo() async {
-    List<Finance> getList = await getFinance();
+    List<Finance> list = await FinanceRepo.getFinances(user!.uid);
     setState(() {
-      financeList = getList;
+      financeList.addAll(list);
     });
     for (var element in financeList) {
       if (element.cateID == 2) {
@@ -60,26 +53,21 @@ class _FinanceDetailState extends State<FinanceDetail> {
     finalTotal = totalIncome - totalExpense;
   }
 
-  Future<List<Finance>> getFinance() async {
-    await FirebaseDatabase.instance
+  void getKey() {
+    var ref = FirebaseDatabase.instance
         .ref()
-        .child('finance/${user!.uid}')
+        .child('finance')
+        .child(user!.uid)
         .get()
-        .then(
-      (snap) {
-        var map =
-            Map<Object?, dynamic>.from(snap.value as Map<Object?, dynamic>);
-        map.forEach(
-          (key, value) {
-            Finance? finance;
-            finance = Finance.fromMap(value);
-            financeList.add(finance);
-          },
-        );
-      },
-    );
-    return financeList;
+        .then((value) {
+      print(value.value);
+      return value.key;
+    });
   }
+
+  int totalExpense = 0;
+  int totalIncome = 0;
+  int finalTotal = 0;
 
   DateTime today = DateTime.now();
   String monthCur = DateTime.now().month.toString();
@@ -101,7 +89,7 @@ class _FinanceDetailState extends State<FinanceDetail> {
             startingDayOfWeek: StartingDayOfWeek.monday,
             locale: 'vi_VN',
             rowHeight: 35,
-            headerStyle: HeaderStyle(
+            headerStyle: const HeaderStyle(
               formatButtonVisible: false,
               titleCentered: true,
             ),
@@ -112,8 +100,8 @@ class _FinanceDetailState extends State<FinanceDetail> {
 
           //tổng quan tiền
           Container(
-            margin: EdgeInsets.only(top: 5),
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            margin: const EdgeInsets.only(top: 5),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             decoration: BoxDecoration(
                 color: AppColors.white,
                 border: Border.all(width: 1, color: AppColors.grey)),
@@ -152,20 +140,21 @@ class _FinanceDetailState extends State<FinanceDetail> {
           Flexible(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: FirebaseAnimatedList(
-                padding: EdgeInsets.zero,
-                shrinkWrap: true,
-                query: dbRef!,
-                itemBuilder: (context, snapshot, animation, index) {
-                  Finance finances = Finance.fromMap(snapshot.value);
-                  DateTime dateTimeFormat = DateTime.parse(finances.dateTime);
+              child: ListView.builder(
+                itemCount: financeList.length,
+                itemBuilder: (context, index) {
+                  DateTime dateTimeFormat =
+                      DateTime.parse(financeList[index].dateTime);
                   return Slidable(
                     endActionPane: ActionPane(
-                      motion: BehindMotion(),
+                      motion: const BehindMotion(),
                       children: [
                         SlidableAction(
-                          onPressed: (context) =>
-                              onTapDelete(snapshot, finances.cateName),
+                          onPressed: (context) {
+                            financeList.removeAt(index);
+                          },
+                          // (context) =>
+                          //     onTapDelete(snapshot, finances.cateName),
                           backgroundColor: AppColors.red,
                           foregroundColor: AppColors.white,
                           icon: Icons.delete,
@@ -177,14 +166,14 @@ class _FinanceDetailState extends State<FinanceDetail> {
                       children: [
                         InkWell(
                           onTap: () {
-                            finances.cateID == 2
-                                ? onTapUpdateExpense(finances, snapshot)
-                                : onTapUpdateIncome(finances, snapshot);
+                            // financeList[index].cateID == 2
+                            //     ? onTapUpdateExpense(finances, snapshot)
+                            //     : onTapUpdateIncome(finances, snapshot);
                           },
                           child: Container(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 vertical: 10, horizontal: 5),
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                                 border: Border(
                                     bottom: BorderSide(
                                         width: 1, color: AppColors.grey))),
@@ -197,16 +186,16 @@ class _FinanceDetailState extends State<FinanceDetail> {
                                     children: [
                                       Row(
                                         children: [
-                                          Text(finances.cateName,
+                                          Text(financeList[index].cateName,
                                               style: tStyle.mediumBold()),
                                           Text(
-                                            ' (${finances.note})',
+                                            ' (${financeList[index].note})',
                                             style: tStyle.small(),
                                             overflow: TextOverflow.clip,
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 5),
+                                      const SizedBox(height: 5),
                                       Row(
                                         children: [
                                           Text(
@@ -224,14 +213,14 @@ class _FinanceDetailState extends State<FinanceDetail> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      finances.cateID == 2
-                                          ? '- ${NumberFormat.decimalPattern().format(finances.money)} đ'
-                                          : '+ ${NumberFormat.decimalPattern().format(finances.money)} đ',
-                                      style: finances.cateID == 2
+                                      financeList[index].cateID == 2
+                                          ? '- ${NumberFormat.decimalPattern().format(financeList[index].money)} đ'
+                                          : '+ ${NumberFormat.decimalPattern().format(financeList[index].money)} đ',
+                                      style: financeList[index].cateID == 2
                                           ? tStyle.rMediumBold()
                                           : tStyle.gMediumBold(),
                                     ),
-                                    Icon(
+                                    const Icon(
                                       Icons.arrow_forward_ios,
                                       size: 15,
                                       color: AppColors.black,
@@ -283,9 +272,7 @@ class _FinanceDetailState extends State<FinanceDetail> {
                 .child(user!.uid)
                 .child(snapshot.key!)
                 .remove();
-            Navigator.pushNamedAndRemoveUntil(
-                context, Bottom.routeName, (route) => false,
-                arguments: true);
+            onTapBack();
           },
         );
       },

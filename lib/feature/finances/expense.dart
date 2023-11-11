@@ -5,11 +5,12 @@ import 'package:finance_app/component/dialog/dialog_primary.dart';
 import 'package:finance_app/component/form_field/input_default.dart';
 import 'package:finance_app/data/category.dart';
 import 'package:finance_app/data/finance.dart';
+import 'package:finance_app/feature/bottom_navigationbar.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/component/btn/button_primary.dart';
+import 'package:finance_app/source/firebase_funtion.dart';
 import 'package:finance_app/source/typo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -57,52 +58,6 @@ class _ExpensePageState extends State<ExpensePage> {
           cateExpense.add(element);
         });
       }
-    }
-  }
-
-  //thêm mới thu chi
-  void addFinance(int cateID, String cateName, int money, String dateTime,
-      String note) async {
-    if (user != null) {
-      String? financeId = FirebaseDatabase.instance
-          .ref()
-          .child('finance')
-          .child(user!.uid)
-          .push()
-          .key;
-      Finance finance = Finance(
-        cateID: cateID,
-        cateName: cateName,
-        money: money,
-        dateTime: dateTime,
-        note: note,
-      );
-      await FirebaseDatabase.instance
-          .ref()
-          .child('finance')
-          .child(user!.uid)
-          .child(financeId!)
-          .set(finance.toMap());
-    }
-  }
-
-  //update thu chi
-  void updateFinance(int cateID, String cateName, int money, String dateTime,
-      String note) async {
-    if (user != null) {
-      Finance finance = Finance(
-        cateID: cateID,
-        cateName: cateName,
-        money: money,
-        dateTime: dateTime,
-        note: note,
-      );
-      await FirebaseDatabase.instance
-          .ref()
-          .child('finance')
-          .child(user!.uid)
-          .child(widget.arg.key!)
-          .set(finance.toMap());
     }
   }
 
@@ -292,20 +247,47 @@ class _ExpensePageState extends State<ExpensePage> {
     Navigator.pop(context);
   }
 
-  void addFinanceDetail(int cateID, String cateName) {
+  void showSuccess() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title:
+              Icon(Icons.check_circle, size: 50, color: AppColors.themeColor),
+          content: Text('Thành công', textAlign: TextAlign.center),
+        );
+      },
+    );
+  }
+
+  void pushBottom() {
+    Navigator.pushNamedAndRemoveUntil(
+        context, Bottom.routeName, (route) => false,
+        arguments: true);
+  }
+
+  void addFinanceDetail(int cateID, String cateName) async {
     if (moneyController.text.isNotEmpty) {
       if (nameCate != '') {
+        //hiển thị thông báo thành công
+        showSuccess();
+        await Future.delayed(Duration(seconds: 1));
+        onTapBack();
         int money = int.parse(moneyController.text);
         String datetime = dateTime.toIso8601String();
         widget.arg.isUpdate == false
-            ? addFinance(cateID, cateName, money, datetime, noteController.text)
-            : updateFinance(
-                cateID, cateName, money, datetime, noteController.text);
+            ? FirebaseFuntion.addFinance(
+                user, cateID, cateName, money, datetime, noteController.text)
+            : FirebaseFuntion.updateFinance(user, widget.arg.key, cateID,
+                cateName, money, datetime, noteController.text);
         if (widget.arg.isUpdate == true) {
-          Navigator.pop(context);
+          pushBottom();
         }
         moneyController.clear();
         noteController.clear();
+        setState(() {
+          nameCate = '';
+        });
       } else {
         showDialog(
           context: context,

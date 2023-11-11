@@ -3,11 +3,14 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:finance_app/data/finance.dart';
 import 'package:finance_app/data/user_account.dart';
 import 'package:finance_app/source/typo.dart';
 import 'package:finance_app/feature/finance_detail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../source/colors.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,12 +24,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    getUser();
     getInfo();
   }
 
+  User? user = FirebaseAuth.instance.currentUser;
   UsersAccount? usersAccount;
-  void getInfo() {
-    User? user = FirebaseAuth.instance.currentUser;
+  void getUser() {
     FirebaseFirestore.instance
         .collection('users')
         .doc(user?.uid)
@@ -38,8 +42,58 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  List<Finance> financeList = [];
+  int totalExpense = 0;
+  int totalIncome = 0;
+  int finalTotal = 0;
+
+  void getInfo() async {
+    List<Finance> getList = await getFinance();
+    setState(() {
+      financeList = getList;
+    });
+    for (var element in financeList) {
+      if (element.cateID == 2) {
+        totalExpense += element.money;
+      }
+      // print(element.money);
+
+    }
+    print(totalExpense);
+  }
+
+  Future<List<Finance>> getFinance() async {
+    await FirebaseDatabase.instance
+        .ref()
+        .child('finance/${user!.uid}')
+        .get()
+        .then(
+      (snap) {
+        var map =
+            Map<Object?, dynamic>.from(snap.value as Map<Object?, dynamic>);
+        map.forEach(
+          (key, value) {
+            Finance? finance;
+            finance = Finance.fromMap(value);
+            financeList.add(finance);
+          },
+        );
+      },
+    );
+    return financeList;
+  }
+
   @override
   Widget build(BuildContext context) {
+    for (var element in financeList) {
+      if (element.cateID == 2) {
+        totalExpense += element.money;
+      }
+      if (element.cateID == 1) {
+        totalIncome += element.money;
+      }
+    }
+    finalTotal = totalIncome - totalExpense;
     var size = MediaQuery.of(context).size;
     final String avat = usersAccount?.avatar ?? '';
     return Scaffold(
@@ -80,7 +134,8 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Text('Tổng tài sản', style: tStyle.H2()),
                 SizedBox(height: 5),
-                Text('10.000.000 đ', style: tStyle.H1()),
+                Text('${NumberFormat.decimalPattern().format(finalTotal)} đ',
+                    style: tStyle.H1()),
               ],
             ),
 
@@ -110,7 +165,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               size: 26,
                               color: AppColors.white,
                             ),
-                            Text('10.000.000 đ', style: tStyle.H4()),
+                            Text(
+                                '${NumberFormat.decimalPattern().format(totalIncome)} đ',
+                                style: tStyle.H4()),
                           ],
                         ),
                       ),
@@ -133,7 +190,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('10.000.000 đ', style: tStyle.H4()),
+                            Text(
+                                '${NumberFormat.decimalPattern().format(totalExpense)} đ',
+                                style: tStyle.H4()),
                             Icon(
                               Icons.home,
                               size: 26,
