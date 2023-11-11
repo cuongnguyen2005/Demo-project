@@ -1,8 +1,7 @@
 // ignore_for_file: unused_import
 
 import 'package:finance_app/feature/bottom_navigationbar.dart';
-import 'package:finance_app/feature/finance-dt.dart';
-import 'package:finance_app/feature/finance_detail.dart';
+import 'package:finance_app/feature/finance-detail.dart';
 import 'package:finance_app/feature/finances/expense.dart';
 import 'package:finance_app/feature/finances/finance_navigator.dart';
 import 'package:finance_app/feature/finances/income.dart';
@@ -26,13 +25,9 @@ Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
   if (settings.name == SignupPage.routeName) {
     return MaterialPageRoute(builder: (_) => const SignupPage());
   }
-  if (settings.name == FinanceDetail.routeName) {
-    // final String arg = settings.arguments as String;
 
-    return MaterialPageRoute(builder: (_) => const FinanceDetail());
-  }
-  if (settings.name == FinanceDt.routeName) {
-    return MaterialPageRoute(builder: (_) => const FinanceDt());
+  if (settings.name == financeDetail.routeName) {
+    return MaterialPageRoute(builder: (_) => const financeDetail());
   }
   if (settings.name == Bottom.routeName) {
     final bool? arg = settings.arguments as bool?;

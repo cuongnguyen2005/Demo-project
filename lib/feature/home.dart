@@ -5,8 +5,8 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:finance_app/data/finance.dart';
 import 'package:finance_app/data/user_account.dart';
+import 'package:finance_app/feature/finance-detail.dart';
 import 'package:finance_app/source/typo.dart';
-import 'package:finance_app/feature/finance_detail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -261,6 +261,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void onTapListFiance() {
-    Navigator.pushNamed(context, FinanceDetail.routeName);
+    Navigator.pushNamed(context, financeDetail.routeName);
   }
 }

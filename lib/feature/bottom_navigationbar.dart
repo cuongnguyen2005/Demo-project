@@ -3,14 +3,10 @@
 
 import 'package:finance_app/feature/statistical.dart';
 import 'package:flutter/material.dart';
-
-import 'package:finance_app/feature/finance-dt.dart';
-import 'package:finance_app/feature/finance_detail.dart';
+import 'package:finance_app/feature/finance-detail.dart';
 import 'package:finance_app/feature/finances/finance_navigator.dart';
-import 'package:finance_app/feature/home.dart';
 import 'package:finance_app/feature/setting/settings.dart';
 import 'package:finance_app/source/colors.dart';
-import 'package:finance_app/source/typo.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class Bottom extends StatefulWidget {
@@ -40,8 +36,8 @@ class _BottomState extends State<Bottom> {
     final tabs = [
       // HomeScreen(),
       IncomeAndExpense(),
-      // FinanceDt(),
-      FinanceDetail(),
+      financeDetail(),
+      // FinanceDetail(),
       StatisticalPage(),
       Settings(),
     ];

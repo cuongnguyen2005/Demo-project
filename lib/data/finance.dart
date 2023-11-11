@@ -2,12 +2,14 @@ import 'dart:convert';
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class Finance {
+  String id;
   int cateID;
   String cateName;
   int money;
   String dateTime;
   String note;
   Finance({
+    required this.id,
     required this.cateID,
     required this.cateName,
     required this.money,
@@ -17,6 +19,7 @@ class Finance {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'id': id,
       'cateID': cateID,
       'cateName': cateName,
       'money': money,
@@ -27,6 +30,7 @@ class Finance {
 
   static Finance fromMap(map) {
     return Finance(
+      id: map['id'] as String,
       cateID: map['cateID'] as int,
       cateName: map['cateName'] as String,
       money: map['money'] as int,

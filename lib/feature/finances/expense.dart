@@ -8,7 +8,7 @@ import 'package:finance_app/data/finance.dart';
 import 'package:finance_app/feature/bottom_navigationbar.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/component/btn/button_primary.dart';
-import 'package:finance_app/source/firebase_funtion.dart';
+import 'package:finance_app/source/finances_api.dart';
 import 'package:finance_app/source/typo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -276,9 +276,9 @@ class _ExpensePageState extends State<ExpensePage> {
         int money = int.parse(moneyController.text);
         String datetime = dateTime.toIso8601String();
         widget.arg.isUpdate == false
-            ? FirebaseFuntion.addFinance(
-                user, cateID, cateName, money, datetime, noteController.text)
-            : FirebaseFuntion.updateFinance(user, widget.arg.key, cateID,
+            ? FinanceRepo.addFinances(user!.uid, cateID, cateName, money,
+                datetime, noteController.text)
+            : FinanceRepo.editFinances(user!.uid, widget.arg.key!, cateID,
                 cateName, money, datetime, noteController.text);
         if (widget.arg.isUpdate == true) {
           pushBottom();

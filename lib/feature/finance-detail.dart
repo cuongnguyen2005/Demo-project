@@ -1,8 +1,8 @@
 // ignore_for_file: file_names
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:finance_app/component/dialog/dialog_primary.dart';
 import 'package:finance_app/data/finance.dart';
+import 'package:finance_app/feature/bottom_navigationbar.dart';
 import 'package:finance_app/feature/finances/expense.dart';
 import 'package:finance_app/feature/finances/income.dart';
 import 'package:finance_app/source/colors.dart';
@@ -15,20 +15,19 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class FinanceDt extends StatefulWidget {
-  const FinanceDt({super.key});
+class financeDetail extends StatefulWidget {
+  const financeDetail({super.key});
 
   static String routeName = '/fiance_detail';
 
   @override
-  State<FinanceDt> createState() => _FinanceDtState();
+  State<financeDetail> createState() => _financeDetailState();
 }
 
-class _FinanceDtState extends State<FinanceDt> {
+class _financeDetailState extends State<financeDetail> {
   @override
   void initState() {
     super.initState();
-    getKey();
     getInfo();
   }
 
@@ -51,18 +50,6 @@ class _FinanceDtState extends State<FinanceDt> {
       }
     }
     finalTotal = totalIncome - totalExpense;
-  }
-
-  void getKey() {
-    var ref = FirebaseDatabase.instance
-        .ref()
-        .child('finance')
-        .child(user!.uid)
-        .get()
-        .then((value) {
-      print(value.value);
-      return value.key;
-    });
   }
 
   int totalExpense = 0;
@@ -150,11 +137,8 @@ class _FinanceDtState extends State<FinanceDt> {
                       motion: const BehindMotion(),
                       children: [
                         SlidableAction(
-                          onPressed: (context) {
-                            financeList.removeAt(index);
-                          },
-                          // (context) =>
-                          //     onTapDelete(snapshot, finances.cateName),
+                          onPressed: (context) =>
+                              onTapDelete(financeList[index].id),
                           backgroundColor: AppColors.red,
                           foregroundColor: AppColors.white,
                           icon: Icons.delete,
@@ -166,9 +150,11 @@ class _FinanceDtState extends State<FinanceDt> {
                       children: [
                         InkWell(
                           onTap: () {
-                            // financeList[index].cateID == 2
-                            //     ? onTapUpdateExpense(finances, snapshot)
-                            //     : onTapUpdateIncome(finances, snapshot);
+                            financeList[index].cateID == 2
+                                ? onTapUpdateExpense(
+                                    financeList[index], financeList[index].id)
+                                : onTapUpdateIncome(
+                                    financeList[index], financeList[index].id);
                           },
                           child: Container(
                             padding: const EdgeInsets.symmetric(
@@ -247,32 +233,36 @@ class _FinanceDtState extends State<FinanceDt> {
     Navigator.of(context).pop();
   }
 
-  void onTapUpdateExpense(finances, DataSnapshot snapshot) {
+  void pushBottom() {
+    Navigator.pushNamedAndRemoveUntil(
+        context, Bottom.routeName, (route) => false,
+        arguments: true);
+  }
+
+  void onTapUpdateExpense(finances, String id) {
     Navigator.pushNamed(context, ExpensePage.routeName,
-        arguments: ExpensePageArg(
-            isUpdate: true, finances: finances, key: snapshot.key));
+        arguments: ExpensePageArg(isUpdate: true, finances: finances, key: id));
   }
 
-  void onTapUpdateIncome(finances, DataSnapshot snapshot) {
+  void onTapUpdateIncome(finances, String id) {
     Navigator.pushNamed(context, IncomePage.routeName,
-        arguments: IncomePageArg(
-            isUpdate: true, finances: finances, key: snapshot.key));
+        arguments: IncomePageArg(isUpdate: true, finances: finances, key: id));
   }
 
-  void onTapDelete(snapshot, cateName) {
+  void onTapDelete(key) {
     showDialog(
       context: context,
       builder: (context) {
         return DialogPrimary(
-          content: 'Bạn có muốn xóa $cateName không?',
+          content: 'Bạn có thực sự muốn xóa không?',
           onTap: () async {
             await FirebaseDatabase.instance
                 .ref()
                 .child('finance')
                 .child(user!.uid)
-                .child(snapshot.key!)
+                .child(key)
                 .remove();
-            onTapBack();
+            pushBottom();
           },
         );
       },
