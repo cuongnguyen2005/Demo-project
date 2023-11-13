@@ -1,6 +1,10 @@
 // ignore_for_file: unused_import
 
+import 'package:finance_app/data/category.dart';
 import 'package:finance_app/feature/bottom_navigationbar.dart';
+import 'package:finance_app/feature/category/cate_income.dart';
+import 'package:finance_app/feature/category/cate_navi.dart';
+import 'package:finance_app/feature/category/update_cate.dart';
 import 'package:finance_app/feature/finance-detail.dart';
 import 'package:finance_app/feature/finances/expense.dart';
 import 'package:finance_app/feature/finances/finance_navigator.dart';
@@ -26,8 +30,8 @@ Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
     return MaterialPageRoute(builder: (_) => const SignupPage());
   }
 
-  if (settings.name == financeDetail.routeName) {
-    return MaterialPageRoute(builder: (_) => const financeDetail());
+  if (settings.name == FinanceDetail.routeName) {
+    return MaterialPageRoute(builder: (_) => const FinanceDetail());
   }
   if (settings.name == Bottom.routeName) {
     final bool? arg = settings.arguments as bool?;
@@ -51,6 +55,16 @@ Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
     return MaterialPageRoute(
         builder: (_) => ExpensePage(
               arg: arg,
+            ));
+  }
+  if (settings.name == CateNavi.routeName) {
+    return MaterialPageRoute(builder: (_) => const CateNavi());
+  }
+  if (settings.name == UpdateCate.routeName) {
+    final Category? arg = settings.arguments as Category?;
+    return MaterialPageRoute(
+        builder: (_) => UpdateCate(
+              expense: arg,
             ));
   }
 

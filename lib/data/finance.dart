@@ -28,7 +28,7 @@ class Finance {
     };
   }
 
-  static Finance fromMap(map) {
+  factory Finance.fromMap(Map<String, dynamic> map) {
     return Finance(
       id: map['id'] as String,
       cateID: map['cateID'] as int,

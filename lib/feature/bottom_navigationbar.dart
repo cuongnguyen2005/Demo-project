@@ -35,8 +35,8 @@ class _BottomState extends State<Bottom> {
   Widget build(BuildContext context) {
     final tabs = [
       // HomeScreen(),
-      IncomeAndExpense(),
-      financeDetail(),
+      FinanceNavi(),
+      FinanceDetail(),
       // FinanceDetail(),
       StatisticalPage(),
       Settings(),

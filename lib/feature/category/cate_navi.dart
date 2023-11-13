@@ -1,13 +1,15 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:finance_app/feature/finances/income.dart';
+import 'package:finance_app/component/btn/button_no_box.dart';
+import 'package:finance_app/feature/category/cate_expense.dart';
+import 'package:finance_app/feature/category/cate_income.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/source/typo.dart';
-import 'package:finance_app/feature/finances/expense.dart';
 import 'package:flutter/material.dart';
 
-class FinanceNavi extends StatelessWidget {
-  const FinanceNavi({super.key});
+class CateNavi extends StatelessWidget {
+  const CateNavi({super.key});
+  static String routeName = 'cate_navi';
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +40,21 @@ class FinanceNavi extends StatelessWidget {
           ),
         ),
         body: TabBarView(
-          children: [
-            ExpensePage(arg: ExpensePageArg(isUpdate: false)),
-            IncomePage(arg: IncomePageArg(isUpdate: false)),
+          children: const [
+            CateExpense(),
+            CateIncome(),
           ],
+        ),
+        bottomSheet: Container(
+          width: double.infinity,
+          color: AppColors.white,
+          padding: const EdgeInsets.all(16),
+          child: ButtonNoBox(
+            textButton: 'Quay về',
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
         ),
       ),
     );

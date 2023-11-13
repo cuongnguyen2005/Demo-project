@@ -1,8 +1,8 @@
 // ignore_for_file: file_names
 
+import 'package:collection/collection.dart';
 import 'package:finance_app/component/dialog/dialog_primary.dart';
 import 'package:finance_app/data/finance.dart';
-import 'package:finance_app/feature/bottom_navigationbar.dart';
 import 'package:finance_app/feature/finances/expense.dart';
 import 'package:finance_app/feature/finances/income.dart';
 import 'package:finance_app/source/colors.dart';
@@ -15,33 +15,56 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class financeDetail extends StatefulWidget {
-  const financeDetail({super.key});
-
+class FinanceDetail extends StatefulWidget {
+  const FinanceDetail({super.key});
   static String routeName = '/fiance_detail';
 
   @override
-  State<financeDetail> createState() => _financeDetailState();
+  State<FinanceDetail> createState() => _FinanceDetailState();
 }
 
-class _financeDetailState extends State<financeDetail> {
+class _FinanceDetailState extends State<FinanceDetail> {
   @override
   void initState() {
     super.initState();
-    getInfo();
+    groupFinanceByDay();
   }
 
   User? user = FirebaseAuth.instance.currentUser;
   String? key;
 
-  List<Finance> financeList = [];
-
-  void getInfo() async {
+  List<Finance> listByMonth = [];
+  void groupFinanceByDay() async {
     List<Finance> list = await FinanceRepo.getFinances(user!.uid);
-    setState(() {
-      financeList.addAll(list);
+    // group list by date
+    final groups = groupBy(list, (Finance e) {
+      int day = DateTime.parse(e.dateTime).day;
+      return e.dateTime.replaceAll(e.dateTime, day.toString());
     });
+    List<Finance> financeList = [];
+    groups.forEach((key, value) {
+      setState(() {
+        financeList.addAll(value);
+      });
+    });
+    //sort finance by date
+    financeList.sort((b, a) => a.dateTime.compareTo(b.dateTime));
+
+    //show list by month
+    listByMonth.clear();
     for (var element in financeList) {
+      if (DateTime.parse(element.dateTime).month == today.month &&
+          DateTime.parse(element.dateTime).year == today.year) {
+        setState(() {
+          listByMonth.add(element);
+        });
+      }
+    }
+
+    //caculator
+    totalExpense = 0;
+    totalIncome = 0;
+    for (var element in listByMonth) {
       if (element.cateID == 2) {
         totalExpense += element.money;
       }
@@ -57,7 +80,6 @@ class _financeDetailState extends State<financeDetail> {
   int finalTotal = 0;
 
   DateTime today = DateTime.now();
-  String monthCur = DateTime.now().month.toString();
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +105,12 @@ class _financeDetailState extends State<financeDetail> {
             focusedDay: today,
             firstDay: DateTime.utc(2000),
             lastDay: DateTime.utc(2050),
+            onPageChanged: (focusedDay) {
+              setState(() {
+                today = focusedDay;
+                groupFinanceByDay();
+              });
+            },
           ),
 
           //tổng quan tiền
@@ -128,17 +156,17 @@ class _financeDetailState extends State<financeDetail> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: ListView.builder(
-                itemCount: financeList.length,
+                itemCount: listByMonth.length,
                 itemBuilder: (context, index) {
                   DateTime dateTimeFormat =
-                      DateTime.parse(financeList[index].dateTime);
+                      DateTime.parse(listByMonth[index].dateTime);
                   return Slidable(
                     endActionPane: ActionPane(
                       motion: const BehindMotion(),
                       children: [
                         SlidableAction(
                           onPressed: (context) =>
-                              onTapDelete(financeList[index].id),
+                              onTapDelete(listByMonth[index].id),
                           backgroundColor: AppColors.red,
                           foregroundColor: AppColors.white,
                           icon: Icons.delete,
@@ -150,11 +178,11 @@ class _financeDetailState extends State<financeDetail> {
                       children: [
                         InkWell(
                           onTap: () {
-                            financeList[index].cateID == 2
+                            listByMonth[index].cateID == 2
                                 ? onTapUpdateExpense(
-                                    financeList[index], financeList[index].id)
+                                    listByMonth[index], listByMonth[index].id)
                                 : onTapUpdateIncome(
-                                    financeList[index], financeList[index].id);
+                                    listByMonth[index], listByMonth[index].id);
                           },
                           child: Container(
                             padding: const EdgeInsets.symmetric(
@@ -172,10 +200,10 @@ class _financeDetailState extends State<financeDetail> {
                                     children: [
                                       Row(
                                         children: [
-                                          Text(financeList[index].cateName,
+                                          Text(listByMonth[index].cateName,
                                               style: tStyle.mediumBold()),
                                           Text(
-                                            ' (${financeList[index].note})',
+                                            ' (${listByMonth[index].note})',
                                             style: tStyle.small(),
                                             overflow: TextOverflow.clip,
                                           ),
@@ -199,10 +227,10 @@ class _financeDetailState extends State<financeDetail> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      financeList[index].cateID == 2
-                                          ? '- ${NumberFormat.decimalPattern().format(financeList[index].money)} đ'
-                                          : '+ ${NumberFormat.decimalPattern().format(financeList[index].money)} đ',
-                                      style: financeList[index].cateID == 2
+                                      listByMonth[index].cateID == 2
+                                          ? '- ${NumberFormat.decimalPattern().format(listByMonth[index].money)} đ'
+                                          : '+ ${NumberFormat.decimalPattern().format(listByMonth[index].money)} đ',
+                                      style: listByMonth[index].cateID == 2
                                           ? tStyle.rMediumBold()
                                           : tStyle.gMediumBold(),
                                     ),
@@ -233,12 +261,6 @@ class _financeDetailState extends State<financeDetail> {
     Navigator.of(context).pop();
   }
 
-  void pushBottom() {
-    Navigator.pushNamedAndRemoveUntil(
-        context, Bottom.routeName, (route) => false,
-        arguments: true);
-  }
-
   void onTapUpdateExpense(finances, String id) {
     Navigator.pushNamed(context, ExpensePage.routeName,
         arguments: ExpensePageArg(isUpdate: true, finances: finances, key: id));
@@ -262,7 +284,10 @@ class _financeDetailState extends State<financeDetail> {
                 .child(user!.uid)
                 .child(key)
                 .remove();
-            pushBottom();
+            onTapBack();
+            setState(() {
+              groupFinanceByDay();
+            });
           },
         );
       },

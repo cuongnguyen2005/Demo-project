@@ -59,7 +59,6 @@ class _HomeScreenState extends State<HomeScreen> {
       // print(element.money);
 
     }
-    print(totalExpense);
   }
 
   Future<List<Finance>> getFinance() async {
@@ -261,6 +260,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void onTapListFiance() {
-    Navigator.pushNamed(context, financeDetail.routeName);
+    Navigator.pushNamed(context, FinanceDetail.routeName);
   }
 }

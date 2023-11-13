@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
+import 'package:finance_app/feature/bottom_navigationbar.dart';
 import 'package:finance_app/feature/login/login.dart';
 import 'package:finance_app/source/colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -17,12 +19,29 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     _navigatortohome();
+    checkLogin();
+  }
+
+  bool isLogged = false;
+
+  FirebaseAuth auth = FirebaseAuth.instance;
+  void checkLogin() async {
+    auth.authStateChanges().listen((User? user) {
+      if (user != null && mounted) {
+        setState(() {
+          isLogged = true;
+        });
+      }
+    });
   }
 
   _navigatortohome() async {
     await Future.delayed(Duration(milliseconds: 1500), () {});
-    Navigator.pushNamedAndRemoveUntil(
-        context, LoginPage.routeName, (route) => false);
+    isLogged == false
+        ? Navigator.pushNamedAndRemoveUntil(
+            context, LoginPage.routeName, (route) => false)
+        : Navigator.pushNamedAndRemoveUntil(
+            context, Bottom.routeName, (route) => false);
   }
 
   @override

@@ -51,8 +51,17 @@ class _ExpensePageState extends State<ExpensePage> {
 
   //phân loại danh mục
   List<Category> cateExpense = [];
-  void getCategory() {
+  void getCategory() async {
+    List<Category> listCateByIdDatabase =
+        await FinanceRepo.getCateById(user!.uid);
     for (var element in cates) {
+      if (element.cateID == 2) {
+        setState(() {
+          cateExpense.add(element);
+        });
+      }
+    }
+    for (var element in listCateByIdDatabase) {
       if (element.cateID == 2) {
         setState(() {
           cateExpense.add(element);
@@ -191,21 +200,21 @@ class _ExpensePageState extends State<ExpensePage> {
                         return InkWell(
                           onTap: () {
                             setState(() {
-                              nameCate = cateExpense[index].cateName;
+                              nameCate = cateExpense[index].name;
                               cateID = cateExpense[index].cateID;
                             });
                           },
                           child: Container(
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                                border: nameCate != cateExpense[index].cateName
+                                border: nameCate != cateExpense[index].name
                                     ? Border.all(
                                         color: AppColors.grey, width: 2)
                                     : Border.all(
                                         color: AppColors.themeColor, width: 2),
                                 borderRadius: BorderRadius.circular(16)),
                             child: Text(
-                              cateExpense[index].cateName,
+                              cateExpense[index].name,
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -271,17 +280,17 @@ class _ExpensePageState extends State<ExpensePage> {
       if (nameCate != '') {
         //hiển thị thông báo thành công
         showSuccess();
-        await Future.delayed(Duration(seconds: 1));
-        onTapBack();
         int money = int.parse(moneyController.text);
         String datetime = dateTime.toIso8601String();
         widget.arg.isUpdate == false
-            ? FinanceRepo.addFinances(user!.uid, cateID, cateName, money,
+            ? await FinanceRepo.addFinances(user!.uid, cateID, cateName, money,
                 datetime, noteController.text)
-            : FinanceRepo.editFinances(user!.uid, widget.arg.key!, cateID,
+            : await FinanceRepo.editFinances(user!.uid, widget.arg.key!, cateID,
                 cateName, money, datetime, noteController.text);
         if (widget.arg.isUpdate == true) {
           pushBottom();
+        } else {
+          onTapBack();
         }
         moneyController.clear();
         noteController.clear();

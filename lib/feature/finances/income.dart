@@ -51,8 +51,17 @@ class _IncomePageState extends State<IncomePage> {
 
   //phân loại danh mục
   List<Category> cateIncome = [];
-  void getCategory() {
+  void getCategory() async {
+    List<Category> listCateByIdDatabase =
+        await FinanceRepo.getCateById(user!.uid);
     for (var element in cates) {
+      if (element.cateID == 1) {
+        setState(() {
+          cateIncome.add(element);
+        });
+      }
+    }
+    for (var element in listCateByIdDatabase) {
       if (element.cateID == 1) {
         setState(() {
           cateIncome.add(element);
@@ -191,21 +200,21 @@ class _IncomePageState extends State<IncomePage> {
                         return InkWell(
                           onTap: () {
                             setState(() {
-                              nameCate = cateIncome[index].cateName;
+                              nameCate = cateIncome[index].name;
                               cateID = cateIncome[index].cateID;
                             });
                           },
                           child: Container(
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                                border: nameCate != cateIncome[index].cateName
+                                border: nameCate != cateIncome[index].name
                                     ? Border.all(
                                         color: AppColors.grey, width: 2)
                                     : Border.all(
                                         color: AppColors.themeColor, width: 2),
                                 borderRadius: BorderRadius.circular(16)),
                             child: Text(
-                              cateIncome[index].cateName,
+                              cateIncome[index].name,
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -272,17 +281,17 @@ class _IncomePageState extends State<IncomePage> {
       if (nameCate != '') {
         //hiển thị thông báo thành công
         showSuccess();
-        await Future.delayed(Duration(seconds: 1));
-        onTapBack();
         int money = int.parse(moneyController.text);
         String datetime = dateTime.toIso8601String();
         widget.arg.isUpdate == false
-            ? FinanceRepo.addFinances(user!.uid, cateID, cateName, money,
+            ? await FinanceRepo.addFinances(user!.uid, cateID, cateName, money,
                 datetime, noteController.text)
-            : FinanceRepo.editFinances(user!.uid, widget.arg.key!, cateID,
+            : await FinanceRepo.editFinances(user!.uid, widget.arg.key!, cateID,
                 cateName, money, datetime, noteController.text);
         if (widget.arg.isUpdate == true) {
           pushBottom();
+        } else {
+          onTapBack();
         }
         moneyController.clear();
         noteController.clear();

@@ -8,6 +8,7 @@ import 'package:finance_app/component/form_field/input_default.dart';
 import 'package:finance_app/component/setting/box_basic_setting.dart';
 import 'package:finance_app/component/setting/box_setting.dart';
 import 'package:finance_app/data/user_account.dart';
+import 'package:finance_app/feature/category/cate_navi.dart';
 import 'package:finance_app/feature/login/login.dart';
 import 'package:finance_app/feature/setting/change_password.dart';
 import 'package:finance_app/source/colors.dart';
@@ -168,7 +169,7 @@ class _SettingsState extends State<Settings> {
                 SizedBox(height: 10),
                 BoxBasicSetting(
                   text: 'Quản lý danh mục',
-                  onTap: () {},
+                  onTap: onTapCateManagement,
                 ),
                 BoxBasicSetting(
                   text: 'Chủ đề',
@@ -198,6 +199,10 @@ class _SettingsState extends State<Settings> {
         ],
       ),
     );
+  }
+
+  void onTapCateManagement() {
+    Navigator.pushNamed(context, CateNavi.routeName);
   }
 
   void onTapBack() {
