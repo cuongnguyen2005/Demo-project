@@ -1,8 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:finance_app/component/btn/button_no_box.dart';
-import 'package:finance_app/feature/category/cate_expense.dart';
-import 'package:finance_app/feature/category/cate_income.dart';
+import 'package:finance_app/component/btn/btn_bottom_sheet.dart';
+import 'package:finance_app/feature/category/cate_management.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/source/typo.dart';
 import 'package:flutter/material.dart';
@@ -41,21 +40,11 @@ class CateNavi extends StatelessWidget {
         ),
         body: TabBarView(
           children: const [
-            CateExpense(),
-            CateIncome(),
+            CateManagement(isCateExpense: true),
+            CateManagement(isCateExpense: false),
           ],
         ),
-        bottomSheet: Container(
-          width: double.infinity,
-          color: AppColors.white,
-          padding: const EdgeInsets.all(16),
-          child: ButtonNoBox(
-            textButton: 'Quay về',
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
+        bottomSheet: BottomSheetButton(),
       ),
     );
   }

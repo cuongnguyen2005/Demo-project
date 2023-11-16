@@ -1,11 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: import_of_legacy_library_into_null_safe, sort_child_properties_last, prefer_const_constructors
 
+import 'package:finance_app/feature/setting/settings.dart';
 import 'package:finance_app/feature/statistical.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_app/feature/finance-detail.dart';
 import 'package:finance_app/feature/finances/finance_navigator.dart';
-import 'package:finance_app/feature/setting/settings.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 

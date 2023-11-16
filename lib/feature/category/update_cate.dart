@@ -1,9 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, use_build_context_synchronously
+import 'package:finance_app/component/btn/btn_bottom_sheet.dart';
 import 'package:finance_app/data/category.dart';
 import 'package:finance_app/source/finances_api.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:finance_app/component/btn/button_no_box.dart';
 import 'package:finance_app/component/btn/button_primary.dart';
 import 'package:finance_app/component/form_field/input_default.dart';
 import 'package:finance_app/source/colors.dart';
@@ -105,17 +105,7 @@ class _UpdateCateState extends State<UpdateCate> {
           ],
         ),
       ),
-      bottomSheet: Container(
-        width: double.infinity,
-        color: AppColors.white,
-        padding: const EdgeInsets.all(16),
-        child: ButtonNoBox(
-          textButton: 'Quay về',
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
+      bottomSheet: const BottomSheetButton(),
     );
   }
 

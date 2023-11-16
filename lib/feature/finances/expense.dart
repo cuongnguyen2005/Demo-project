@@ -1,7 +1,8 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, sized_box_for_whitespace
 
-import 'package:finance_app/component/btn/button_no_box.dart';
+import 'package:finance_app/component/btn/btn_bottom_sheet.dart';
 import 'package:finance_app/component/dialog/dialog_primary.dart';
+import 'package:finance_app/component/dialog/dialog_success.dart';
 import 'package:finance_app/component/form_field/input_default.dart';
 import 'package:finance_app/data/category.dart';
 import 'package:finance_app/data/finance.dart';
@@ -88,8 +89,8 @@ class _ExpensePageState extends State<ExpensePage> {
 
   String nameCate = '';
   int cateID = 0;
-  final noteController = TextEditingController();
-  final moneyController = TextEditingController();
+  final TextEditingController noteController = TextEditingController();
+  final TextEditingController moneyController = TextEditingController();
   DateTime dateTime = DateTime.now();
 
   @override
@@ -238,17 +239,7 @@ class _ExpensePageState extends State<ExpensePage> {
           ),
         ],
       ),
-      bottomSheet: widget.arg.isUpdate == true
-          ? Container(
-              width: double.infinity,
-              color: AppColors.white,
-              padding: const EdgeInsets.all(16),
-              child: ButtonNoBox(
-                textButton: 'Quay về',
-                onTap: onTapBack,
-              ),
-            )
-          : null,
+      bottomSheet: widget.arg.isUpdate == true ? BottomSheetButton() : null,
     );
   }
 
@@ -260,11 +251,7 @@ class _ExpensePageState extends State<ExpensePage> {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title:
-              Icon(Icons.check_circle, size: 50, color: AppColors.themeColor),
-          content: Text('Thành công', textAlign: TextAlign.center),
-        );
+        return DialogSuccess();
       },
     );
   }
@@ -291,12 +278,12 @@ class _ExpensePageState extends State<ExpensePage> {
           pushBottom();
         } else {
           onTapBack();
+          moneyController.clear();
+          noteController.clear();
+          setState(() {
+            nameCate = '';
+          });
         }
-        moneyController.clear();
-        noteController.clear();
-        setState(() {
-          nameCate = '';
-        });
       } else {
         showDialog(
           context: context,

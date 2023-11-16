@@ -1,25 +1,29 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
-import 'package:finance_app/feature/category/update_cate.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:finance_app/component/btn/button_no_box.dart';
+import 'package:finance_app/component/btn/btn_bottom_sheet.dart';
 import 'package:finance_app/component/btn/button_primary.dart';
 import 'package:finance_app/data/category.dart';
+import 'package:finance_app/feature/category/update_cate.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/source/finances_api.dart';
 import 'package:finance_app/source/typo.dart';
 
-class CateExpense extends StatefulWidget {
-  const CateExpense({super.key});
+class CateManagement extends StatefulWidget {
+  const CateManagement({
+    Key? key,
+    required this.isCateExpense,
+  }) : super(key: key);
+  final bool isCateExpense;
   static String routeName = 'cate_management';
 
   @override
-  State<CateExpense> createState() => _CateExpenseState();
+  State<CateManagement> createState() => _CateManagementState();
 }
 
-class _CateExpenseState extends State<CateExpense> {
+class _CateManagementState extends State<CateManagement> {
   @override
   void initState() {
     user = FirebaseAuth.instance.currentUser;
@@ -28,18 +32,26 @@ class _CateExpenseState extends State<CateExpense> {
   }
 
   User? user;
-  List<Category> categoryIdList = [];
-  List<Category> categoryDfList = [];
+  List<Category> categoryExpenseIdList = [];
+  List<Category> categoryExpenseDfList = [];
+  List<Category> categoryIncomeIdList = [];
+  List<Category> categoryIncomeDfList = [];
 
   void getCate() async {
     //get by id
     List<Category> categoryIdListDatabase =
         await FinanceRepo.getCateById(user!.uid);
-    categoryIdList = [];
+    categoryExpenseIdList = [];
+    categoryIncomeIdList = [];
     for (var element in categoryIdListDatabase) {
       if (element.cateID == 2) {
         setState(() {
-          categoryIdList.add(element);
+          categoryExpenseIdList.add(element);
+        });
+      }
+      if (element.cateID == 1) {
+        setState(() {
+          categoryIncomeIdList.add(element);
         });
       }
     }
@@ -48,7 +60,12 @@ class _CateExpenseState extends State<CateExpense> {
     for (var element in cates) {
       if (element.cateID == 2) {
         setState(() {
-          categoryDfList.add(element);
+          categoryExpenseDfList.add(element);
+        });
+      }
+      if (element.cateID == 1) {
+        setState(() {
+          categoryIncomeDfList.add(element);
         });
       }
     }
@@ -78,7 +95,9 @@ class _CateExpenseState extends State<CateExpense> {
                     Text('Danh mục mặc định', style: tStyle.H6()),
                     Flexible(
                       child: ListView.builder(
-                        itemCount: categoryDfList.length,
+                        itemCount: widget.isCateExpense == true
+                            ? categoryExpenseDfList.length
+                            : categoryIncomeDfList.length,
                         itemBuilder: (context, index) {
                           return Container(
                             padding: const EdgeInsets.symmetric(
@@ -87,7 +106,10 @@ class _CateExpenseState extends State<CateExpense> {
                                 border: Border(
                                     bottom: BorderSide(
                                         width: 1, color: AppColors.grey))),
-                            child: Text(categoryDfList[index].name,
+                            child: Text(
+                                widget.isCateExpense == true
+                                    ? categoryExpenseDfList[index].name
+                                    : categoryIncomeDfList[index].name,
                                 style: tStyle.medium()),
                           );
                         },
@@ -108,15 +130,19 @@ class _CateExpenseState extends State<CateExpense> {
                     Text('Danh mục của bạn', style: tStyle.H6()),
                     Flexible(
                       child: ListView.builder(
-                        itemCount: categoryIdList.length,
+                        itemCount: widget.isCateExpense == true
+                            ? categoryExpenseIdList.length
+                            : categoryIncomeIdList.length,
                         itemBuilder: (context, index) {
                           return Slidable(
                             endActionPane: ActionPane(
                               motion: const BehindMotion(),
                               children: [
                                 SlidableAction(
-                                  onPressed: (context) =>
-                                      onTapDelete(categoryIdList[index].id),
+                                  onPressed: (context) => onTapDelete(
+                                      widget.isCateExpense == true
+                                          ? categoryExpenseIdList[index].id
+                                          : categoryIncomeIdList[index].id),
                                   backgroundColor: AppColors.red,
                                   foregroundColor: AppColors.white,
                                   icon: Icons.delete,
@@ -125,8 +151,10 @@ class _CateExpenseState extends State<CateExpense> {
                               ],
                             ),
                             child: InkWell(
-                              onTap: () =>
-                                  onTapUpdateWidget(categoryIdList[index]),
+                              onTap: () => onTapUpdateWidget(
+                                  widget.isCateExpense == true
+                                      ? categoryExpenseIdList[index]
+                                      : categoryIncomeIdList[index]),
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 15, horizontal: 5),
@@ -138,7 +166,10 @@ class _CateExpenseState extends State<CateExpense> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(categoryIdList[index].name,
+                                    Text(
+                                        widget.isCateExpense == true
+                                            ? categoryExpenseIdList[index].name
+                                            : categoryIncomeIdList[index].name,
                                         style: tStyle.medium()),
                                     const Icon(
                                       Icons.arrow_forward_ios,
@@ -159,15 +190,7 @@ class _CateExpenseState extends State<CateExpense> {
           ],
         ),
       ),
-      bottomSheet: Container(
-        width: double.infinity,
-        color: AppColors.white,
-        padding: const EdgeInsets.all(16),
-        child: ButtonNoBox(
-          textButton: 'Quay về',
-          onTap: onTapBack,
-        ),
-      ),
+      bottomSheet: const BottomSheetButton(),
     );
   }
 

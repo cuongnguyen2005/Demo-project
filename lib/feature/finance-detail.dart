@@ -121,31 +121,41 @@ class _FinanceDetailState extends State<FinanceDetail> {
                 color: AppColors.white,
                 border: Border.all(width: 1, color: AppColors.grey)),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  children: [
-                    Text('Thu nhập', style: tStyle.medium()),
-                    Text(
-                        '${NumberFormat.decimalPattern().format(totalIncome)} đ',
-                        style: tStyle.gMediumBold()),
-                  ],
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Thu nhập', style: tStyle.medium()),
+                      Text(
+                          '${NumberFormat.decimalPattern().format(totalIncome)} đ',
+                          style: tStyle.gMediumBold()),
+                    ],
+                  ),
                 ),
-                Column(
-                  children: [
-                    Text('Chi tiêu', style: tStyle.medium()),
-                    Text(
-                        '${NumberFormat.decimalPattern().format(totalExpense)} đ',
-                        style: tStyle.rMediumBold()),
-                  ],
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    children: [
+                      Text('Chi tiêu', style: tStyle.medium()),
+                      Text(
+                          '${NumberFormat.decimalPattern().format(totalExpense)} đ',
+                          style: tStyle.rMediumBold()),
+                    ],
+                  ),
                 ),
-                Column(
-                  children: [
-                    Text('Còn', style: tStyle.medium()),
-                    Text(
-                        '${NumberFormat.decimalPattern().format(finalTotal)} đ',
-                        style: tStyle.bMediumBold()),
-                  ],
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text('Còn', style: tStyle.medium()),
+                      Text(
+                          '${NumberFormat.decimalPattern().format(finalTotal)} đ',
+                          style: tStyle.bMediumBold()),
+                    ],
+                  ),
                 ),
               ],
             ),

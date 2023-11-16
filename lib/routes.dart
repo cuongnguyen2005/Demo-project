@@ -2,7 +2,6 @@
 
 import 'package:finance_app/data/category.dart';
 import 'package:finance_app/feature/bottom_navigationbar.dart';
-import 'package:finance_app/feature/category/cate_income.dart';
 import 'package:finance_app/feature/category/cate_navi.dart';
 import 'package:finance_app/feature/category/update_cate.dart';
 import 'package:finance_app/feature/finance-detail.dart';
@@ -12,6 +11,7 @@ import 'package:finance_app/feature/finances/income.dart';
 import 'package:finance_app/feature/intro/splash_screen.dart';
 import 'package:finance_app/feature/login/login.dart';
 import 'package:finance_app/feature/setting/change_password.dart';
+import 'package:finance_app/feature/setting/settings_personal.dart';
 import 'package:finance_app/feature/signup/signup.dart';
 import 'package:flutter/material.dart';
 
@@ -66,6 +66,9 @@ Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
         builder: (_) => UpdateCate(
               expense: arg,
             ));
+  }
+  if (settings.name == SettingsPersonal.routeName) {
+    return MaterialPageRoute(builder: (_) => const SettingsPersonal());
   }
 
   return null;

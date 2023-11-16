@@ -34,8 +34,8 @@ class _LoginPageState extends State<LoginPage> {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   bool visibility = true;
-  final usernameController = TextEditingController();
-  final pwController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController pwController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -153,12 +153,14 @@ class _LoginPageState extends State<LoginPage> {
             ));
           });
       try {
-        await auth.signInWithEmailAndPassword(
+        final UserCredential user = await auth.signInWithEmailAndPassword(
             email: usernameController.text, password: pwController.text);
-        //remove loading
-        onTapBack();
-        Navigator.pushNamedAndRemoveUntil(
-            context, Bottom.routeName, (route) => false);
+        if (user.user != null) {
+          Navigator.pushNamedAndRemoveUntil(
+              context, Bottom.routeName, (route) => false);
+        } else {
+          onTapBack();
+        }
       } on FirebaseAuthException catch (e) {
         if (e.code == 'INVALID_LOGIN_CREDENTIALS') {
           //remove loading
@@ -173,7 +175,39 @@ class _LoginPageState extends State<LoginPage> {
             },
           );
         }
+        // if (e.code == 'wrong-password') {
+        //   //remove loading
+        //   onTapBack();
+        //   showDialog(
+        //     context: context,
+        //     builder: (context) {
+        //       return DialogPrimary(
+        //         content: 'Mật khẩu không đúng',
+        //         onTap: onTapBack,
+        //       );
+        //     },
+        //   );
+        // }
+        // if (e.code == 'user-not-found') {
+        //   //remove loading
+        //   onTapBack();
+        //   showDialog(
+        //     context: context,
+        //     builder: (context) {
+        //       return DialogPrimary(
+        //         content: 'Tài khoản không tồn tại',
+        //         onTap: onTapBack,
+        //       );
+        //     },
+        //   );
+        // }
       }
+      // on PlatformException catch (e) {
+      //   print("lỗi ${e.code}");
+      // }
+      // catch (e) {
+      //   print(e.hashCode);
+      // }
     }
   }
 }

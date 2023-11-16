@@ -27,9 +27,9 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
   bool visibility = true;
-  final nameController = TextEditingController();
-  final usernameController = TextEditingController();
-  final pwController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController pwController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -152,10 +152,12 @@ class _SignupPageState extends State<SignupPage> {
             ));
           });
       try {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: usernameController.text, password: pwController.text);
-
-        createUsertoFireStore();
+        final UserCredential user = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
+                email: usernameController.text, password: pwController.text);
+        if (user.user?.uid != null) {
+          createUsertoFireStore(user.user!);
+        }
       } on FirebaseAuthException catch (e) {
         if (e.code == 'email-already-in-use') {
           //remove loading
@@ -168,18 +170,27 @@ class _SignupPageState extends State<SignupPage> {
             },
           );
         }
-      }
+        if (e.code == 'network-request-failed') {
+          onTapBack();
+          showDialog(
+            context: context,
+            builder: (context) {
+              return DialogPrimary(
+                  content: 'Lỗi kết nối mạng', onTap: onTapBack);
+            },
+          );
+        }
+      } catch (e) {}
     }
   }
 
-  createUsertoFireStore() async {
-    User? user = FirebaseAuth.instance.currentUser;
+  createUsertoFireStore(User user) async {
     ByteData bytes = await rootBundle.load('assets/images/avatar_white.jpg');
     final ByteBuffer buffer = bytes.buffer;
 
     UsersAccount userAccount = UsersAccount(
       name: nameController.text,
-      userName: user!.email,
+      userName: user.email,
       avatar: base64.encode(Uint8List.view(buffer)),
     );
 
