@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:finance_app/data/finance.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/source/finances_api.dart';
@@ -18,40 +17,16 @@ class MonthStatisticalPage extends StatefulWidget {
 }
 
 class _MonthStatisticalPageState extends State<MonthStatisticalPage> {
-  Map<String, double> dataMap = {
-    'Ăn uống': 1,
-  };
   @override
   void initState() {
     super.initState();
-    groupFinanceByCatename();
     groupFinanceByDay();
   }
 
-  List<String> nameCateList = [];
   User? user = FirebaseAuth.instance.currentUser;
-
-  void groupFinanceByCatename() async {
-    List<Finance> listByYear = [];
-    nameCateList = [];
-    List<Finance> list = await FinanceRepo.getFinances(user!.uid);
-    for (var element in list) {
-      if (DateTime.parse(element.dateTime).year == today.year &&
-          DateTime.parse(element.dateTime).month == today.month) {
-        listByYear.add(element);
-      }
-    }
-    final groups = groupBy(listByYear, (Finance e) {
-      return e.cateName;
-    });
-    groups.forEach((key, value) {
-      setState(() {
-        nameCateList.add(key);
-      });
-    });
-  }
-
   List<Finance> listByMonth = [];
+  Map<String, double> sumMap = {};
+
   void groupFinanceByDay() async {
     List<Finance> list = await FinanceRepo.getFinances(user!.uid);
     List<Finance> financeList = [];
@@ -82,6 +57,17 @@ class _MonthStatisticalPageState extends State<MonthStatisticalPage> {
       }
     }
     finalTotal = totalIncome - totalExpense;
+
+    //tính tổng theo danh mục
+    sumMap = {};
+    for (var element in listByMonth) {
+      if (sumMap.containsKey(element.cateName)) {
+        sumMap[element.cateName] =
+            sumMap[element.cateName]! + double.parse(element.money.toString());
+      } else {
+        sumMap[element.cateName] = double.parse(element.money.toString());
+      }
+    }
   }
 
   int totalExpense = 0;
@@ -109,7 +95,6 @@ class _MonthStatisticalPageState extends State<MonthStatisticalPage> {
                 setState(() {
                   today = selected;
                   groupFinanceByDay();
-                  groupFinanceByCatename();
                 });
               }
             },
@@ -127,12 +112,6 @@ class _MonthStatisticalPageState extends State<MonthStatisticalPage> {
               )),
             ),
           ),
-          // PieChart(
-          //   dataMap: dataMap,
-          //   chartValuesOptions: const ChartValuesOptions(
-          //     showChartValuesInPercentage: true,
-          //   ),
-          // ),
 
           //tổng quan tiền
           Container(
@@ -178,11 +157,21 @@ class _MonthStatisticalPageState extends State<MonthStatisticalPage> {
               ],
             ),
           ),
+          // Expanded(
+          //   child: PieChart(
+          //     dataMap: sumMap,
+          //     chartValuesOptions: const ChartValuesOptions(
+          //       showChartValuesInPercentage: true,
+          //     ),
+          //   ),
+          // ),
+          const SizedBox(height: 16),
           Container(height: 1, width: double.infinity, color: AppColors.grey),
           Flexible(
             child: ListView.builder(
-              itemCount: nameCateList.length,
+              itemCount: sumMap.length,
               itemBuilder: (context, index) {
+                String key = sumMap.keys.elementAt(index);
                 return Container(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -192,8 +181,13 @@ class _MonthStatisticalPageState extends State<MonthStatisticalPage> {
                         bottom: BorderSide(width: 1, color: AppColors.grey)),
                   ),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(nameCateList[index]),
+                      Text(key, style: tStyle.medium()),
+                      Text(
+                        '${NumberFormat.decimalPattern().format(sumMap[key])} đ',
+                        style: tStyle.medium(),
+                      ),
                     ],
                   ),
                 );

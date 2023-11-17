@@ -1,6 +1,5 @@
 // ignore_for_file: file_names
 
-import 'package:collection/collection.dart';
 import 'package:finance_app/data/finance.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/source/finances_api.dart';
@@ -10,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:month_year_picker/month_year_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:pie_chart/pie_chart.dart';
 
 class YearStatisticalPage extends StatefulWidget {
   const YearStatisticalPage({super.key});
@@ -20,39 +18,16 @@ class YearStatisticalPage extends StatefulWidget {
 }
 
 class _YearStatisticalPageState extends State<YearStatisticalPage> {
-  Map<String, double> dataMap = {
-    'Ăn uống': 1,
-  };
   @override
   void initState() {
     super.initState();
-    groupFinanceByCatename();
     groupFinanceByDay();
   }
 
-  List<String> nameCateList = [];
   User? user = FirebaseAuth.instance.currentUser;
+  List<Finance> listByYear = [];
+  Map<String, double> sumMap = {};
 
-  void groupFinanceByCatename() async {
-    List<Finance> listByYear = [];
-    nameCateList = [];
-    List<Finance> list = await FinanceRepo.getFinances(user!.uid);
-    for (var element in list) {
-      if (DateTime.parse(element.dateTime).year == today.year) {
-        listByYear.add(element);
-      }
-    }
-    final groups = groupBy(listByYear, (Finance e) {
-      return e.cateName;
-    });
-    groups.forEach((key, value) {
-      setState(() {
-        nameCateList.add(key);
-      });
-    });
-  }
-
-  List<Finance> listByMonth = [];
   void groupFinanceByDay() async {
     List<Finance> list = await FinanceRepo.getFinances(user!.uid);
     List<Finance> financeList = [];
@@ -60,12 +35,12 @@ class _YearStatisticalPageState extends State<YearStatisticalPage> {
       financeList = list;
     });
 
-    //show list by month
-    listByMonth = [];
+    //show list by year
+    listByYear = [];
     for (var element in financeList) {
       if (DateTime.parse(element.dateTime).year == today.year) {
         setState(() {
-          listByMonth.add(element);
+          listByYear.add(element);
         });
       }
     }
@@ -73,7 +48,7 @@ class _YearStatisticalPageState extends State<YearStatisticalPage> {
     //caculator
     totalExpense = 0;
     totalIncome = 0;
-    for (var element in listByMonth) {
+    for (var element in listByYear) {
       if (element.cateID == 2) {
         totalExpense += element.money;
       }
@@ -82,6 +57,17 @@ class _YearStatisticalPageState extends State<YearStatisticalPage> {
       }
     }
     finalTotal = totalIncome - totalExpense;
+
+    //tính tổng theo danh mục
+    sumMap = {};
+    for (var element in listByYear) {
+      if (sumMap.containsKey(element.cateName)) {
+        sumMap[element.cateName] =
+            sumMap[element.cateName]! + double.parse(element.money.toString());
+      } else {
+        sumMap[element.cateName] = double.parse(element.money.toString());
+      }
+    }
   }
 
   int totalExpense = 0;
@@ -109,7 +95,6 @@ class _YearStatisticalPageState extends State<YearStatisticalPage> {
                 setState(() {
                   today = selected;
                   groupFinanceByDay();
-                  groupFinanceByCatename();
                 });
               }
             },
@@ -127,12 +112,6 @@ class _YearStatisticalPageState extends State<YearStatisticalPage> {
               )),
             ),
           ),
-          // PieChart(
-          //   dataMap: dataMap,
-          //   chartValuesOptions: const ChartValuesOptions(
-          //     showChartValuesInPercentage: true,
-          //   ),
-          // ),
 
           //tổng quan tiền
           Container(
@@ -178,11 +157,21 @@ class _YearStatisticalPageState extends State<YearStatisticalPage> {
               ],
             ),
           ),
+          // Expanded(
+          //   child: PieChart(
+          //     dataMap: sumMap,
+          //     chartValuesOptions: const ChartValuesOptions(
+          //       showChartValuesInPercentage: true,
+          //     ),
+          //   ),
+          // ),
+          const SizedBox(height: 16),
           Container(height: 1, width: double.infinity, color: AppColors.grey),
           Flexible(
             child: ListView.builder(
-              itemCount: nameCateList.length,
+              itemCount: sumMap.length,
               itemBuilder: (context, index) {
+                String key = sumMap.keys.elementAt(index);
                 return Container(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -192,8 +181,13 @@ class _YearStatisticalPageState extends State<YearStatisticalPage> {
                         bottom: BorderSide(width: 1, color: AppColors.grey)),
                   ),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(nameCateList[index]),
+                      Text(key, style: tStyle.medium()),
+                      Text(
+                        '${NumberFormat.decimalPattern().format(sumMap[key])} đ',
+                        style: tStyle.medium(),
+                      ),
                     ],
                   ),
                 );
