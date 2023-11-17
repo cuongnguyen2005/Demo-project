@@ -1,6 +1,5 @@
 // ignore_for_file: file_names
 
-import 'package:collection/collection.dart';
 import 'package:finance_app/component/dialog/dialog_primary.dart';
 import 'package:finance_app/data/finance.dart';
 import 'package:finance_app/feature/finances/expense.dart';
@@ -14,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FinanceDetail extends StatefulWidget {
   const FinanceDetail({super.key});
@@ -36,22 +36,16 @@ class _FinanceDetailState extends State<FinanceDetail> {
   List<Finance> listByMonth = [];
   void groupFinanceByDay() async {
     List<Finance> list = await FinanceRepo.getFinances(user!.uid);
-    // group list by date
-    final groups = groupBy(list, (Finance e) {
-      int day = DateTime.parse(e.dateTime).day;
-      return e.dateTime.replaceAll(e.dateTime, day.toString());
-    });
     List<Finance> financeList = [];
-    groups.forEach((key, value) {
-      setState(() {
-        financeList.addAll(value);
-      });
+    setState(() {
+      financeList = list;
     });
+
     //sort finance by date
     financeList.sort((b, a) => a.dateTime.compareTo(b.dateTime));
 
     //show list by month
-    listByMonth.clear();
+    listByMonth = [];
     for (var element in financeList) {
       if (DateTime.parse(element.dateTime).month == today.month &&
           DateTime.parse(element.dateTime).year == today.year) {
@@ -60,24 +54,7 @@ class _FinanceDetailState extends State<FinanceDetail> {
         });
       }
     }
-
-    //caculator
-    totalExpense = 0;
-    totalIncome = 0;
-    for (var element in listByMonth) {
-      if (element.cateID == 2) {
-        totalExpense += element.money;
-      }
-      if (element.cateID == 1) {
-        totalIncome += element.money;
-      }
-    }
-    finalTotal = totalIncome - totalExpense;
   }
-
-  int totalExpense = 0;
-  int totalIncome = 0;
-  int finalTotal = 0;
 
   DateTime today = DateTime.now();
 
@@ -88,7 +65,8 @@ class _FinanceDetailState extends State<FinanceDetail> {
       appBar: AppBar(
         backgroundColor: AppColors.themeColor,
         title: Center(
-          child: Text('Danh sách thu chi', style: tStyle.H5()),
+          child: Text(AppLocalizations.of(context)!.listInAndEx,
+              style: tStyle.H5()),
         ),
       ),
       body: Column(
@@ -96,7 +74,7 @@ class _FinanceDetailState extends State<FinanceDetail> {
           //lịch
           TableCalendar(
             startingDayOfWeek: StartingDayOfWeek.monday,
-            locale: 'vi_VN',
+            // locale: 'vi_VN',
             rowHeight: 35,
             headerStyle: const HeaderStyle(
               formatButtonVisible: false,
@@ -112,54 +90,7 @@ class _FinanceDetailState extends State<FinanceDetail> {
               });
             },
           ),
-
-          //tổng quan tiền
-          Container(
-            margin: const EdgeInsets.only(top: 5),
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            decoration: BoxDecoration(
-                color: AppColors.white,
-                border: Border.all(width: 1, color: AppColors.grey)),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Thu nhập', style: tStyle.medium()),
-                      Text(
-                          '${NumberFormat.decimalPattern().format(totalIncome)} đ',
-                          style: tStyle.gMediumBold()),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Column(
-                    children: [
-                      Text('Chi tiêu', style: tStyle.medium()),
-                      Text(
-                          '${NumberFormat.decimalPattern().format(totalExpense)} đ',
-                          style: tStyle.rMediumBold()),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text('Còn', style: tStyle.medium()),
-                      Text(
-                          '${NumberFormat.decimalPattern().format(finalTotal)} đ',
-                          style: tStyle.bMediumBold()),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
+          Container(width: double.infinity, height: 1, color: AppColors.grey),
 
           //list
           Flexible(

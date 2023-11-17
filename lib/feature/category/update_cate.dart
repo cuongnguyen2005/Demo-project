@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, use_build_context_synchronously
 import 'package:finance_app/component/btn/btn_bottom_sheet.dart';
+import 'package:finance_app/component/dialog/dialog_success.dart';
 import 'package:finance_app/data/category.dart';
 import 'package:finance_app/source/finances_api.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,6 +9,7 @@ import 'package:finance_app/component/btn/button_primary.dart';
 import 'package:finance_app/component/form_field/input_default.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/source/typo.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UpdateCate extends StatefulWidget {
   const UpdateCate({
@@ -43,7 +45,7 @@ class _UpdateCateState extends State<UpdateCate> {
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.themeColor,
         title: Center(
-          child: Text('Thêm mới', style: tStyle.H5()),
+          child: Text(AppLocalizations.of(context)!.navi1, style: tStyle.H5()),
         ),
       ),
       body: Container(
@@ -51,7 +53,7 @@ class _UpdateCateState extends State<UpdateCate> {
         child: Column(
           children: [
             InputDefault(
-              hintText: 'tên danh mục',
+              hintText: AppLocalizations.of(context)!.cateName,
               obscureText: false,
               controller: nameCateController,
             ),
@@ -97,7 +99,9 @@ class _UpdateCateState extends State<UpdateCate> {
             ),
             const SizedBox(height: 16),
             ButtonPrimary(
-              textButton: widget.expense == null ? 'Thêm' : 'Chỉnh sửa',
+              textButton: widget.expense == null
+                  ? AppLocalizations.of(context)!.submit
+                  : AppLocalizations.of(context)!.update,
               onTap: () => widget.expense == null
                   ? onTapAddCate(cateID, nameCate)
                   : onTapUpdateCate(cateID, widget.expense?.id ?? '', nameCate),
@@ -139,11 +143,7 @@ class _UpdateCateState extends State<UpdateCate> {
     showDialog(
       context: context,
       builder: (context) {
-        return const AlertDialog(
-          title:
-              Icon(Icons.check_circle, size: 50, color: AppColors.themeColor),
-          content: Text('Thành công', textAlign: TextAlign.center),
-        );
+        return const DialogSuccess();
       },
     );
   }

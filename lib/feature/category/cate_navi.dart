@@ -5,6 +5,7 @@ import 'package:finance_app/feature/category/cate_management.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/source/typo.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CateNavi extends StatelessWidget {
   const CateNavi({super.key});
@@ -24,13 +25,13 @@ class CateNavi extends StatelessWidget {
               tabs: [
                 Tab(
                   child: Text(
-                    'Khoản Chi',
+                    AppLocalizations.of(context)!.expense,
                     style: tStyle.H5(),
                   ),
                 ),
                 Tab(
                   child: Text(
-                    'Khoản Thu',
+                    AppLocalizations.of(context)!.income,
                     style: tStyle.H5(),
                   ),
                 ),

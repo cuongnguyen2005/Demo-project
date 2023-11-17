@@ -2,12 +2,13 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe, sort_child_properties_last, prefer_const_constructors
 
 import 'package:finance_app/feature/setting/settings.dart';
-import 'package:finance_app/feature/statistical.dart';
+import 'package:finance_app/feature/statis/statis_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_app/feature/finance-detail.dart';
 import 'package:finance_app/feature/finances/finance_navigator.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Bottom extends StatefulWidget {
   const Bottom({
@@ -38,7 +39,7 @@ class _BottomState extends State<Bottom> {
       FinanceNavi(),
       FinanceDetail(),
       // FinanceDetail(),
-      StatisticalPage(),
+      StatisNavi(),
       Settings(),
     ];
     return Scaffold(
@@ -60,22 +61,22 @@ class _BottomState extends State<Bottom> {
             tabBackgroundColor: AppColors.themeColor,
             color: AppColors.grey,
             gap: 8,
-            tabs: const [
+            tabs: [
               GButton(
                 icon: Icons.note_add,
-                text: 'Thêm',
+                text: AppLocalizations.of(context)!.navi1,
               ),
               GButton(
                 icon: Icons.calendar_month,
-                text: 'Lịch biểu',
+                text: AppLocalizations.of(context)!.navi2,
               ),
               GButton(
                 icon: Icons.insert_chart_rounded,
-                text: 'Thống kê',
+                text: AppLocalizations.of(context)!.navi3,
               ),
               GButton(
                 icon: Icons.settings,
-                text: 'Cài đặt',
+                text: AppLocalizations.of(context)!.navi4,
               ),
             ],
             onTabChange: (value) {

@@ -10,6 +10,7 @@ import 'package:finance_app/feature/finances/finance_navigator.dart';
 import 'package:finance_app/feature/finances/income.dart';
 import 'package:finance_app/feature/intro/splash_screen.dart';
 import 'package:finance_app/feature/login/login.dart';
+import 'package:finance_app/feature/setting/change_language.dart';
 import 'package:finance_app/feature/setting/change_password.dart';
 import 'package:finance_app/feature/setting/settings_personal.dart';
 import 'package:finance_app/feature/signup/signup.dart';
@@ -69,6 +70,9 @@ Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
   }
   if (settings.name == SettingsPersonal.routeName) {
     return MaterialPageRoute(builder: (_) => const SettingsPersonal());
+  }
+  if (settings.name == ChangeLanguage.routeName) {
+    return MaterialPageRoute(builder: (_) => const ChangeLanguage());
   }
 
   return null;

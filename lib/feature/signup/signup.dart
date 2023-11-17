@@ -16,6 +16,7 @@ import 'package:finance_app/source/utils/validate_util.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -52,12 +53,12 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                     SizedBox(height: size.height * .1),
                     Text(
-                      'Tạo một tài khoản',
+                      AppLocalizations.of(context)!.titleSignup,
                       style: tStyle.H1(),
                     ),
                     const SizedBox(height: 32),
                     InputDefault(
-                      hintText: 'Họ và tên',
+                      hintText: AppLocalizations.of(context)!.name,
                       obscureText: false,
                       prefixIcon: const Icon(Icons.person),
                       validator: ValidateUntils.validateName,
@@ -66,7 +67,7 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                     const SizedBox(height: 16),
                     InputDefault(
-                      hintText: 'Email',
+                      hintText: AppLocalizations.of(context)!.email,
                       obscureText: false,
                       prefixIcon: const Icon(Icons.email),
                       validator: ValidateUntils.validateEmail,
@@ -75,7 +76,7 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                     const SizedBox(height: 16),
                     InputDefault(
-                      hintText: 'Mật khẩu',
+                      hintText: AppLocalizations.of(context)!.pw,
                       obscureText: visibility,
                       prefixIcon: const Icon(Icons.lock_outline),
                       suffixIcon: InkWell(
@@ -95,7 +96,7 @@ class _SignupPageState extends State<SignupPage> {
                         Expanded(
                           flex: 1,
                           child: ButtonPrimary(
-                            textButton: 'ĐĂNG KÝ',
+                            textButton: AppLocalizations.of(context)!.signup,
                             onTap: onTapSignup,
                           ),
                         ),
@@ -116,11 +117,11 @@ class _SignupPageState extends State<SignupPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Bạn đã có tài khoản? ',
+              AppLocalizations.of(context)!.titleSignup2,
               style: tStyle.H5(),
             ),
             ButtonNoBox(
-              textButton: 'Đăng nhập',
+              textButton: AppLocalizations.of(context)!.login,
               onTap: onTapBack,
             )
           ],
@@ -166,7 +167,8 @@ class _SignupPageState extends State<SignupPage> {
             context: context,
             builder: (context) {
               return DialogPrimary(
-                  content: 'Email đã tồn tại', onTap: onTapBack);
+                  content: AppLocalizations.of(context)!.emailUsed,
+                  onTap: onTapBack);
             },
           );
         }

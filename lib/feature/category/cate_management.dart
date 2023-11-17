@@ -10,6 +10,7 @@ import 'package:finance_app/feature/category/update_cate.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/source/finances_api.dart';
 import 'package:finance_app/source/typo.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CateManagement extends StatefulWidget {
   const CateManagement({
@@ -81,7 +82,7 @@ class _CateManagementState extends State<CateManagement> {
         child: Column(
           children: [
             ButtonPrimary(
-              textButton: 'Thêm',
+              textButton: AppLocalizations.of(context)!.navi1,
               onTap: onTapAddWidget,
             ),
             const SizedBox(height: 16),
@@ -92,7 +93,8 @@ class _CateManagementState extends State<CateManagement> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Danh mục mặc định', style: tStyle.H6()),
+                    Text(AppLocalizations.of(context)!.cateDf,
+                        style: tStyle.H6()),
                     Flexible(
                       child: ListView.builder(
                         itemCount: widget.isCateExpense == true
@@ -127,7 +129,8 @@ class _CateManagementState extends State<CateManagement> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Danh mục của bạn', style: tStyle.H6()),
+                    Text(AppLocalizations.of(context)!.catePersonal,
+                        style: tStyle.H6()),
                     Flexible(
                       child: ListView.builder(
                         itemCount: widget.isCateExpense == true

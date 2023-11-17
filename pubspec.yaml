@@ -33,6 +33,7 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  shared_preferences: ^2.2.0
     
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -64,6 +65,11 @@ dependencies:
   #group item
   collection: ^1.16.0
 
+  #pick month year
+  month_year_picker: ^0.2.0+4
+  month_picker_dialog: ^0.4.0
+  
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -80,7 +86,7 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
+  generate: true
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

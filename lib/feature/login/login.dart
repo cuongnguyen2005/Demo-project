@@ -11,6 +11,7 @@ import 'package:finance_app/feature/signup/signup.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/source/typo.dart';
 import 'package:finance_app/source/utils/validate_util.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({
@@ -53,17 +54,17 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     SizedBox(height: size.height * .2),
                     Text(
-                      'Đăng nhập',
+                      AppLocalizations.of(context)!.login,
                       style: tStyle.H1(),
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      'Vui lòng đăng nhập để tiếp tục',
+                      AppLocalizations.of(context)!.titleLogin,
                       style: tStyle.H6(),
                     ),
                     const SizedBox(height: 32),
                     InputDefault(
-                      hintText: 'Email',
+                      hintText: AppLocalizations.of(context)!.email,
                       obscureText: false,
                       prefixIcon: const Icon(Icons.email),
                       validator: ValidateUntils.validateEmail,
@@ -72,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(height: 16),
                     InputDefault(
-                      hintText: 'Mật khẩu',
+                      hintText: AppLocalizations.of(context)!.pw,
                       obscureText: visibility,
                       prefixIcon: const Icon(Icons.lock_outline),
                       suffixIcon: InkWell(
@@ -92,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                         Expanded(
                           flex: 1,
                           child: ButtonPrimary(
-                            textButton: 'ĐĂNG NHẬP',
+                            textButton: AppLocalizations.of(context)!.login,
                             onTap: onTapLogin,
                           ),
                         ),
@@ -113,11 +114,11 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Bạn không có tài khoản? ',
+              AppLocalizations.of(context)!.titleLogin2,
               style: tStyle.H5(),
             ),
             ButtonNoBox(
-              textButton: 'Đăng ký',
+              textButton: AppLocalizations.of(context)!.signup,
               onTap: onTapSignup,
             )
           ],

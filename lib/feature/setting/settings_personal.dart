@@ -15,6 +15,7 @@ import 'package:finance_app/source/typo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsPersonal extends StatefulWidget {
   const SettingsPersonal({super.key});
@@ -98,7 +99,7 @@ class _SettingsPersonalState extends State<SettingsPersonal> {
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.themeColor,
         title: Center(
-          child: Text('Cá nhân', style: tStyle.H5()),
+          child: Text(AppLocalizations.of(context)!.person, style: tStyle.H5()),
         ),
       ),
       body: ListView(
@@ -153,18 +154,18 @@ class _SettingsPersonalState extends State<SettingsPersonal> {
             child: Column(
               children: [
                 BoxSetting(
-                  title: 'Địa chỉ email',
+                  title: AppLocalizations.of(context)!.email,
                   text: usersAccount?.userName ?? '',
                   onTap: () {},
                 ),
                 BoxSetting(
-                  title: 'Tên',
+                  title: AppLocalizations.of(context)!.name,
                   text: usersAccount?.name ?? '',
                   onTap: onTapChangeName,
                 ),
                 BoxSetting(
-                  title: 'Mật khẩu',
-                  text: 'Thay đổi mật khẩu',
+                  title: AppLocalizations.of(context)!.pw,
+                  text: AppLocalizations.of(context)!.changePw,
                   onTap: onTapChangePw,
                 ),
               ],
@@ -176,7 +177,7 @@ class _SettingsPersonalState extends State<SettingsPersonal> {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: ButtonPrimary(
-              textButton: 'Đăng xuất',
+              textButton: AppLocalizations.of(context)!.logout,
               onTap: onTapLogout,
             ),
           ),
@@ -205,7 +206,7 @@ class _SettingsPersonalState extends State<SettingsPersonal> {
       builder: (context) {
         return AlertDialog(
           title: InputDefault(
-            hintText: 'Tên',
+            hintText: AppLocalizations.of(context)!.name,
             obscureText: false,
             controller: nameController,
           ),
@@ -213,7 +214,7 @@ class _SettingsPersonalState extends State<SettingsPersonal> {
             Padding(
               padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
               child: ButtonPrimary(
-                textButton: 'Cập nhật',
+                textButton: AppLocalizations.of(context)!.update,
                 onTap: () {
                   UsersAccount userAcc = UsersAccount(
                     name: nameController.text,

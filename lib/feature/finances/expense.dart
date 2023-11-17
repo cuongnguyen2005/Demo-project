@@ -14,6 +14,7 @@ import 'package:finance_app/source/typo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ExpensePageArg {
   final bool isUpdate;
@@ -74,7 +75,6 @@ class _ExpensePageState extends State<ExpensePage> {
   //chọn ngày
   void _showDatePicker() async {
     DateTime? picked = await showDatePicker(
-      locale: const Locale("vi"),
       context: context,
       initialDate: dateTime,
       firstDate: DateTime(2000),
@@ -102,7 +102,8 @@ class _ExpensePageState extends State<ExpensePage> {
               automaticallyImplyLeading: false,
               backgroundColor: AppColors.themeColor,
               title: Center(
-                child: Text('Chỉnh sửa', style: tStyle.H5()),
+                child: Text(AppLocalizations.of(context)!.update,
+                    style: tStyle.H5()),
               ),
             )
           : null,
@@ -119,7 +120,8 @@ class _ExpensePageState extends State<ExpensePage> {
                       children: [
                         Expanded(
                           flex: 1,
-                          child: Text('Ngày', style: tStyle.medium()),
+                          child: Text(AppLocalizations.of(context)!.date,
+                              style: tStyle.medium()),
                         ),
                         Expanded(
                           flex: 5,
@@ -132,7 +134,7 @@ class _ExpensePageState extends State<ExpensePage> {
                                 borderRadius: BorderRadius.circular(16),
                               ),
                               child: Text(
-                                DateFormat.yMMMMEEEEd('vi').format(dateTime),
+                                DateFormat.yMEd().format(dateTime),
                                 style: tStyle.medium(),
                                 textAlign: TextAlign.center,
                               ),
@@ -146,11 +148,12 @@ class _ExpensePageState extends State<ExpensePage> {
                       children: [
                         Expanded(
                             flex: 1,
-                            child: Text('Ghi chú', style: tStyle.medium())),
+                            child: Text(AppLocalizations.of(context)!.notes,
+                                style: tStyle.medium())),
                         Expanded(
                           flex: 5,
                           child: InputDefault(
-                            hintText: 'Nhập ghi chú',
+                            hintText: AppLocalizations.of(context)!.enterNote,
                             obscureText: false,
                             controller: noteController,
                           ),
@@ -162,11 +165,12 @@ class _ExpensePageState extends State<ExpensePage> {
                       children: [
                         Expanded(
                             flex: 1,
-                            child: Text('Số Tiền', style: tStyle.medium())),
+                            child: Text(AppLocalizations.of(context)!.money,
+                                style: tStyle.medium())),
                         Expanded(
                           flex: 5,
                           child: InputDefault(
-                            hintText: 'Nhập số tiền',
+                            hintText: AppLocalizations.of(context)!.enterMoney,
                             keyboardType: TextInputType.number,
                             obscureText: false,
                             controller: moneyController,
@@ -182,7 +186,8 @@ class _ExpensePageState extends State<ExpensePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text('Danh mục', style: tStyle.medium()),
+                    Text(AppLocalizations.of(context)!.cate,
+                        style: tStyle.medium()),
                   ],
                 ),
                 SizedBox(height: 16),
@@ -228,8 +233,8 @@ class _ExpensePageState extends State<ExpensePage> {
                     alignment: Alignment.bottomCenter,
                     child: ButtonPrimary(
                       textButton: widget.arg.isUpdate == false
-                          ? 'Nhập khoản chi'
-                          : 'Chỉnh sửa khoản chi',
+                          ? AppLocalizations.of(context)!.submit
+                          : AppLocalizations.of(context)!.update,
                       onTap: () {
                         addFinanceDetail(cateID, nameCate);
                       },
@@ -289,7 +294,7 @@ class _ExpensePageState extends State<ExpensePage> {
           context: context,
           builder: (context) {
             return DialogPrimary(
-              content: 'Bạn chưa chọn danh mục',
+              content: AppLocalizations.of(context)!.selectCate,
               onTap: onTapBack,
             );
           },
@@ -300,7 +305,7 @@ class _ExpensePageState extends State<ExpensePage> {
         context: context,
         builder: (context) {
           return DialogPrimary(
-            content: 'Bạn chưa nhập số tiền',
+            content: AppLocalizations.of(context)!.selectMoney,
             onTap: onTapBack,
           );
         },

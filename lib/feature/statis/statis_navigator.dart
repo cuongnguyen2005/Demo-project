@@ -1,14 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:finance_app/feature/finances/income.dart';
+import 'package:finance_app/feature/statis/month_statistical.dart';
+import 'package:finance_app/feature/statis/year_statistical%20copy.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/source/typo.dart';
-import 'package:finance_app/feature/finances/expense.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class FinanceNavi extends StatelessWidget {
-  const FinanceNavi({super.key});
+class StatisNavi extends StatelessWidget {
+  const StatisNavi({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +24,13 @@ class FinanceNavi extends StatelessWidget {
               tabs: [
                 Tab(
                   child: Text(
-                    AppLocalizations.of(context)!.expense,
+                    AppLocalizations.of(context)!.month,
                     style: tStyle.H5(),
                   ),
                 ),
                 Tab(
                   child: Text(
-                    AppLocalizations.of(context)!.income,
+                    AppLocalizations.of(context)!.year,
                     style: tStyle.H5(),
                   ),
                 ),
@@ -39,9 +39,9 @@ class FinanceNavi extends StatelessWidget {
           ),
         ),
         body: TabBarView(
-          children: [
-            ExpensePage(arg: ExpensePageArg(isUpdate: false)),
-            IncomePage(arg: IncomePageArg(isUpdate: false)),
+          children: const [
+            MonthStatisticalPage(),
+            YearStatisticalPage(),
           ],
         ),
       ),
