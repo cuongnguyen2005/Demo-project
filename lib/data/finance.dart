@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 class Finance {
   String id;
   int cateID;
@@ -8,6 +7,8 @@ class Finance {
   int money;
   String dateTime;
   String note;
+  int color;
+  String icon;
   Finance({
     required this.id,
     required this.cateID,
@@ -15,6 +16,8 @@ class Finance {
     required this.money,
     required this.dateTime,
     required this.note,
+    required this.color,
+    required this.icon,
   });
 
   Map<String, dynamic> toMap() {
@@ -25,6 +28,8 @@ class Finance {
       'money': money,
       'dateTime': dateTime,
       'note': note,
+      'color': color,
+      'icon': icon,
     };
   }
 
@@ -36,17 +41,10 @@ class Finance {
       money: map['money'] as int,
       dateTime: map['dateTime'] as String,
       note: map['note'] as String,
+      color: map['color'] as int,
+      icon: map['icon'] as String,
     );
   }
-  // factory Finance.fromMap1(Map<dynamic, dynamic> map) {
-  //   return Finance(
-  //     cateID: map['cateID'] as int,
-  //     cateName: map['cateName'] as String,
-  //     money: map['money'] as int,
-  //     dateTime: map['dateTime'] as String,
-  //     note: map['note'] as String,
-  //   );
-  // }
 
   String toJson() => json.encode(toMap());
 

@@ -1,7 +1,4 @@
-// ignore_for_file: prefer_const_constructors, non_constant_identifier_names
-
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:finance_app/component/btn/btn_bottom_sheet.dart';
 import 'package:finance_app/component/btn/button_primary.dart';
@@ -62,7 +59,7 @@ class _SettingsPersonalState extends State<SettingsPersonal> {
           avatar: base64Image,
         );
         //save to firestore
-        AddtoServer(userAcc);
+        addtoServer(userAcc);
         //get user from firestore and update image on client
         UsersAccount? userAccDt;
         FirebaseFirestore.instance
@@ -83,7 +80,7 @@ class _SettingsPersonalState extends State<SettingsPersonal> {
     } catch (e) {}
   }
 
-  void AddtoServer(UsersAccount userAcc) async {
+  void addtoServer(UsersAccount userAcc) async {
     await FirebaseFirestore.instance
         .collection('users')
         .doc(user!.uid)
@@ -104,7 +101,7 @@ class _SettingsPersonalState extends State<SettingsPersonal> {
       ),
       body: ListView(
         children: [
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           //header
           Stack(
             children: [
@@ -129,7 +126,7 @@ class _SettingsPersonalState extends State<SettingsPersonal> {
                   onTap: () {
                     pickImage();
                   },
-                  child: CircleAvatar(
+                  child: const CircleAvatar(
                     backgroundColor: AppColors.blue,
                     radius: 15,
                     child: Icon(
@@ -141,12 +138,12 @@ class _SettingsPersonalState extends State<SettingsPersonal> {
               ),
             ],
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
 
           //cài đặt cá nhân
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 16),
-            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: AppColors.white,
               borderRadius: BorderRadius.circular(16),
@@ -154,16 +151,21 @@ class _SettingsPersonalState extends State<SettingsPersonal> {
             child: Column(
               children: [
                 BoxSetting(
+                  icon:
+                      const Icon(Icons.email, color: AppColors.blue, size: 30),
                   title: AppLocalizations.of(context)!.email,
                   text: usersAccount?.userName ?? '',
                   onTap: () {},
                 ),
                 BoxSetting(
+                  icon: const Icon(Icons.person_pin,
+                      color: AppColors.green, size: 30),
                   title: AppLocalizations.of(context)!.name,
                   text: usersAccount?.name ?? '',
                   onTap: onTapChangeName,
                 ),
                 BoxSetting(
+                  icon: const Icon(Icons.lock, color: AppColors.red, size: 30),
                   title: AppLocalizations.of(context)!.pw,
                   text: AppLocalizations.of(context)!.changePw,
                   onTap: onTapChangePw,
@@ -171,20 +173,20 @@ class _SettingsPersonalState extends State<SettingsPersonal> {
               ],
             ),
           ),
-          SizedBox(height: 32),
+          const SizedBox(height: 32),
 
           //button đăng xuất
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: ButtonPrimary(
               textButton: AppLocalizations.of(context)!.logout,
               onTap: onTapLogout,
             ),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
         ],
       ),
-      bottomSheet: BottomSheetButton(),
+      bottomSheet: const BottomSheetButton(),
     );
   }
 
@@ -221,7 +223,7 @@ class _SettingsPersonalState extends State<SettingsPersonal> {
                     userName: usersAccount?.userName,
                     avatar: usersAccount?.avatar,
                   );
-                  AddtoServer(userAcc);
+                  addtoServer(userAcc);
                   UsersAccount? userAccDt;
                   FirebaseFirestore.instance
                       .collection('users')

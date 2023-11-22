@@ -43,5 +43,20 @@
     "year" : "Năm",
     "inAndEx" : "Chi tiêu",
     "listInAndEx" : "Danh sách thu chi",
-    "agree" : "Đồng ý"
+    "agree" : "Đồng ý",
+    "eat" : "Ăn uống",
+    "houseware" : "Chi tiêu hàng ngày",
+    "clothes" : "Quần áo",
+    "cosmetic" : "Mỹ phẩm",
+    "medical" : "Y tế",
+    "education" : "Giáo dục",
+    "transport" : "Đi lại",
+    "salary" : "Tiền lương",
+    "poketmoney" : "Tiền phụ cấp",
+    "bonus" : "Tiền thưởng",
+    "color" : "Màu sắc",
+    "icon" : "Biểu tượng",
+    "delete" : "Xóa",
+    "cateDefaultManagement": "Danh mục mặc định",
+    "catePersonalManagement": "Danh mục cá nhân"
 }

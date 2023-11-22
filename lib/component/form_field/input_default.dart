@@ -1,8 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
-
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/source/typo.dart';
 
@@ -39,14 +35,14 @@ class InputDefault extends StatelessWidget {
       decoration: InputDecoration(
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
-        fillColor: AppColors.lightYellow,
+        fillColor: AppColors.themeColor.withOpacity(0.2),
         filled: true,
         hintText: hintText,
         border: OutlineInputBorder(
           borderSide: BorderSide.none,
           borderRadius: BorderRadius.circular(16),
         ),
-        contentPadding: EdgeInsets.symmetric(
+        contentPadding: const EdgeInsets.symmetric(
           vertical: 0,
           horizontal: 16,
         ),

@@ -1,31 +1,35 @@
-// ignore_for_file: must_be_immutable
-
-import 'package:finance_app/source/colors.dart';
-import 'package:finance_app/source/typo.dart';
 import 'package:flutter/material.dart';
+import 'package:finance_app/source/typo.dart';
 
 class BoxBasicSetting extends StatelessWidget {
-  BoxBasicSetting({super.key, required this.text, this.onTap});
+  const BoxBasicSetting({
+    Key? key,
+    required this.text,
+    this.onTap,
+    required this.icon,
+  }) : super(key: key);
   final String text;
-  void Function()? onTap;
+  final void Function()? onTap;
+  final Icon icon;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: 16, bottom: 10),
-      decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(width: 1, color: AppColors.grey),
-        ),
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: InkWell(
         onTap: onTap,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              text,
-              style: tStyle.mediumRegular(),
+            Row(
+              children: [
+                icon,
+                const SizedBox(width: 10),
+                Text(
+                  text,
+                  style: tStyle.mediumRegular(),
+                ),
+              ],
             ),
             const Icon(
               Icons.arrow_forward_ios_rounded,

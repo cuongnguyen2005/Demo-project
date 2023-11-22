@@ -1,14 +1,14 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-// ignore_for_file: import_of_legacy_library_into_null_safe, sort_child_properties_last, prefer_const_constructors
-
 import 'package:finance_app/feature/setting/settings.dart';
-import 'package:finance_app/feature/statis/statis_navigator.dart';
+import 'package:finance_app/feature/statis/statis_tab.dart';
+import 'package:finance_app/feature/finance_detail/bloc/finance_detail_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:finance_app/feature/finance-detail.dart';
-import 'package:finance_app/feature/finances/finance_navigator.dart';
+import 'package:finance_app/feature/finance_detail/finance_detail.dart';
+import 'package:finance_app/feature/finances/finance_tab.dart';
 import 'package:finance_app/source/colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'statis/bloc/statis_bloc.dart';
 
 class Bottom extends StatefulWidget {
   const Bottom({
@@ -35,19 +35,23 @@ class _BottomState extends State<Bottom> {
   @override
   Widget build(BuildContext context) {
     final tabs = [
-      // HomeScreen(),
-      FinanceNavi(),
-      FinanceDetail(),
-      // FinanceDetail(),
-      StatisNavi(),
-      Settings(),
+      const FinanceTabbar(),
+      BlocProvider(
+        create: (context) => FinanceDetailBloc(),
+        child: const FinanceDetail(),
+      ),
+      BlocProvider(
+        create: (context) => StatisBloc(),
+        child: const StatisTab(),
+      ),
+      const Settings(),
     ];
     return Scaffold(
       body: tabs[_pageIndex],
       bottomNavigationBar: Container(
         color: AppColors.white,
         child: Padding(
-          padding: EdgeInsets.only(
+          padding: const EdgeInsets.only(
             left: 16,
             right: 16,
             top: 10,
@@ -55,7 +59,7 @@ class _BottomState extends State<Bottom> {
           ),
           child: GNav(
             selectedIndex: _pageIndex,
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             backgroundColor: AppColors.white,
             activeColor: AppColors.white,
             tabBackgroundColor: AppColors.themeColor,

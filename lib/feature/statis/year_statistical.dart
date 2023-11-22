@@ -1,5 +1,4 @@
-// ignore_for_file: file_names
-
+import 'package:finance_app/component/btn/btn_select_day.dart';
 import 'package:finance_app/data/finance.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/source/finances_api.dart';
@@ -98,28 +97,20 @@ class _YearStatisticalPageState extends State<YearStatisticalPage> {
                 });
               }
             },
-            child: Container(
-              padding: const EdgeInsets.all(16),
-              margin: const EdgeInsets.only(top: 16, right: 16, left: 16),
-              decoration: BoxDecoration(
-                color: AppColors.lightYellow,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Center(
-                  child: Text(
-                DateFormat.y().format(today),
-                style: tStyle.medium(),
-              )),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              child: ButtonSelectDay(text: DateFormat.yM().format(today)),
             ),
           ),
 
           //tổng quan tiền
           Container(
             padding: const EdgeInsets.all(16),
-            margin: const EdgeInsets.all(16),
+            margin: const EdgeInsets.symmetric(horizontal: 16),
             decoration: BoxDecoration(
                 color: AppColors.white,
-                border: Border.all(width: 1, color: AppColors.grey)),
+                border: Border.all(width: 1, color: AppColors.grey),
+                borderRadius: BorderRadius.circular(10)),
             child: Column(
               children: [
                 Row(

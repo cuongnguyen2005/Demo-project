@@ -1,8 +1,13 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:finance_app/component/btn/button_primary.dart';
 import 'package:finance_app/component/btn/button_secondary.dart';
 import 'package:finance_app/component/form_field/input_default.dart';
+import 'package:finance_app/feature/login/login.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/source/typo.dart';
+import 'package:finance_app/source/utils/validate_util.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ChangePassword extends StatefulWidget {
@@ -14,7 +19,6 @@ class ChangePassword extends StatefulWidget {
 }
 
 class _ChangePasswordState extends State<ChangePassword> {
-  final oldPwController = TextEditingController();
   final newPwController = TextEditingController();
   final confirmPwController = TextEditingController();
 
@@ -38,16 +42,6 @@ class _ChangePasswordState extends State<ChangePassword> {
           key: formKey,
           child: Column(
             children: [
-              InputDefault(
-                hintText: 'Mật khẩu cũ',
-                obscureText: visibilityOld,
-                suffixIcon: InkWell(
-                    onTap: onTapVisibilityOld,
-                    child: const Icon(Icons.visibility_off)),
-                controller: oldPwController,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: validateOldPassword,
-              ),
               const SizedBox(height: 16),
               InputDefault(
                 hintText: 'Mật khẩu mới',
@@ -57,7 +51,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     child: const Icon(Icons.visibility_off)),
                 controller: newPwController,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: validateNewPassword,
+                validator: ValidateUntils.validatePassword,
               ),
               const SizedBox(height: 16),
               InputDefault(
@@ -70,28 +64,31 @@ class _ChangePasswordState extends State<ChangePassword> {
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: validateConfirmPassword,
               ),
-              const SizedBox(height: 32),
-              Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: ButtonSecondary(
-                      textButton: 'Hủy',
-                      onTap: onTapBack,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    flex: 1,
-                    child: ButtonPrimary(
-                      textButton: 'Cập nhật',
-                      onTap: onTapUpdatePw,
-                    ),
-                  ),
-                ],
-              ),
             ],
           ),
+        ),
+      ),
+      bottomSheet: Container(
+        padding: const EdgeInsets.all(16),
+        height: 75,
+        child: Row(
+          children: [
+            Expanded(
+              flex: 1,
+              child: ButtonSecondary(
+                textButton: 'Hủy',
+                onTap: onTapBack,
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              flex: 1,
+              child: ButtonPrimary(
+                textButton: 'Cập nhật',
+                onTap: onTapUpdatePw,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -120,38 +117,29 @@ class _ChangePasswordState extends State<ChangePassword> {
   }
 
   void onTapUpdatePw() {
-    if (formKey.currentState!.validate()) {}
+    if (formKey.currentState!.validate()) {
+      changePassword();
+    }
   }
 
-  //validate
-  String? validateOldPassword(String? value) {
-    // return null;
-    if ((value ?? '').isEmpty) return 'Mật khẩu không được để trống';
+  var curUser = FirebaseAuth.instance.currentUser;
 
-    // String pw = widget.user.password;
-    // List<int> bytes = utf8.encode(value ?? '');
-    // if (md5.convert(bytes).toString() == pw) {
-    //   return null;
-    // } else {
-    //   return "Mật khẩu không đúng";
-    // }
-  }
-
-  //validate
-  String? validateNewPassword(String? value) {
-    if ((value ?? '').isEmpty) return 'Mật khẩu không được để trống';
-
-    // String pw = widget.user.password;
-    // List<int> bytes = utf8.encode(value ?? '');
-    // if (md5.convert(bytes).toString() == pw) {
-    //   return "Mật khẩu trùng mật khẩu cũ";
-    // }
-    // RegExp pwRegexp = RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$');
-    // if (pwRegexp.hasMatch(value ?? "")) {
-    //   return null;
-    // } else {
-    //   return "Mật khẩu phải gồm 6 kí tự, 1 in hoa, in thường và số";
-    // }
+  void changePassword() async {
+    try {
+      await curUser!.updatePassword(newPwController.text);
+      FirebaseAuth.instance.signOut();
+      Navigator.pushNamedAndRemoveUntil(
+          context, LoginPage.routeName, (route) => false);
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Text(e.toString()),
+          );
+        },
+      );
+    }
   }
 
   //

@@ -19,8 +19,15 @@ class FinanceRepo {
     }
   }
 
-  static Future<List<Finance>> addFinances(String uid, int cateID,
-      String cateName, int money, String dateTime, String note) async {
+  static Future<List<Finance>> addFinances(
+      String uid,
+      int cateID,
+      String cateName,
+      int money,
+      String dateTime,
+      int color,
+      String icon,
+      String note) async {
     final dio = Dio();
     String url =
         'https://finance-478a7-default-rtdb.firebaseio.com/finance/$uid.json';
@@ -31,6 +38,8 @@ class FinanceRepo {
       money: money,
       dateTime: dateTime,
       note: note,
+      icon: icon,
+      color: color,
     );
     final Response response = await dio.post(url, data: finance.toMap());
     if (response.data != null) {
@@ -49,8 +58,16 @@ class FinanceRepo {
     return [];
   }
 
-  static Future<List<Finance>> editFinances(String uid, String key, int cateID,
-      String cateName, int money, String dateTime, String note) async {
+  static Future<List<Finance>> editFinances(
+      String uid,
+      String key,
+      int cateID,
+      String cateName,
+      int money,
+      String dateTime,
+      int color,
+      String icon,
+      String note) async {
     final dio = Dio();
     String url =
         'https://finance-478a7-default-rtdb.firebaseio.com/finance/$uid/$key.json';
@@ -61,6 +78,8 @@ class FinanceRepo {
       money: money,
       dateTime: dateTime,
       note: note,
+      icon: icon,
+      color: color,
     );
     await dio.patch(url, data: finance.toMap());
     return [];
@@ -82,8 +101,8 @@ class FinanceRepo {
     }
   }
 
-  static Future<List<Finance>> addCateById(
-      String uid, int cateID, String cateName, String nameCategory) async {
+  static Future<List<Finance>> addCateById(String uid, int cateID,
+      String cateName, String nameCategory, int color, String icon) async {
     final dio = Dio();
     String url =
         'https://finance-478a7-default-rtdb.firebaseio.com/categoryById/$uid.json';
@@ -92,6 +111,8 @@ class FinanceRepo {
       cateID: cateID,
       cateName: cateName,
       name: nameCategory,
+      icon: icon,
+      color: color,
     );
     final Response response = await dio.post(url, data: cate.toMap());
     if (response.data != null) {
@@ -104,7 +125,7 @@ class FinanceRepo {
   }
 
   static Future<List<Finance>> updateCateById(String uid, String id, int cateID,
-      String cateName, String nameCategory) async {
+      String cateName, String nameCategory, int color, String icon) async {
     final dio = Dio();
     String url =
         'https://finance-478a7-default-rtdb.firebaseio.com/categoryById/$uid/$id.json';
@@ -113,6 +134,8 @@ class FinanceRepo {
       cateID: cateID,
       cateName: cateName,
       name: nameCategory,
+      icon: icon,
+      color: color,
     );
     dio.patch(url, data: cate.toMap());
     return [];

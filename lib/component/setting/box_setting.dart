@@ -1,37 +1,42 @@
-// ignore_for_file: must_be_immutable
-
-import 'package:finance_app/source/colors.dart';
-import 'package:finance_app/source/typo.dart';
 import 'package:flutter/material.dart';
+import 'package:finance_app/source/typo.dart';
 
 class BoxSetting extends StatelessWidget {
-  BoxSetting({super.key, required this.title, required this.text, this.onTap});
+  const BoxSetting({
+    Key? key,
+    required this.title,
+    required this.text,
+    this.onTap,
+    required this.icon,
+  }) : super(key: key);
   final String title;
   final String text;
-  void Function()? onTap;
+  final void Function()? onTap;
+  final Icon icon;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: 16, bottom: 10),
-      decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(width: 1, color: AppColors.grey),
-        ),
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
       child: InkWell(
         onTap: onTap,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Row(
               children: [
-                Text(title, style: tStyle.medium()),
-                const SizedBox(height: 5),
-                Text(
-                  text,
-                  style: tStyle.mediumRegular(),
+                icon,
+                const SizedBox(width: 10),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(title, style: tStyle.medium()),
+                    const SizedBox(height: 5),
+                    Text(
+                      text,
+                      style: tStyle.mediumRegular(),
+                    ),
+                  ],
                 ),
               ],
             ),

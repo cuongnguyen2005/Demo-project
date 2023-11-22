@@ -1,8 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-// ignore_for_file: sized_box_for_whitespace, prefer_const_constructors
-
 import 'package:flutter/material.dart';
-
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/source/typo.dart';
 
@@ -22,13 +18,13 @@ class ButtonPrimary extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          gradient: LinearGradient(
+          gradient: const LinearGradient(
             begin: Alignment.bottomLeft,
             end: Alignment.topRight,
-            colors: const [
+            colors: [
               AppColors.themeColor,
               AppColors.orange,
             ],

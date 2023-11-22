@@ -1,3 +1,4 @@
+import 'package:finance_app/component/btn/btn_select_day.dart';
 import 'package:finance_app/data/finance.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/source/finances_api.dart';
@@ -7,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:month_year_picker/month_year_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:pie_chart/pie_chart.dart';
 
 class MonthStatisticalPage extends StatefulWidget {
   const MonthStatisticalPage({super.key});
@@ -98,28 +98,20 @@ class _MonthStatisticalPageState extends State<MonthStatisticalPage> {
                 });
               }
             },
-            child: Container(
-              padding: const EdgeInsets.all(16),
-              margin: const EdgeInsets.only(top: 16, right: 16, left: 16),
-              decoration: BoxDecoration(
-                color: AppColors.lightYellow,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Center(
-                  child: Text(
-                DateFormat.yM().format(today),
-                style: tStyle.medium(),
-              )),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              child: ButtonSelectDay(text: DateFormat.yM().format(today)),
             ),
           ),
 
           //tổng quan tiền
           Container(
             padding: const EdgeInsets.all(16),
-            margin: const EdgeInsets.all(16),
+            margin: const EdgeInsets.symmetric(horizontal: 16),
             decoration: BoxDecoration(
                 color: AppColors.white,
-                border: Border.all(width: 1, color: AppColors.grey)),
+                border: Border.all(width: 1, color: AppColors.grey),
+                borderRadius: BorderRadius.circular(10)),
             child: Column(
               children: [
                 Row(

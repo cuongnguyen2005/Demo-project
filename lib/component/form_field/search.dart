@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:finance_app/source/typo.dart';
 import 'package:flutter/material.dart';
 
@@ -18,12 +16,12 @@ class Search extends StatelessWidget {
         fillColor: Colors.white.withAlpha(95),
         filled: true,
         hintText: hintText,
-        suffixIcon: Icon(Icons.search),
+        suffixIcon: const Icon(Icons.search),
         border: OutlineInputBorder(
           borderSide: BorderSide.none,
           borderRadius: BorderRadius.circular(16),
         ),
-        contentPadding: EdgeInsets.symmetric(
+        contentPadding: const EdgeInsets.symmetric(
           vertical: 0,
           horizontal: 16,
         ),

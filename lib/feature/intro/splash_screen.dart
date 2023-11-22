@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously
 
 import 'package:finance_app/feature/bottom_navigationbar.dart';
 import 'package:finance_app/feature/login/login.dart';
@@ -36,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   _navigatortohome() async {
-    await Future.delayed(Duration(milliseconds: 1500), () {});
+    await Future.delayed(const Duration(milliseconds: 1500), () {});
     isLogged == false
         ? Navigator.pushNamedAndRemoveUntil(
             context, LoginPage.routeName, (route) => false)
@@ -46,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: Text(
           'Finance',
