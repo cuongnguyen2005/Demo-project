@@ -17,12 +17,9 @@ class CateDefaultTab extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(60), // here the desired height
-          child: TabBarDefault(
-              text1: AppLocalizations.of(context)!.expense,
-              text2: AppLocalizations.of(context)!.income),
-        ),
+        appBar: TabBarDefault(
+            text1: AppLocalizations.of(context)!.expense,
+            text2: AppLocalizations.of(context)!.income),
         body: TabBarView(
           children: [
             BlocProvider(

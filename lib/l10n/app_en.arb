@@ -58,5 +58,13 @@
     "icon" : "Icons",
     "delete" : "Delete",
     "cateDefaultManagement": "Category default",
-    "catePersonalManagement": "Category personal"
+    "catePersonalManagement": "Category personal",
+    "userNull" : "This field cannot be null!",
+    "userInvalid" : "User invalid!",
+    "pwInvalid" : "Password must include 6 characters, 1 uppercase letter, lowercase letter and number",
+    "userNotExist" : "User not exist or password wrong",
+    "cancel" : "Cancel",
+    "newPw" : "New password",
+    "confirmPw" : "Confirm password",
+    "incorrectPw" : "Password not correct!"
 }

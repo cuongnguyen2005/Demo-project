@@ -5,8 +5,8 @@ import 'package:finance_app/source/finances_api.dart';
 import 'package:finance_app/source/typo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_month_picker/flutter_month_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:month_year_picker/month_year_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class YearStatisticalPage extends StatefulWidget {
@@ -83,9 +83,8 @@ class _YearStatisticalPageState extends State<YearStatisticalPage> {
         children: [
           InkWell(
             onTap: () async {
-              final selected = await showMonthYearPicker(
+              final selected = await showMonthPicker(
                 context: context,
-                initialMonthYearPickerMode: MonthYearPickerMode.year,
                 initialDate: today,
                 firstDate: DateTime(2010),
                 lastDate: DateTime(2050),

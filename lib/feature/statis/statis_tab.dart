@@ -12,12 +12,9 @@ class StatisTab extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(60), // here the desired height
-          child: TabBarDefault(
-              text1: AppLocalizations.of(context)!.month,
-              text2: AppLocalizations.of(context)!.year),
-        ),
+        appBar: TabBarDefault(
+            text1: AppLocalizations.of(context)!.month,
+            text2: AppLocalizations.of(context)!.year),
         body: const TabBarView(
           children: [
             MonthStatisticalPage(),

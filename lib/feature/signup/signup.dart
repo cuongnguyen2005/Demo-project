@@ -83,7 +83,7 @@ class _SignupPageState extends State<SignupPage> {
                         hintText: AppLocalizations.of(context)!.name,
                         obscureText: false,
                         prefixIcon: const Icon(Icons.person),
-                        validator: ValidateUntils.validateName,
+                        validator: ValidateUntils(ctx: context).validateName,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         controller: context.read<SignupBloc>().nameController,
                       ),
@@ -92,7 +92,7 @@ class _SignupPageState extends State<SignupPage> {
                         hintText: AppLocalizations.of(context)!.email,
                         obscureText: false,
                         prefixIcon: const Icon(Icons.email),
-                        validator: ValidateUntils.validateEmail,
+                        validator: ValidateUntils(ctx: context).validateEmail,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         controller:
                             context.read<SignupBloc>().usernameController,
@@ -110,7 +110,8 @@ class _SignupPageState extends State<SignupPage> {
                                   ? const Icon(Icons.visibility_off)
                                   : const Icon(Icons.visibility),
                             ),
-                            validator: ValidateUntils.validatePassword,
+                            validator:
+                                ValidateUntils(ctx: context).validatePassword,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             controller: context.read<SignupBloc>().pwController,

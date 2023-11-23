@@ -1,3 +1,4 @@
+import 'package:finance_app/component/app_bar/app_bar_primary.dart';
 import 'package:finance_app/component/setting/box_basic_setting.dart';
 import 'package:finance_app/feature/category/cate_default/cate_default_tab.dart';
 import 'package:finance_app/feature/category/cate_personal/cate_personal_tab.dart';
@@ -19,13 +20,7 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.themeColor,
-        title: Center(
-          child:
-              Text(AppLocalizations.of(context)!.settings, style: tStyle.H5()),
-        ),
-      ),
+      appBar: AppBarWidget(text: AppLocalizations.of(context)!.settings),
       body: ListView(
         children: [
           Container(

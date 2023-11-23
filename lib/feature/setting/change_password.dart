@@ -9,6 +9,7 @@ import 'package:finance_app/source/typo.dart';
 import 'package:finance_app/source/utils/validate_util.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});
@@ -33,7 +34,8 @@ class _ChangePasswordState extends State<ChangePassword> {
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.themeColor,
         title: Center(
-          child: Text('Thay đổi mật khẩu', style: tStyle.H5()),
+          child:
+              Text(AppLocalizations.of(context)!.changePw, style: tStyle.H5()),
         ),
       ),
       body: Container(
@@ -44,18 +46,18 @@ class _ChangePasswordState extends State<ChangePassword> {
             children: [
               const SizedBox(height: 16),
               InputDefault(
-                hintText: 'Mật khẩu mới',
+                hintText: AppLocalizations.of(context)!.newPw,
                 obscureText: visibilityNew,
                 suffixIcon: InkWell(
                     onTap: onTapVisibilityNew,
                     child: const Icon(Icons.visibility_off)),
                 controller: newPwController,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: ValidateUntils.validatePassword,
+                validator: ValidateUntils(ctx: context).validatePassword,
               ),
               const SizedBox(height: 16),
               InputDefault(
-                hintText: 'Xác nhận mật khẩu',
+                hintText: AppLocalizations.of(context)!.confirmPw,
                 obscureText: visibilityConfirm,
                 suffixIcon: InkWell(
                     onTap: onTapVisibilityConfirm,
@@ -76,7 +78,7 @@ class _ChangePasswordState extends State<ChangePassword> {
             Expanded(
               flex: 1,
               child: ButtonSecondary(
-                textButton: 'Hủy',
+                textButton: AppLocalizations.of(context)!.cancel,
                 onTap: onTapBack,
               ),
             ),
@@ -84,7 +86,7 @@ class _ChangePasswordState extends State<ChangePassword> {
             Expanded(
               flex: 1,
               child: ButtonPrimary(
-                textButton: 'Cập nhật',
+                textButton: AppLocalizations.of(context)!.update,
                 onTap: onTapUpdatePw,
               ),
             ),
@@ -148,7 +150,7 @@ class _ChangePasswordState extends State<ChangePassword> {
     if (value == newPwController.text) {
       return null;
     } else {
-      return "Mật khẩu không khớp";
+      return AppLocalizations.of(context)!.incorrectPw;
     }
   }
 }

@@ -1,10 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:finance_app/component/app_bar/app_bar_primary.dart';
 import 'package:finance_app/component/btn/btn_bottom_sheet.dart';
 import 'package:finance_app/main.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/source/language_constant.dart';
-import 'package:finance_app/source/typo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -22,14 +22,7 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: AppColors.themeColor,
-        title: Center(
-          child: Text(AppLocalizations.of(context)!.languageChange,
-              style: tStyle.H5()),
-        ),
-      ),
+      appBar: AppBarWidget(text: AppLocalizations.of(context)!.languageChange),
       body: ListView.builder(
         itemCount: languages.length,
         itemBuilder: (context, index) {

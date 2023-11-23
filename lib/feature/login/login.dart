@@ -49,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
             context: context,
             builder: (context) {
               return DialogPrimary(
-                content: 'Tài khoản không tồn tại hoặc mật khẩu không đúng',
+                content: AppLocalizations.of(context)!.userNotExist,
                 onTap: onTapBack,
               );
             },
@@ -111,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
                         hintText: AppLocalizations.of(context)!.email,
                         obscureText: false,
                         prefixIcon: const Icon(Icons.email),
-                        validator: ValidateUntils.validateEmail,
+                        validator: ValidateUntils(ctx: context).validateEmail,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         controller:
                             context.read<LoginBloc>().usernameController,
@@ -129,7 +129,8 @@ class _LoginPageState extends State<LoginPage> {
                                   ? const Icon(Icons.visibility_off)
                                   : const Icon(Icons.visibility),
                             ),
-                            validator: ValidateUntils.validatePassword,
+                            validator:
+                                ValidateUntils(ctx: context).validatePassword,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             controller: context.read<LoginBloc>().pwController,

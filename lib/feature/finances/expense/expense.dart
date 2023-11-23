@@ -1,3 +1,4 @@
+import 'package:finance_app/component/app_bar/app_bar_primary.dart';
 import 'package:finance_app/component/btn/btn_bottom_sheet.dart';
 import 'package:finance_app/component/btn/btn_select_day.dart';
 import 'package:finance_app/component/form_field/input_secondary.dart';
@@ -57,14 +58,7 @@ class _ExpensePageState extends State<ExpensePage> {
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: widget.arg.isUpdate == true
-          ? AppBar(
-              automaticallyImplyLeading: false,
-              backgroundColor: AppColors.themeColor,
-              title: Center(
-                child: Text(AppLocalizations.of(context)!.update,
-                    style: tStyle.H5()),
-              ),
-            )
+          ? AppBarWidget(text: AppLocalizations.of(context)!.update)
           : null,
       body: ListView(
         children: [

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:finance_app/component/app_bar/app_bar_primary.dart';
 import 'package:finance_app/component/btn/btn_bottom_sheet.dart';
 import 'package:finance_app/component/btn/button_primary.dart';
 import 'package:finance_app/component/form_field/input_default.dart';
@@ -8,7 +9,6 @@ import 'package:finance_app/data/user_account.dart';
 import 'package:finance_app/feature/login/login.dart';
 import 'package:finance_app/feature/setting/change_password.dart';
 import 'package:finance_app/source/colors.dart';
-import 'package:finance_app/source/typo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -84,7 +84,7 @@ class _SettingsPersonalState extends State<SettingsPersonal> {
     await FirebaseFirestore.instance
         .collection('users')
         .doc(user!.uid)
-        .set(userAcc.toMap());
+        .update(userAcc.toMap());
   }
 
   @override
@@ -92,13 +92,7 @@ class _SettingsPersonalState extends State<SettingsPersonal> {
     final String avat = usersAccount?.avatar ?? '';
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: AppColors.themeColor,
-        title: Center(
-          child: Text(AppLocalizations.of(context)!.person, style: tStyle.H5()),
-        ),
-      ),
+      appBar: AppBarWidget(text: AppLocalizations.of(context)!.person),
       body: ListView(
         children: [
           const SizedBox(height: 16),

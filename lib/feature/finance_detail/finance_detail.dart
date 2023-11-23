@@ -1,3 +1,4 @@
+import 'package:finance_app/component/app_bar/app_bar_primary.dart';
 import 'package:finance_app/component/dialog/dialog_primary.dart';
 import 'package:finance_app/data/finance.dart';
 import 'package:finance_app/feature/finances/expense/expense.dart';
@@ -39,12 +40,8 @@ class _FinanceDetailState extends State<FinanceDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
-      appBar: AppBar(
-        backgroundColor: AppColors.themeColor,
-        title: Center(
-          child: Text(AppLocalizations.of(context)!.listInAndEx,
-              style: tStyle.H5()),
-        ),
+      appBar: AppBarWidget(
+        text: AppLocalizations.of(context)!.listInAndEx,
       ),
       body: Column(
         children: [
@@ -63,6 +60,12 @@ class _FinanceDetailState extends State<FinanceDetail> {
               context.read<FinanceDetailBloc>().today = focusedDay;
               getListFinance();
             },
+            calendarStyle: CalendarStyle(
+              todayDecoration: BoxDecoration(
+                color: AppColors.themeColor,
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
           ),
           Container(width: double.infinity, height: 1, color: AppColors.grey),
 

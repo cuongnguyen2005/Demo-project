@@ -58,5 +58,13 @@
     "icon" : "Biểu tượng",
     "delete" : "Xóa",
     "cateDefaultManagement": "Danh mục mặc định",
-    "catePersonalManagement": "Danh mục cá nhân"
+    "catePersonalManagement": "Danh mục cá nhân",
+    "userNull" : "Trường này không được để trống!",
+    "userInvalid" : "Tài khoản sai định dạng!",
+    "pwInvalid" : "Mật khẩu phải gồm 6 kí tự, 1 in hoa, in thường và số",
+    "userNotExist" : "Tài khoản không tồn tại hoặc mật khẩu sai",
+    "cancel" : "Hủy",
+    "newPw" : "Mật khẩu mới",
+    "confirmPw" : "Xác nhận mật khẩu",
+    "incorrectPw" : "Mật khẩu không khớp!"
 }
