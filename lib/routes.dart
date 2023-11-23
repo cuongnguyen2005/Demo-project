@@ -1,16 +1,11 @@
-// ignore_for_file: unused_import
-
-import 'package:finance_app/data/category.dart';
 import 'package:finance_app/feature/bottom_navigationbar.dart';
-import 'package:finance_app/feature/category/cate_default/income/bloc/cate_income_default_bloc.dart';
 import 'package:finance_app/feature/category/cate_personal/expense/bloc/cate_expense_personal_bloc.dart';
 import 'package:finance_app/feature/category/cate_personal/cate_personal_tab.dart';
 import 'package:finance_app/feature/category/add_update_cate.dart';
 import 'package:finance_app/feature/finance_detail/finance_detail.dart';
-import 'package:finance_app/feature/finances/expense/bloc/expense_bloc.dart';
-import 'package:finance_app/feature/finances/expense/expense.dart';
-import 'package:finance_app/feature/finances/finance_tab.dart';
-import 'package:finance_app/feature/finances/income/income.dart';
+import 'package:finance_app/feature/finances/bloc/finances_bloc.dart';
+import 'package:finance_app/feature/finances/expense.dart';
+import 'package:finance_app/feature/finances/income.dart';
 import 'package:finance_app/feature/intro/splash_screen.dart';
 import 'package:finance_app/feature/login/bloc/login_bloc.dart';
 import 'package:finance_app/feature/login/login.dart';
@@ -21,7 +16,6 @@ import 'package:finance_app/feature/signup/bloc/signup_bloc.dart';
 import 'package:finance_app/feature/signup/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'feature/category/cate_default/cate_default_tab.dart';
 
 Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
@@ -63,7 +57,7 @@ Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
     final arg = settings.arguments as IncomePageArg;
     return MaterialPageRoute(
         builder: (_) => BlocProvider(
-              create: (context) => ExpenseBloc(),
+              create: (context) => FinancesBloc(),
               child: IncomePage(
                 arg: arg,
               ),
@@ -73,7 +67,7 @@ Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
     final arg = settings.arguments as ExpensePageArg;
     return MaterialPageRoute(
         builder: (_) => BlocProvider(
-              create: (context) => ExpenseBloc(),
+              create: (context) => FinancesBloc(),
               child: ExpensePage(
                 arg: arg,
               ),

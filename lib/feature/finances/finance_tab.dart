@@ -1,10 +1,7 @@
 import 'package:finance_app/component/tab_bar/tab_bar.dart';
-import 'package:finance_app/feature/finances/expense/bloc/expense_bloc.dart';
-import 'package:finance_app/feature/finances/income/bloc/income_bloc.dart';
-import 'package:finance_app/feature/finances/income/income.dart';
-import 'package:finance_app/feature/finances/expense/expense.dart';
+import 'package:finance_app/feature/finances/income.dart';
+import 'package:finance_app/feature/finances/expense.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FinanceTabbar extends StatelessWidget {
@@ -20,14 +17,8 @@ class FinanceTabbar extends StatelessWidget {
             text2: AppLocalizations.of(context)!.income),
         body: TabBarView(
           children: [
-            BlocProvider(
-              create: (context) => ExpenseBloc(),
-              child: ExpensePage(arg: ExpensePageArg(isUpdate: false)),
-            ),
-            BlocProvider(
-              create: (context) => IncomeBloc(),
-              child: IncomePage(arg: IncomePageArg(isUpdate: false)),
-            ),
+            ExpensePage(arg: ExpensePageArg(isUpdate: false)),
+            IncomePage(arg: IncomePageArg(isUpdate: false)),
           ],
         ),
       ),

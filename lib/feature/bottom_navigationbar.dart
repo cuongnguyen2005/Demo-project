@@ -1,3 +1,4 @@
+import 'package:finance_app/feature/finances/bloc/finances_bloc.dart';
 import 'package:finance_app/feature/setting/settings.dart';
 import 'package:finance_app/feature/statis/statis_tab.dart';
 import 'package:finance_app/feature/finance_detail/bloc/finance_detail_bloc.dart';
@@ -35,7 +36,10 @@ class _BottomState extends State<Bottom> {
   @override
   Widget build(BuildContext context) {
     final tabs = [
-      const FinanceTabbar(),
+      BlocProvider(
+        create: (context) => FinancesBloc(),
+        child: const FinanceTabbar(),
+      ),
       BlocProvider(
         create: (context) => FinanceDetailBloc(),
         child: const FinanceDetail(),

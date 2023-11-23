@@ -4,7 +4,9 @@ import 'package:finance_app/component/btn/btn_select_day.dart';
 import 'package:finance_app/component/form_field/input_secondary.dart';
 import 'package:finance_app/data/category.dart';
 import 'package:finance_app/data/finance.dart';
-import 'package:finance_app/feature/finances/expense/bloc/expense_bloc.dart';
+import 'package:finance_app/feature/finances/bloc/finances_bloc.dart';
+import 'package:finance_app/feature/finances/bloc/finances_event.dart';
+import 'package:finance_app/feature/finances/bloc/finances_state.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/component/btn/button_primary.dart';
 import 'package:finance_app/source/typo.dart';
@@ -13,44 +15,42 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'bloc/expense_event.dart';
-import 'bloc/expense_state.dart';
 
-class ExpensePageArg {
+class IncomePageArg {
   final bool isUpdate;
   final Finance? finances;
   final String? key;
-  ExpensePageArg({
+  IncomePageArg({
     required this.isUpdate,
     this.finances,
     this.key,
   });
 }
 
-class ExpensePage extends StatefulWidget {
-  const ExpensePage({super.key, required this.arg});
-  final ExpensePageArg arg;
-  static String routeName = 'expense_page';
+class IncomePage extends StatefulWidget {
+  const IncomePage({super.key, required this.arg});
+  final IncomePageArg arg;
+  static String routeName = 'income_page';
 
   @override
-  State<ExpensePage> createState() => _ExpensePageState();
+  State<IncomePage> createState() => _IncomePageState();
 }
 
-class _ExpensePageState extends State<ExpensePage> {
+class _IncomePageState extends State<IncomePage> {
   @override
   void initState() {
     super.initState();
-    context.read<ExpenseBloc>().add(ExpenseGetCateEvent(context: context));
-    context.read<ExpenseBloc>().noteController.text =
+    context.read<FinancesBloc>().add(FinancesGetCateEvent(context: context));
+    context.read<FinancesBloc>().noteController.text =
         widget.arg.finances?.note ?? '';
-    context.read<ExpenseBloc>().moneyController.text =
+    context.read<FinancesBloc>().moneyController.text =
         widget.arg.finances?.money.toString() ?? '';
-    context.read<ExpenseBloc>().dateTime = DateTime.parse(
+    context.read<FinancesBloc>().dateTime = DateTime.parse(
         widget.arg.finances?.dateTime ?? DateTime.now().toString());
-    context.read<ExpenseBloc>().nameCate = widget.arg.finances?.cateName ?? '';
-    context.read<ExpenseBloc>().cateID = widget.arg.finances?.cateID ?? 0;
-    context.read<ExpenseBloc>().color = widget.arg.finances?.color ?? 0;
-    context.read<ExpenseBloc>().icon = widget.arg.finances?.icon ?? '';
+    context.read<FinancesBloc>().nameCate = widget.arg.finances?.cateName ?? '';
+    context.read<FinancesBloc>().cateID = widget.arg.finances?.cateID ?? 0;
+    context.read<FinancesBloc>().color = widget.arg.finances?.color ?? 0;
+    context.read<FinancesBloc>().icon = widget.arg.finances?.icon ?? '';
   }
 
   @override
@@ -85,24 +85,25 @@ class _ExpensePageState extends State<ExpensePage> {
                         Expanded(
                           flex: 5,
                           child: InkWell(
-                              onTap: () async {
-                                DateTime? picked = await showDatePicker(
-                                  context: context,
-                                  initialDate:
-                                      context.read<ExpenseBloc>().dateTime,
-                                  firstDate: DateTime(2000),
-                                  lastDate: DateTime(2300),
-                                );
-                                if (picked != null) {
-                                  setState(() {
-                                    context.read<ExpenseBloc>().dateTime =
-                                        picked;
-                                  });
-                                }
-                              },
-                              child: ButtonSelectDay(
-                                  text: DateFormat.yMEd().format(
-                                      context.read<ExpenseBloc>().dateTime))),
+                            onTap: () async {
+                              DateTime? picked = await showDatePicker(
+                                context: context,
+                                initialDate:
+                                    context.read<FinancesBloc>().dateTime,
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2300),
+                              );
+                              if (picked != null) {
+                                setState(() {
+                                  context.read<FinancesBloc>().dateTime =
+                                      picked;
+                                });
+                              }
+                            },
+                            child: ButtonSelectDay(
+                                text: DateFormat.yMEd().format(
+                                    context.read<FinancesBloc>().dateTime)),
+                          ),
                         ),
                       ],
                     ),
@@ -127,7 +128,7 @@ class _ExpensePageState extends State<ExpensePage> {
                             hintText: AppLocalizations.of(context)!.enterNote,
                             obscureText: false,
                             controller:
-                                context.read<ExpenseBloc>().noteController,
+                                context.read<FinancesBloc>().noteController,
                           ),
                         ),
                       ],
@@ -154,7 +155,7 @@ class _ExpensePageState extends State<ExpensePage> {
                             keyboardType: TextInputType.number,
                             obscureText: false,
                             controller:
-                                context.read<ExpenseBloc>().moneyController,
+                                context.read<FinancesBloc>().moneyController,
                           ),
                         ),
                       ],
@@ -165,9 +166,9 @@ class _ExpensePageState extends State<ExpensePage> {
               const SizedBox(height: 16),
 
               //lựa chọn danh mục
-              BlocBuilder<ExpenseBloc, ExpenseState>(
+              BlocBuilder<FinancesBloc, FinancesState>(
                 builder: (context, state) {
-                  List<Category> cateExpense = state.cateExpense;
+                  List<Category> cateIncome = state.cateIncome;
                   return Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
@@ -196,27 +197,28 @@ class _ExpensePageState extends State<ExpensePage> {
                                 crossAxisSpacing: 10,
                                 mainAxisSpacing: 10,
                               ),
-                              itemCount: cateExpense.length,
+                              itemCount: cateIncome.length,
                               itemBuilder: (BuildContext ctx, index) {
                                 return InkWell(
                                   onTap: () {
                                     setState(() {
-                                      context.read<ExpenseBloc>().nameCate =
-                                          cateExpense[index].name;
-                                      context.read<ExpenseBloc>().cateID =
-                                          cateExpense[index].cateID;
-                                      context.read<ExpenseBloc>().color =
-                                          cateExpense[index].color;
-                                      context.read<ExpenseBloc>().icon =
-                                          cateExpense[index].icon;
+                                      context.read<FinancesBloc>().nameCate =
+                                          cateIncome[index].name;
+                                      context.read<FinancesBloc>().cateID =
+                                          cateIncome[index].cateID;
+                                      context.read<FinancesBloc>().color =
+                                          cateIncome[index].color;
+                                      context.read<FinancesBloc>().icon =
+                                          cateIncome[index].icon;
                                     });
                                   },
                                   child: Container(
+                                    alignment: Alignment.center,
                                     decoration: BoxDecoration(
                                         border: context
-                                                    .read<ExpenseBloc>()
+                                                    .read<FinancesBloc>()
                                                     .nameCate !=
-                                                cateExpense[index].name
+                                                cateIncome[index].name
                                             ? Border.all(
                                                 color: AppColors.grey, width: 2)
                                             : Border.all(
@@ -230,12 +232,11 @@ class _ExpensePageState extends State<ExpensePage> {
                                       children: [
                                         Icon(
                                           MdiIcons.fromString(
-                                              cateExpense[index].icon),
-                                          color:
-                                              Color(cateExpense[index].color),
+                                              cateIncome[index].icon),
+                                          color: Color(cateIncome[index].color),
                                         ),
                                         Text(
-                                          cateExpense[index].name,
+                                          cateIncome[index].name,
                                           style: tStyle.mediumRegular(),
                                           textAlign: TextAlign.center,
                                         ),
@@ -257,9 +258,9 @@ class _ExpensePageState extends State<ExpensePage> {
                 child: ButtonPrimary(
                   textButton: widget.arg.isUpdate == false
                       ? AppLocalizations.of(context)!.submit
-                      : AppLocalizations.of(context)!.update,
+                      : AppLocalizations.of(context)!.submit,
                   onTap: () {
-                    addFinanceDetail();
+                    addAndEditFinanceDetail();
                   },
                 ),
               )
@@ -272,9 +273,10 @@ class _ExpensePageState extends State<ExpensePage> {
     );
   }
 
-  void addFinanceDetail() {
+  //nhấn thêm mới
+  void addAndEditFinanceDetail() {
     context
-        .read<ExpenseBloc>()
-        .add(ExpenseAddAndEditEvent(widget: widget, context: context));
+        .read<FinancesBloc>()
+        .add(FinancesAddAndEditIncomeEvent(widget: widget, context: context));
   }
 }

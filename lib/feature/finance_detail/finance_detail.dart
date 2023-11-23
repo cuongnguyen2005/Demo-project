@@ -1,8 +1,8 @@
 import 'package:finance_app/component/app_bar/app_bar_primary.dart';
 import 'package:finance_app/component/dialog/dialog_primary.dart';
 import 'package:finance_app/data/finance.dart';
-import 'package:finance_app/feature/finances/expense/expense.dart';
-import 'package:finance_app/feature/finances/income/income.dart';
+import 'package:finance_app/feature/finances/expense.dart';
+import 'package:finance_app/feature/finances/income.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/source/typo.dart';
 import 'package:firebase_database/firebase_database.dart';
