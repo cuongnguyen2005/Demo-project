@@ -1,22 +1,22 @@
 import 'package:flutter/cupertino.dart';
 
-class CateExpensePersonalEvent {}
+class CatePersonalEvent {}
 
-class CateGetExpenseListEvent extends CateExpensePersonalEvent {
+class CateGetListEvent extends CatePersonalEvent {
   final BuildContext context;
-  CateGetExpenseListEvent({
+  CateGetListEvent({
     required this.context,
   });
 }
 
-class CateAddEvent extends CateExpensePersonalEvent {
+class CateAddEvent extends CatePersonalEvent {
   final BuildContext context;
   CateAddEvent({
     required this.context,
   });
 }
 
-class CateUpdateEvent extends CateExpensePersonalEvent {
+class CateUpdateEvent extends CatePersonalEvent {
   final BuildContext context;
   final String id;
   CateUpdateEvent({

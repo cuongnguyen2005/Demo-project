@@ -1,5 +1,5 @@
 import 'package:finance_app/feature/bottom_navigationbar.dart';
-import 'package:finance_app/feature/category/cate_personal/expense/bloc/cate_expense_personal_bloc.dart';
+import 'package:finance_app/feature/category/cate_default/bloc/cate_default_bloc.dart';
 import 'package:finance_app/feature/category/cate_personal/cate_personal_tab.dart';
 import 'package:finance_app/feature/category/add_update_cate.dart';
 import 'package:finance_app/feature/finance_detail/finance_detail.dart';
@@ -17,6 +17,7 @@ import 'package:finance_app/feature/signup/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'feature/category/cate_default/cate_default_tab.dart';
+import 'feature/category/cate_personal/bloc/cate_personal_bloc.dart';
 
 Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
   if (settings.name == SplashScreen.routeName) {
@@ -74,16 +75,24 @@ Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
             ));
   }
   if (settings.name == CatePersonalTab.routeName) {
-    return MaterialPageRoute(builder: (_) => const CatePersonalTab());
+    return MaterialPageRoute(
+        builder: (_) => BlocProvider(
+              create: (context) => CatePersonalBloc(),
+              child: const CatePersonalTab(),
+            ));
   }
   if (settings.name == CateDefaultTab.routeName) {
-    return MaterialPageRoute(builder: (_) => const CateDefaultTab());
+    return MaterialPageRoute(
+        builder: (_) => BlocProvider(
+              create: (context) => CateDefaultBloc(),
+              child: const CateDefaultTab(),
+            ));
   }
   if (settings.name == AddAndUpdateCate.routeName) {
     final arg = settings.arguments as AddAndUpdateCateArg;
     return MaterialPageRoute(
         builder: (_) => BlocProvider(
-              create: (context) => CateExpensePersonalBloc(),
+              create: (context) => CatePersonalBloc(),
               child: AddAndUpdateCate(
                 arg: arg,
               ),

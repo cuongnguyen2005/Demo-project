@@ -7,11 +7,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'cate_income_personal_event.dart';
-import 'cate_income_personal_state.dart';
+import 'cate_personal_event.dart';
+import 'cate_personal_state.dart';
 
-class CateIncomePersonalBloc
-    extends Bloc<CateIncomePersonalEvent, CateIncomePersonalState> {
+class CatePersonalBloc extends Bloc<CatePersonalEvent, CatePersonalState> {
   User? user = FirebaseAuth.instance.currentUser;
   final TextEditingController nameCateController = TextEditingController();
   String nameCate = '';
@@ -39,19 +38,25 @@ class CateIncomePersonalBloc
     'school',
     'motorbike'
   ];
-  CateIncomePersonalBloc() : super(CateInitial()) {
-    on<CateIncomePersonalEvent>((event, emit) {});
-    on<CateGetIncomeListEvent>((event, emit) async {
+  CatePersonalBloc() : super(CatePersonalInitial()) {
+    on<CatePersonalEvent>((event, emit) {});
+    on<CateGetListEvent>((event, emit) async {
+      final List<Category> curListExpenseId = [];
       final List<Category> curListIncomeId = [];
       //get by id
       List<Category> categoryIdListDatabase =
           await FinanceRepo.getCateById(user!.uid);
       for (var element in categoryIdListDatabase) {
+        if (element.cateID == 2) {
+          curListExpenseId.add(element);
+        }
         if (element.cateID == 1) {
           curListIncomeId.add(element);
-          emit(CateIncomePersonalState(categoryIncomeIdList: curListIncomeId));
         }
       }
+      emit(CatePersonalState(
+          categoryExpenseIdList: curListExpenseId,
+          categoryIncomeIdList: curListIncomeId));
     });
     on<CateAddEvent>((event, emit) async {
       if (nameCateController.text.isNotEmpty) {

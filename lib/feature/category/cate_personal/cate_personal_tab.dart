@@ -1,13 +1,8 @@
 import 'package:finance_app/component/btn/btn_bottom_sheet.dart';
 import 'package:finance_app/component/tab_bar/tab_bar.dart';
-import 'package:finance_app/feature/category/cate_personal/expense/bloc/cate_expense_personal_bloc.dart';
-import 'package:finance_app/feature/category/cate_personal/expense/cate_expense_personal_management.dart';
+import 'package:finance_app/feature/category/cate_personal/cate_personal_management.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import 'income/bloc/cate_income_personal_bloc.dart';
-import 'income/cate_income_personal_management.dart';
 
 class CatePersonalTab extends StatelessWidget {
   const CatePersonalTab({super.key});
@@ -21,16 +16,10 @@ class CatePersonalTab extends StatelessWidget {
         appBar: TabBarDefault(
             text1: AppLocalizations.of(context)!.expense,
             text2: AppLocalizations.of(context)!.income),
-        body: TabBarView(
+        body: const TabBarView(
           children: [
-            BlocProvider(
-              create: (context) => CateExpensePersonalBloc(),
-              child: const CateExpensePersonalManagement(),
-            ),
-            BlocProvider(
-              create: (context) => CateIncomePersonalBloc(),
-              child: const CateIncomePersonalManagement(),
-            ),
+            CatePersonalManagement(isCateExpense: true),
+            CatePersonalManagement(isCateExpense: false),
           ],
         ),
         bottomSheet: const BottomSheetButton(),

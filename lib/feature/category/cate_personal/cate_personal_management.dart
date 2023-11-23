@@ -1,8 +1,8 @@
-import 'package:finance_app/feature/category/cate_personal/expense/bloc/cate_expense_personal_bloc.dart';
-import 'package:finance_app/feature/category/cate_personal/expense/bloc/cate_expense_personal_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:finance_app/component/btn/btn_bottom_sheet.dart';
 import 'package:finance_app/component/btn/button_primary.dart';
 import 'package:finance_app/data/category.dart';
@@ -10,22 +10,23 @@ import 'package:finance_app/feature/category/add_update_cate.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/source/finances_api.dart';
 import 'package:finance_app/source/typo.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'bloc/cate_personal_bloc.dart';
+import 'bloc/cate_personal_event.dart';
+import 'bloc/cate_personal_state.dart';
 
-import 'bloc/cate_expense_personal_state.dart';
-
-class CateExpensePersonalManagement extends StatefulWidget {
-  const CateExpensePersonalManagement({super.key});
+class CatePersonalManagement extends StatefulWidget {
+  const CatePersonalManagement({
+    Key? key,
+    required this.isCateExpense,
+  }) : super(key: key);
+  final bool isCateExpense;
   static String routeName = 'cate_management';
 
   @override
-  State<CateExpensePersonalManagement> createState() =>
-      _CateExpensePersonalManagementState();
+  State<CatePersonalManagement> createState() => _CatePersonalManagementState();
 }
 
-class _CateExpensePersonalManagementState
-    extends State<CateExpensePersonalManagement> {
+class _CatePersonalManagementState extends State<CatePersonalManagement> {
   @override
   void initState() {
     super.initState();
@@ -36,9 +37,10 @@ class _CateExpensePersonalManagementState
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: BlocBuilder<CateExpensePersonalBloc, CateExpensePersonalState>(
+      body: BlocBuilder<CatePersonalBloc, CatePersonalState>(
         builder: (context, state) {
           List<Category> categoryExpenseIdList = state.categoryExpenseIdList;
+          List<Category> categoryIncomeIdList = state.categoryIncomeIdList;
           return Container(
             padding: const EdgeInsets.all(16),
             height: size.height - 120,
@@ -60,7 +62,9 @@ class _CateExpensePersonalManagementState
                           style: tStyle.H6()),
                       Flexible(
                         child: ListView.builder(
-                          itemCount: categoryExpenseIdList.length,
+                          itemCount: widget.isCateExpense == true
+                              ? categoryExpenseIdList.length
+                              : categoryIncomeIdList.length,
                           itemBuilder: (context, index) {
                             return Slidable(
                               endActionPane: ActionPane(
@@ -68,7 +72,9 @@ class _CateExpensePersonalManagementState
                                 children: [
                                   SlidableAction(
                                     onPressed: (context) => onTapDelete(
-                                        categoryExpenseIdList[index].id),
+                                        widget.isCateExpense == true
+                                            ? categoryExpenseIdList[index].id
+                                            : categoryIncomeIdList[index].id),
                                     backgroundColor: AppColors.red,
                                     foregroundColor: AppColors.white,
                                     icon: Icons.delete,
@@ -78,7 +84,9 @@ class _CateExpensePersonalManagementState
                               ),
                               child: InkWell(
                                 onTap: () => onTapUpdateWidget(
-                                    categoryExpenseIdList[index]),
+                                    widget.isCateExpense == true
+                                        ? categoryExpenseIdList[index]
+                                        : categoryIncomeIdList[index]),
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
                                       vertical: 15, horizontal: 5),
@@ -93,17 +101,34 @@ class _CateExpensePersonalManagementState
                                     children: [
                                       Row(
                                         children: [
-                                          Icon(
-                                            MdiIcons.fromString(
-                                                categoryExpenseIdList[index]
-                                                    .icon),
-                                            color: Color(
-                                                categoryExpenseIdList[index]
-                                                    .color),
-                                          ),
+                                          widget.isCateExpense == true
+                                              ? Icon(
+                                                  MdiIcons.fromString(
+                                                      categoryExpenseIdList[
+                                                              index]
+                                                          .icon),
+                                                  color: Color(
+                                                      categoryExpenseIdList[
+                                                              index]
+                                                          .color),
+                                                )
+                                              : Icon(
+                                                  MdiIcons.fromString(
+                                                      categoryIncomeIdList[
+                                                              index]
+                                                          .icon),
+                                                  color: Color(
+                                                      categoryIncomeIdList[
+                                                              index]
+                                                          .color),
+                                                ),
                                           const SizedBox(width: 16),
                                           Text(
-                                              categoryExpenseIdList[index].name,
+                                              widget.isCateExpense == true
+                                                  ? categoryExpenseIdList[index]
+                                                      .name
+                                                  : categoryIncomeIdList[index]
+                                                      .name,
                                               style: tStyle.medium()),
                                         ],
                                       ),
@@ -136,26 +161,34 @@ class _CateExpensePersonalManagementState
   }
 
   void getCate() {
-    context
-        .read<CateExpensePersonalBloc>()
-        .add(CateGetExpenseListEvent(context: context));
+    context.read<CatePersonalBloc>().add(CateGetListEvent(context: context));
   }
 
   void onTapAddWidget() {
-    Navigator.pushNamed(context, AddAndUpdateCate.routeName,
-            arguments: AddAndUpdateCateArg(isExpenseCate: true))
-        .then((_) => getCate());
+    widget.isCateExpense == true
+        ? Navigator.pushNamed(context, AddAndUpdateCate.routeName,
+                arguments: AddAndUpdateCateArg(isExpenseCate: true))
+            .then((_) => getCate())
+        : Navigator.pushNamed(context, AddAndUpdateCate.routeName,
+                arguments: AddAndUpdateCateArg(isExpenseCate: false))
+            .then((_) => getCate());
   }
 
   void onTapDelete(String id) async {
     await FinanceRepo.deleteCate(
-        context.read<CateExpensePersonalBloc>().user!.uid, id);
+        context.read<CatePersonalBloc>().user!.uid, id);
     getCate();
   }
 
   void onTapUpdateWidget(Category cate) {
-    Navigator.pushNamed(context, AddAndUpdateCate.routeName,
-            arguments: AddAndUpdateCateArg(isExpenseCate: true, cates: cate))
-        .then((_) => getCate());
+    widget.isCateExpense == true
+        ? Navigator.pushNamed(context, AddAndUpdateCate.routeName,
+                arguments:
+                    AddAndUpdateCateArg(isExpenseCate: true, cates: cate))
+            .then((_) => getCate())
+        : Navigator.pushNamed(context, AddAndUpdateCate.routeName,
+                arguments:
+                    AddAndUpdateCateArg(isExpenseCate: false, cates: cate))
+            .then((_) => getCate());
   }
 }

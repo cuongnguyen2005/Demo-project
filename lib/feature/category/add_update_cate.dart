@@ -1,5 +1,4 @@
-import 'package:finance_app/feature/category/cate_personal/expense/bloc/cate_expense_personal_bloc.dart';
-import 'package:finance_app/feature/category/cate_personal/expense/bloc/cate_expense_personal_event.dart';
+import 'package:finance_app/feature/category/cate_personal/bloc/cate_personal_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -10,6 +9,7 @@ import 'package:finance_app/component/form_field/input_default.dart';
 import 'package:finance_app/data/category.dart';
 import 'package:finance_app/source/colors.dart';
 import 'package:finance_app/source/typo.dart';
+import 'cate_personal/bloc/cate_personal_bloc.dart';
 
 class AddAndUpdateCateArg {
   final Category? cates;
@@ -36,17 +36,16 @@ class _AddAndUpdateCateState extends State<AddAndUpdateCate> {
   @override
   void initState() {
     super.initState();
-    context.read<CateExpensePersonalBloc>().nameCateController.text =
+    context.read<CatePersonalBloc>().nameCateController.text =
         widget.arg.cates?.name ?? '';
     widget.arg.isExpenseCate == true
-        ? context.read<CateExpensePersonalBloc>().nameCate = 'Khoản chi'
-        : context.read<CateExpensePersonalBloc>().nameCate = 'Khoản thu';
-    context.read<CateExpensePersonalBloc>().color =
-        widget.arg.cates?.color ?? 0;
-    context.read<CateExpensePersonalBloc>().icon = widget.arg.cates?.icon ?? '';
+        ? context.read<CatePersonalBloc>().nameCate = 'Khoản chi'
+        : context.read<CatePersonalBloc>().nameCate = 'Khoản thu';
+    context.read<CatePersonalBloc>().color = widget.arg.cates?.color ?? 0;
+    context.read<CatePersonalBloc>().icon = widget.arg.cates?.icon ?? '';
     widget.arg.isExpenseCate == true
-        ? context.read<CateExpensePersonalBloc>().cateID = 2
-        : context.read<CateExpensePersonalBloc>().cateID = 1;
+        ? context.read<CatePersonalBloc>().cateID = 2
+        : context.read<CatePersonalBloc>().cateID = 1;
   }
 
   @override
@@ -68,9 +67,8 @@ class _AddAndUpdateCateState extends State<AddAndUpdateCate> {
                 InputDefault(
                   hintText: AppLocalizations.of(context)!.cateName,
                   obscureText: false,
-                  controller: context
-                      .read<CateExpensePersonalBloc>()
-                      .nameCateController,
+                  controller:
+                      context.read<CatePersonalBloc>().nameCateController,
                 ),
                 const SizedBox(height: 16),
 
@@ -95,25 +93,21 @@ class _AddAndUpdateCateState extends State<AddAndUpdateCate> {
                         crossAxisSpacing: 5,
                         mainAxisSpacing: 5,
                       ),
-                      itemCount: context
-                          .read<CateExpensePersonalBloc>()
-                          .iconList
-                          .length,
+                      itemCount:
+                          context.read<CatePersonalBloc>().iconList.length,
                       itemBuilder: (BuildContext ctx, index) {
                         List<String> iconList =
-                            context.read<CateExpensePersonalBloc>().iconList;
+                            context.read<CatePersonalBloc>().iconList;
                         return InkWell(
                           onTap: () {
                             setState(() {
-                              context.read<CateExpensePersonalBloc>().icon =
+                              context.read<CatePersonalBloc>().icon =
                                   iconList[index];
                             });
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                                border: context
-                                            .read<CateExpensePersonalBloc>()
-                                            .icon !=
+                                border: context.read<CatePersonalBloc>().icon !=
                                         iconList[index]
                                     ? Border.all(
                                         color: AppColors.grey, width: 2)
@@ -148,30 +142,27 @@ class _AddAndUpdateCateState extends State<AddAndUpdateCate> {
                         crossAxisSpacing: 5,
                         mainAxisSpacing: 5,
                       ),
-                      itemCount: context
-                          .read<CateExpensePersonalBloc>()
-                          .colorList
-                          .length,
+                      itemCount:
+                          context.read<CatePersonalBloc>().colorList.length,
                       itemBuilder: (BuildContext ctx, index) {
                         List<int> colorList =
-                            context.read<CateExpensePersonalBloc>().colorList;
+                            context.read<CatePersonalBloc>().colorList;
                         return InkWell(
                           onTap: () {
                             setState(() {
-                              context.read<CateExpensePersonalBloc>().color =
+                              context.read<CatePersonalBloc>().color =
                                   colorList[index];
                             });
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                                border: context
-                                            .read<CateExpensePersonalBloc>()
-                                            .color !=
-                                        colorList[index]
-                                    ? Border.all(
-                                        color: AppColors.grey, width: 2)
-                                    : Border.all(
-                                        color: AppColors.black, width: 2),
+                                border:
+                                    context.read<CatePersonalBloc>().color !=
+                                            colorList[index]
+                                        ? Border.all(
+                                            color: AppColors.grey, width: 2)
+                                        : Border.all(
+                                            color: AppColors.black, width: 2),
                                 borderRadius: BorderRadius.circular(16),
                                 color: Color(colorList[index])),
                           ),
@@ -197,12 +188,12 @@ class _AddAndUpdateCateState extends State<AddAndUpdateCate> {
   }
 
   void onTapAddCate() async {
-    context.read<CateExpensePersonalBloc>().add(CateAddEvent(context: context));
+    context.read<CatePersonalBloc>().add(CateAddEvent(context: context));
   }
 
   void onTapUpdateCate(String id) async {
     context
-        .read<CateExpensePersonalBloc>()
+        .read<CatePersonalBloc>()
         .add(CateUpdateEvent(context: context, id: id));
   }
 }

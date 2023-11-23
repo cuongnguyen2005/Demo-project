@@ -1,14 +1,14 @@
 import 'package:finance_app/data/category.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'cate_income_default_event.dart';
-import 'cate_income_default_state.dart';
+import 'cate_default_event.dart';
+import 'cate_default_state.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class CateIncomeDefaultBloc
-    extends Bloc<CateIncomeDefaultEvent, CateIncomeDefaultState> {
-  CateIncomeDefaultBloc() : super(CateDefaultInitial()) {
-    on<CateIncomeDefaultEvent>((event, emit) {});
-    on<CateGetIncomeDefaultEvent>((event, emit) {
+class CateDefaultBloc extends Bloc<CateDefaultEvent, CateDefaultState> {
+  CateDefaultBloc() : super(CateDefaultInitial()) {
+    on<CateDefaultEvent>((event, emit) {});
+    on<CateGetDefaultEvent>((event, emit) {
+      final List<Category> curListExpenseDf = [];
       final List<Category> curListIncomeDf = [];
       List<Category> cates = [
         Category(
@@ -85,11 +85,16 @@ class CateIncomeDefaultBloc
 
       //get default
       for (var element1 in cates) {
+        if (element1.cateID == 2) {
+          curListExpenseDf.add(element1);
+        }
         if (element1.cateID == 1) {
           curListIncomeDf.add(element1);
         }
       }
-      emit(CateIncomeDefaultState(categoryIncomeDfList: curListIncomeDf));
+      emit(CateDefaultState(
+          categoryExpenseDfList: curListExpenseDf,
+          categoryIncomeDfList: curListIncomeDf));
     });
   }
 }
