@@ -66,5 +66,6 @@
     "cancel" : "Hủy",
     "newPw" : "Mật khẩu mới",
     "confirmPw" : "Xác nhận mật khẩu",
-    "incorrectPw" : "Mật khẩu không khớp!"
+    "incorrectPw" : "Mật khẩu không khớp!",
+    "notify" : "Bạn cần đăng nhập lại để thực hiện thay đổi mật khẩu"
 }

@@ -1,3 +1,4 @@
+import 'package:finance_app/component/app_bar/app_bar_primary.dart';
 import 'package:finance_app/feature/category/cate_personal/bloc/cate_personal_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -51,13 +52,7 @@ class _AddAndUpdateCateState extends State<AddAndUpdateCate> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: AppColors.themeColor,
-        title: Center(
-          child: Text(AppLocalizations.of(context)!.navi1, style: tStyle.H5()),
-        ),
-      ),
+      appBar: AppBarWidget(text: AppLocalizations.of(context)!.navi1),
       body: ListView(
         children: [
           Container(

@@ -61,87 +61,92 @@ class _CatePersonalManagementState extends State<CatePersonalManagement> {
                       Text(AppLocalizations.of(context)!.catePersonal,
                           style: tStyle.H6()),
                       Flexible(
-                        child: ListView.builder(
-                          itemCount: widget.isCateExpense == true
-                              ? categoryExpenseIdList.length
-                              : categoryIncomeIdList.length,
-                          itemBuilder: (context, index) {
-                            return Slidable(
-                              endActionPane: ActionPane(
-                                motion: const BehindMotion(),
-                                children: [
-                                  SlidableAction(
-                                    onPressed: (context) => onTapDelete(
-                                        widget.isCateExpense == true
-                                            ? categoryExpenseIdList[index].id
-                                            : categoryIncomeIdList[index].id),
-                                    backgroundColor: AppColors.red,
-                                    foregroundColor: AppColors.white,
-                                    icon: Icons.delete,
-                                    label: AppLocalizations.of(context)!.delete,
-                                  ),
-                                ],
-                              ),
-                              child: InkWell(
-                                onTap: () => onTapUpdateWidget(
-                                    widget.isCateExpense == true
-                                        ? categoryExpenseIdList[index]
-                                        : categoryIncomeIdList[index]),
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 5),
-                                  decoration: const BoxDecoration(
-                                      border: Border(
-                                          bottom: BorderSide(
-                                              width: 1,
-                                              color: AppColors.grey))),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
+                        child: SlidableAutoCloseBehavior(
+                          child: ListView.builder(
+                            itemCount: widget.isCateExpense == true
+                                ? categoryExpenseIdList.length
+                                : categoryIncomeIdList.length,
+                            itemBuilder: (context, index) {
+                              return Slidable(
+                                endActionPane: ActionPane(
+                                  motion: const BehindMotion(),
+                                  children: [
+                                    SlidableAction(
+                                      onPressed: (context) => onTapDelete(
                                           widget.isCateExpense == true
-                                              ? Icon(
-                                                  MdiIcons.fromString(
-                                                      categoryExpenseIdList[
-                                                              index]
-                                                          .icon),
-                                                  color: Color(
-                                                      categoryExpenseIdList[
-                                                              index]
-                                                          .color),
-                                                )
-                                              : Icon(
-                                                  MdiIcons.fromString(
-                                                      categoryIncomeIdList[
-                                                              index]
-                                                          .icon),
-                                                  color: Color(
-                                                      categoryIncomeIdList[
-                                                              index]
-                                                          .color),
-                                                ),
-                                          const SizedBox(width: 16),
-                                          Text(
-                                              widget.isCateExpense == true
-                                                  ? categoryExpenseIdList[index]
-                                                      .name
-                                                  : categoryIncomeIdList[index]
-                                                      .name,
-                                              style: tStyle.medium()),
-                                        ],
-                                      ),
-                                      const Icon(
-                                        Icons.arrow_forward_ios,
-                                        size: 15,
-                                      ),
-                                    ],
+                                              ? categoryExpenseIdList[index].id
+                                              : categoryIncomeIdList[index].id),
+                                      backgroundColor: AppColors.red,
+                                      foregroundColor: AppColors.white,
+                                      icon: Icons.delete,
+                                      label:
+                                          AppLocalizations.of(context)!.delete,
+                                    ),
+                                  ],
+                                ),
+                                child: InkWell(
+                                  onTap: () => onTapUpdateWidget(
+                                      widget.isCateExpense == true
+                                          ? categoryExpenseIdList[index]
+                                          : categoryIncomeIdList[index]),
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 15, horizontal: 5),
+                                    decoration: const BoxDecoration(
+                                        border: Border(
+                                            bottom: BorderSide(
+                                                width: 1,
+                                                color: AppColors.grey))),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            widget.isCateExpense == true
+                                                ? Icon(
+                                                    MdiIcons.fromString(
+                                                        categoryExpenseIdList[
+                                                                index]
+                                                            .icon),
+                                                    color: Color(
+                                                        categoryExpenseIdList[
+                                                                index]
+                                                            .color),
+                                                  )
+                                                : Icon(
+                                                    MdiIcons.fromString(
+                                                        categoryIncomeIdList[
+                                                                index]
+                                                            .icon),
+                                                    color: Color(
+                                                        categoryIncomeIdList[
+                                                                index]
+                                                            .color),
+                                                  ),
+                                            const SizedBox(width: 16),
+                                            Text(
+                                                widget.isCateExpense == true
+                                                    ? categoryExpenseIdList[
+                                                            index]
+                                                        .name
+                                                    : categoryIncomeIdList[
+                                                            index]
+                                                        .name,
+                                                style: tStyle.medium()),
+                                          ],
+                                        ),
+                                        const Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: 15,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            );
-                          },
+                              );
+                            },
+                          ),
                         ),
                       )
                     ],

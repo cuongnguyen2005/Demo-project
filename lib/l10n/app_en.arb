@@ -66,5 +66,6 @@
     "cancel" : "Cancel",
     "newPw" : "New password",
     "confirmPw" : "Confirm password",
-    "incorrectPw" : "Password not correct!"
+    "incorrectPw" : "Password not correct!",
+    "notify" : "You need to log in again and retrying change password"
 }

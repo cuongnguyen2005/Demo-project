@@ -1,18 +1,27 @@
 import 'package:finance_app/data/finance.dart';
 
 class StatisState {
-  final Map<String, double> sumMap;
+  final Map<String, double> sumMapMonth;
   final List<Finance> listByMonth;
-  final int totalExpense;
-  final int totalIncome;
-  final int finalTotal;
-
+  final int totalExpenseMonth;
+  final int totalIncomeMonth;
+  final int finalTotalMonth;
+  final Map<String, double> sumMapYear;
+  final List<Finance> listByYear;
+  final int totalExpenseYear;
+  final int totalIncomeYear;
+  final int finalTotalYear;
   StatisState({
-    this.sumMap = const {},
+    this.sumMapMonth = const {},
     this.listByMonth = const [],
-    this.totalExpense = 0,
-    this.totalIncome = 0,
-    this.finalTotal = 0,
+    this.totalExpenseMonth = 0,
+    this.totalIncomeMonth = 0,
+    this.finalTotalMonth = 0,
+    this.sumMapYear = const {},
+    this.listByYear = const [],
+    this.totalExpenseYear = 0,
+    this.totalIncomeYear = 0,
+    this.finalTotalYear = 0,
   });
 }
 

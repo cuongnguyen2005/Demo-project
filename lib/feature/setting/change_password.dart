@@ -133,14 +133,33 @@ class _ChangePasswordState extends State<ChangePassword> {
       Navigator.pushNamedAndRemoveUntil(
           context, LoginPage.routeName, (route) => false);
     } catch (e) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            content: Text(e.toString()),
-          );
-        },
-      );
+      if (e.hashCode == 415628578) {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(16))),
+              content: Text(AppLocalizations.of(context)!.notify,
+                  textAlign: TextAlign.center),
+              actions: [
+                Padding(
+                  padding:
+                      const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                  child: ButtonPrimary(
+                    textButton: AppLocalizations.of(context)!.logout,
+                    onTap: () {
+                      FirebaseAuth.instance.signOut();
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, LoginPage.routeName, (route) => false);
+                    },
+                  ),
+                )
+              ],
+            );
+          },
+        );
+      }
     }
   }
 

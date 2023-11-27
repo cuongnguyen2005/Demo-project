@@ -74,112 +74,119 @@ class _FinanceDetailState extends State<FinanceDetail> {
             child: BlocBuilder<FinanceDetailBloc, FinanceDetailState>(
               builder: (context, state) {
                 final List<Finance> listByMonth = state.listByMonth;
-                return ListView.builder(
-                  itemCount: listByMonth.length,
-                  itemBuilder: (context, index) {
-                    DateTime dateTimeFormat =
-                        DateTime.parse(listByMonth[index].dateTime);
-                    return Slidable(
-                      endActionPane: ActionPane(
-                        motion: const BehindMotion(),
-                        children: [
-                          SlidableAction(
-                            onPressed: (context) =>
-                                onTapDelete(listByMonth[index].id),
-                            backgroundColor: AppColors.red,
-                            foregroundColor: AppColors.white,
-                            icon: Icons.delete,
-                            label: AppLocalizations.of(context)!.delete,
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              listByMonth[index].cateID == 2
-                                  ? onTapUpdateExpense(
-                                      listByMonth[index], listByMonth[index].id)
-                                  : onTapUpdateIncome(listByMonth[index],
-                                      listByMonth[index].id);
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 16),
-                              decoration: const BoxDecoration(
-                                  border: Border(
-                                      bottom: BorderSide(
-                                          width: 1, color: AppColors.grey))),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        MdiIcons.fromString(
-                                            listByMonth[index].icon),
-                                        color: Color(listByMonth[index].color),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                    listByMonth[index].cateName,
-                                                    style: tStyle.mediumBold()),
-                                                Text(
-                                                  ' (${listByMonth[index].note})',
-                                                  style: tStyle.small(),
-                                                  overflow: TextOverflow.clip,
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(height: 5),
-                                            Row(
-                                              children: [
-                                                Text(
-                                                    DateFormat.yMd()
-                                                        .format(dateTimeFormat),
-                                                    style: tStyle.mediumBold()),
-                                                Text(
-                                                    ' (${DateFormat.E('vi').format(dateTimeFormat)})',
-                                                    style: tStyle.mediumBold()),
-                                              ],
-                                            ),
-                                          ]),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        listByMonth[index].cateID == 2
-                                            ? '- ${NumberFormat.decimalPattern().format(listByMonth[index].money)} đ'
-                                            : '+ ${NumberFormat.decimalPattern().format(listByMonth[index].money)} đ',
-                                        style: listByMonth[index].cateID == 2
-                                            ? tStyle.rMediumBold()
-                                            : tStyle.gMediumBold(),
-                                      ),
-                                      const Icon(
-                                        Icons.arrow_forward_ios,
-                                        size: 15,
-                                        color: AppColors.black,
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                return SlidableAutoCloseBehavior(
+                  child: ListView.builder(
+                    itemCount: listByMonth.length,
+                    itemBuilder: (context, index) {
+                      DateTime dateTimeFormat =
+                          DateTime.parse(listByMonth[index].dateTime);
+                      return Slidable(
+                        endActionPane: ActionPane(
+                          motion: const BehindMotion(),
+                          children: [
+                            SlidableAction(
+                              onPressed: (context) =>
+                                  onTapDelete(listByMonth[index].id),
+                              backgroundColor: AppColors.red,
+                              foregroundColor: AppColors.white,
+                              icon: Icons.delete,
+                              label: AppLocalizations.of(context)!.delete,
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                listByMonth[index].cateID == 2
+                                    ? onTapUpdateExpense(listByMonth[index],
+                                        listByMonth[index].id)
+                                    : onTapUpdateIncome(listByMonth[index],
+                                        listByMonth[index].id);
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 16),
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                        bottom: BorderSide(
+                                            width: 1, color: AppColors.grey))),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          MdiIcons.fromString(
+                                              listByMonth[index].icon),
+                                          color:
+                                              Color(listByMonth[index].color),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                      listByMonth[index]
+                                                          .cateName,
+                                                      style:
+                                                          tStyle.mediumBold()),
+                                                  Text(
+                                                    ' (${listByMonth[index].note})',
+                                                    style: tStyle.small(),
+                                                    overflow: TextOverflow.clip,
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(height: 5),
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                      DateFormat.yMd().format(
+                                                          dateTimeFormat),
+                                                      style:
+                                                          tStyle.mediumBold()),
+                                                  Text(
+                                                      ' (${DateFormat.E('vi').format(dateTimeFormat)})',
+                                                      style:
+                                                          tStyle.mediumBold()),
+                                                ],
+                                              ),
+                                            ]),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          listByMonth[index].cateID == 2
+                                              ? '- ${NumberFormat.decimalPattern().format(listByMonth[index].money)} đ'
+                                              : '+ ${NumberFormat.decimalPattern().format(listByMonth[index].money)} đ',
+                                          style: listByMonth[index].cateID == 2
+                                              ? tStyle.rMediumBold()
+                                              : tStyle.gMediumBold(),
+                                        ),
+                                        const Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: 15,
+                                          color: AppColors.black,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 );
               },
             ),

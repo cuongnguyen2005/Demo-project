@@ -10,9 +10,8 @@ class StatisBloc extends Bloc<StatisEvent, StatisState> {
 
   StatisBloc() : super(StatisInitial()) {
     on<StatisEvent>((event, emit) {});
-    on<StatisGetMapEvent>((event, emit) async {
+    on<StatisGetMapMonthEvent>((event, emit) async {
       List<Finance> list = await FinanceRepo.getFinances(user!.uid);
-
       //show list by month
       List<Finance> curlistByMonth = [];
       for (var element in list) {
@@ -34,9 +33,6 @@ class StatisBloc extends Bloc<StatisEvent, StatisState> {
           curTotalIncome += element.money;
         }
       }
-      emit(StatisState(totalExpense: curTotalExpense));
-      emit(StatisState(totalIncome: curTotalIncome));
-      emit(StatisState(finalTotal: curTotalIncome - curTotalExpense));
 
       //tính tổng theo danh mục
       Map<String, double> cursumMap = {};
@@ -48,7 +44,52 @@ class StatisBloc extends Bloc<StatisEvent, StatisState> {
           cursumMap[element.cateName] = double.parse(element.money.toString());
         }
       }
-      emit(StatisState(sumMap: cursumMap));
+      emit(StatisState(
+          totalExpenseMonth: curTotalExpense,
+          totalIncomeMonth: curTotalIncome,
+          finalTotalMonth: curTotalIncome - curTotalExpense,
+          sumMapMonth: cursumMap));
+    });
+
+    //year
+    on<StatisGetMapYearEvent>((event, emit) async {
+      List<Finance> list = await FinanceRepo.getFinances(user!.uid);
+      //show list by year
+      List<Finance> curlistByYear = [];
+      for (var element in list) {
+        if (DateTime.parse(element.dateTime).year == event.today.year) {
+          curlistByYear.add(element);
+          emit(StatisState(listByYear: curlistByYear));
+        }
+      }
+
+      //caculator
+      int curTotalExpense = 0;
+      int curTotalIncome = 0;
+      for (var element in state.listByYear) {
+        if (element.cateID == 2) {
+          curTotalExpense += element.money;
+        }
+        if (element.cateID == 1) {
+          curTotalIncome += element.money;
+        }
+      }
+
+      //tính tổng theo danh mục
+      Map<String, double> cursumMap = {};
+      for (var element in state.listByYear) {
+        if (cursumMap.containsKey(element.cateName)) {
+          cursumMap[element.cateName] = cursumMap[element.cateName]! +
+              double.parse(element.money.toString());
+        } else {
+          cursumMap[element.cateName] = double.parse(element.money.toString());
+        }
+      }
+      emit(StatisState(
+          totalExpenseYear: curTotalExpense,
+          totalIncomeYear: curTotalIncome,
+          finalTotalYear: curTotalIncome - curTotalExpense,
+          sumMapYear: cursumMap));
     });
   }
 }
