@@ -129,10 +129,6 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   void changePassword() async {
     try {
-      showDialog(
-        context: context,
-        builder: (context) => const DialogSuccess(),
-      );
       await curUser!.updatePassword(newPwController.text);
       FirebaseAuth.instance.signOut();
       Navigator.pushNamedAndRemoveUntil(
