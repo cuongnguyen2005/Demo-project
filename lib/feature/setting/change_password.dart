@@ -2,6 +2,7 @@
 
 import 'package:finance_app/component/btn/button_primary.dart';
 import 'package:finance_app/component/btn/button_secondary.dart';
+import 'package:finance_app/component/dialog/dialog_success.dart';
 import 'package:finance_app/component/form_field/input_default.dart';
 import 'package:finance_app/feature/login/login.dart';
 import 'package:finance_app/source/colors.dart';
@@ -128,38 +129,39 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   void changePassword() async {
     try {
+      showDialog(
+        context: context,
+        builder: (context) => const DialogSuccess(),
+      );
       await curUser!.updatePassword(newPwController.text);
       FirebaseAuth.instance.signOut();
       Navigator.pushNamedAndRemoveUntil(
           context, LoginPage.routeName, (route) => false);
     } catch (e) {
-      if (e.hashCode == 415628578) {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(16))),
-              content: Text(AppLocalizations.of(context)!.notify,
-                  textAlign: TextAlign.center),
-              actions: [
-                Padding(
-                  padding:
-                      const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-                  child: ButtonPrimary(
-                    textButton: AppLocalizations.of(context)!.logout,
-                    onTap: () {
-                      FirebaseAuth.instance.signOut();
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, LoginPage.routeName, (route) => false);
-                    },
-                  ),
-                )
-              ],
-            );
-          },
-        );
-      }
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(16))),
+            content: Text(AppLocalizations.of(context)!.notify,
+                textAlign: TextAlign.center),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                child: ButtonPrimary(
+                  textButton: AppLocalizations.of(context)!.agree,
+                  onTap: () {
+                    FirebaseAuth.instance.signOut();
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, LoginPage.routeName, (route) => false);
+                  },
+                ),
+              )
+            ],
+          );
+        },
+      );
     }
   }
 
